@@ -615,3 +615,106 @@ em { font-style: italic; }
 
 /* Cards: 3D hover tilt context */
 @media (hover: hover) and (pointer: fine) { .card { transform-style: preserve-3d; } }
+
+/* ==========================================================================
+   § Inside the digestive system — sticky anatomy + scroll story
+   ========================================================================== */
+.gut { --o-line: var(--ink); --o-fill: #ebe5d9; --o-hot: #f4d9c8; position: relative; }
+.gut__grid { display: grid; }
+.gut__stage {
+  position: sticky; top: var(--nav-h); z-index: 2;
+  height: 46vh; height: 46svh;
+  margin-inline: calc(var(--gutter) * -1); padding: 8px var(--gutter) 10px;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  /* paints over the strip above the stage while the nav is tucked away */
+  box-shadow: 0 calc(var(--nav-h) * -1) 0 var(--paper);
+  display: grid; grid-template-rows: minmax(0, 1fr) auto;
+}
+@media (max-width: 1023px) { .tag text { font-size: 19px; letter-spacing: 0; } }
+.gut__svg { display: block; width: 100%; height: 100%; min-height: 0; overflow: visible; }
+.gut__caption { display: flex; justify-content: space-between; gap: 12px; color: var(--ink-3); font-size: 11px; padding-top: 6px; }
+.gut__caption [data-gut-label] { color: var(--accent); }
+
+/* organs */
+.organ { transition: opacity .7s var(--ease-out); }
+.organ .o-fill { fill: var(--o-fill); stroke: var(--o-line); stroke-width: 1.4; stroke-linejoin: round; transition: fill .7s var(--ease-out), stroke .7s; }
+.organ .o-detail { fill: none; stroke: var(--o-line); stroke-width: 0.9; stroke-linecap: round; opacity: .45; }
+.organ .o-duct { fill: none; stroke: var(--o-line); stroke-width: 3.2; stroke-linecap: round; }
+.organ .t-out { fill: none; stroke: var(--o-line); stroke-linecap: round; stroke-linejoin: round; transition: stroke .7s; }
+.organ .t-in { fill: none; stroke: var(--o-fill); stroke-linecap: round; stroke-linejoin: round; transition: stroke .7s var(--ease-out); }
+.organ .t-flow { fill: none; stroke: var(--accent); stroke-linecap: round; opacity: 0; stroke-dasharray: 2 16; transition: opacity .6s; }
+.organ .t-haustra { fill: none; stroke: var(--o-line); stroke-width: 0.9; opacity: .4; }
+.t-oes.t-out { stroke-width: 15; } .t-oes.t-in { stroke-width: 12; } .t-oes.t-flow { stroke-width: 3.5; }
+.t-duo.t-out { stroke-width: 15; } .t-duo.t-in { stroke-width: 12; } .t-duo.t-flow { stroke-width: 3.5; }
+.t-sb.t-out { stroke-width: 13; } .t-sb.t-in { stroke-width: 10; } .t-sb.t-flow { stroke-width: 3; }
+.t-colon.t-out { stroke-width: 27; } .t-colon.t-in { stroke-width: 24; } .t-colon.t-flow { stroke-width: 4.5; stroke-dasharray: 3 22; }
+.t-app.t-out { stroke-width: 7; } .t-app.t-in { stroke-width: 4.6; }
+.t-stom.t-flow { stroke-width: 4; }
+.seg-hidden { fill: none; stroke: none; }
+
+.gut__journey { fill: none; stroke: none; }
+.gut__trail { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 3 5; opacity: .85; }
+.gut__dot { fill: #fff7f0; stroke: var(--accent); stroke-width: 2; }
+.gut__glow { mix-blend-mode: multiply; }
+
+/* active state: chosen organ warms up, others recede */
+.gut__svg.has-active .organ { opacity: .38; }
+.gut__svg.has-active .organ.is-active { opacity: 1; }
+.organ.is-active .o-fill { fill: var(--o-hot); stroke: var(--accent); stroke-width: 1.8; }
+.organ.is-active .o-duct { stroke: var(--accent); }
+.organ.is-active .t-out { stroke: var(--accent); }
+.organ.is-active .t-in { stroke: var(--o-hot); }
+.organ.is-active .t-flow { opacity: .9; animation: peristalsis 1.6s linear infinite; }
+@keyframes peristalsis { to { stroke-dashoffset: -36; } }
+
+.tag { opacity: 0; transition: opacity .5s var(--ease-out); pointer-events: none; }
+.tag.is-active { opacity: 1; }
+.tag path { fill: none; stroke: var(--accent); stroke-width: 1; }
+.tag circle { fill: var(--accent); }
+.tag text { font-family: var(--mono); font-size: 14px; letter-spacing: .04em; text-transform: uppercase; fill: var(--ink); }
+
+/* story steps */
+.gut__steps { position: relative; z-index: 1; }
+.gstep { min-height: 64vh; min-height: 64svh; padding: 36px 0 40px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--rule); }
+.gstep:last-child { border-bottom: 0; }
+.gstep__no { color: var(--accent); }
+.gstep__title { margin-top: 10px; font-family: var(--serif); font-weight: 340; font-size: clamp(34px, 4.6vw, 64px); line-height: 1; letter-spacing: -0.025em; font-variation-settings: 'opsz' 72; }
+.gstep__aka { margin-top: 8px; font-family: var(--serif); font-style: italic; color: var(--ink-3); font-size: 19px; }
+.gstep__fact { margin-top: 18px; font-size: clamp(17px, 1.4vw, 19px); color: var(--ink-2); max-width: 46ch; text-wrap: pretty; }
+.gstep__meta { margin-top: 24px; display: grid; gap: 16px; }
+.gstep__meta dt { color: var(--ink-3); font-size: 11px; margin-bottom: 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { font-size: 14px; line-height: 1.2; padding: 7px 12px; border: 1px solid var(--rule-strong); border-radius: 100px; background: color-mix(in srgb, var(--paper) 70%, transparent); }
+.chips--proc li { border-color: color-mix(in srgb, var(--accent) 45%, transparent); color: var(--accent-ink); }
+.gut__note { margin-top: 18px; color: var(--ink-3); font-size: 13px; }
+
+@media (min-width: 1024px) {
+  .gut__grid { grid-template-columns: 6fr 5fr; column-gap: 5vw; }
+  .gut__stage { top: calc(var(--nav-h) + 12px); height: calc(100vh - var(--nav-h) - 36px); margin: 0; padding: 0; border: 0; background: none; box-shadow: none; grid-row: 1 / span 2; }
+  .gut__steps { grid-column: 2; }
+  .gstep { min-height: 86vh; border-bottom: 0; padding: 0; }
+  .gstep__meta { grid-template-columns: 1fr 1fr; }
+}
+
+/* Gentle entrance for steps */
+.js:not(.no-motion) .gstep > * { opacity: 0; transform: translateY(26px); }
+.no-motion .gstep > * { opacity: 1 !important; transform: none !important; }
+
+/* ==========================================================================
+   § When to see a gastroenterologist
+   ========================================================================== */
+.signs__grid { display: grid; gap: 0; border-top: 1px solid var(--rule-strong); }
+.sign { position: relative; padding: 22px 0 24px 34px; border-bottom: 1px solid var(--rule); }
+.sign__dot { position: absolute; left: 4px; top: 30px; width: 10px; height: 10px; border-radius: 50%; background: var(--ink); }
+.sign--urgent .sign__dot { background: var(--accent); }
+.sign--urgent .sign__dot::after { content: ''; position: absolute; inset: -6px; border-radius: 50%; border: 1px solid var(--accent); animation: ping 2.2s var(--ease-out) infinite; }
+@keyframes ping { 0% { transform: scale(.4); opacity: 1; } 80%, 100% { transform: scale(2.2); opacity: 0; } }
+.sign__title { font-family: var(--serif); font-size: clamp(21px, 2vw, 27px); line-height: 1.2; font-weight: 400; letter-spacing: -0.01em; font-variation-settings: 'opsz' 28; }
+.sign__note { margin-top: 6px; color: var(--ink-2); font-size: 15px; max-width: 46ch; }
+.sign__flag { display: inline-block; margin-top: 10px; color: var(--accent); }
+.signs__foot { margin-top: 28px; color: var(--ink-2); max-width: 70ch; }
+@media (min-width: 760px) {
+  .signs__grid { grid-template-columns: 1fr 1fr; column-gap: 40px; }
+}
+@media (min-width: 1100px) { .signs__grid { grid-template-columns: repeat(3, 1fr); } }

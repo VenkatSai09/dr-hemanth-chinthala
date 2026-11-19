@@ -21,7 +21,7 @@ roman = set(html.unescape(re.sub(r"<[^>]+>", " ", page)))
 roman |= {chr(c) for c in range(0x20, 0x7F)} | set("–—‘’“”·×₹§•…é")
 roman = {c for c in roman if ord(c) < 0x2200}
 italic = set("".join(html.unescape(m) for m in re.findall(r"<em>(.*?)</em>", page)))
-italic |= set("abcdefghijklmnopqrstuvwxyz ivx.,")
+italic |= set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ivx.,—–’‘“”-&")
 
 with tempfile.TemporaryDirectory() as tmp:
     for style, chars in (("normal", roman), ("italic", italic)):

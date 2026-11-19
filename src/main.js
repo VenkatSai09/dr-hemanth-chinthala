@@ -192,9 +192,22 @@ function initReveals() {
   ScrollTrigger.batch('[data-reveal]', {
     start: 'top 88%',
     once: true,
-    onEnter: (batch) =>
-      gsap.to(batch, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.08, overwrite: true }),
+    onEnter: (batch) => {
+      const [show, skip] = splitByViewport(batch);
+      gsap.set(skip, { opacity: 1, y: 0 });
+      gsap.to(show, { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.08, overwrite: true });
+    },
   });
+}
+
+// After a long jump (menu link, refresh mid-page) many elements enter at once.
+// Only animate the ones on screen; anything already scrolled past appears instantly,
+// so the visible rows never queue behind dozens of off-screen ones.
+function splitByViewport(els) {
+  const show = [];
+  const skip = [];
+  els.forEach((el) => (el.getBoundingClientRect().bottom < 0 ? skip : show).push(el));
+  return [show, skip];
 }
 
 /* ------------------------------------------------------------------ *
@@ -226,12 +239,16 @@ function initWipes() {
     start: 'top 90%',
     once: true,
     onEnter: (batch) => {
-      gsap.to(batch, {
+      const [show, skip] = splitByViewport(batch);
+      gsap.set(skip, { clipPath: 'none' });
+      gsap.set(skip.map((b) => [...b.children]).flat(), { opacity: 1, y: 0 });
+      if (!show.length) return;
+      gsap.to(show, {
         clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut', stagger: 0.09,
         // Drop the clip once open so hover fills and focus rings are never cut off.
-        onComplete: () => gsap.set(batch, { clipPath: 'none' }),
+        onComplete: () => gsap.set(show, { clipPath: 'none' }),
       });
-      gsap.to(batch.map((b) => [...b.children]).flat(), { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.035, delay: 0.25 });
+      gsap.to(show.map((b) => [...b.children]).flat(), { opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.035, delay: 0.25 });
     },
   });
 }
@@ -334,6 +351,120 @@ function initDetails() {
       card.addEventListener('pointerleave', () => { rx(0); ry(0); });
     });
   }
+}
+
+/* ------------------------------------------------------------------ *
+ * Inside the digestive system
+ * The diagram draws itself, then an "endoscope light" travels the tract
+ * from the oesophagus to the rectum, stopping at each organ as its
+ * story scrolls into view. The active organ warms up and a peristaltic
+ * wave runs through it; the rest of the anatomy recedes.
+ * ------------------------------------------------------------------ */
+function initGut() {
+  const section = $('[data-gut]');
+  if (!section) return;
+  const svg = $('[data-gut-svg]', section);
+  const journey = $('[data-journey]', svg);
+  const trail = $('[data-trail]', svg);
+  const scope = $('[data-scope]', svg);
+  const label = $('[data-gut-label]', section);
+  const counter = $('[data-gut-count]', section);
+  const steps = $$('[data-step]', section);
+
+  // Build one continuous lumen from the organ centre-lines.
+  const order = ['oesophagus', 'stomach', 'duodenum', 'smallbowel', 'colon'];
+  const segs = order.map((id) => $(`[data-seg="${id}"]`, svg));
+  const d = segs.map((p, i) => (i ? p.getAttribute('d').trim().replace(/^M/, 'L') : p.getAttribute('d').trim())).join(' ');
+  journey.setAttribute('d', d);
+  trail.setAttribute('d', d);
+  const total = journey.getTotalLength();
+  const lens = segs.map((p) => p.getTotalLength());
+  const sum = lens.reduce((a, b) => a + b, 0);
+  const startOf = {};
+  order.reduce((acc, id, i) => { startOf[id] = acc; return acc + lens[i]; }, 0);
+  const stopFor = (spec) => {
+    const [id, f] = spec.split(':');
+    const i = order.indexOf(id);
+    return Math.min(1, (startOf[id] + lens[i] * Number(f)) / sum);
+  };
+
+  // Flow dashes need a consistent rhythm regardless of path length.
+  trail.style.strokeDasharray = `${total}`;
+  const state = { p: 0 };
+  const render = () => {
+    const pt = journey.getPointAtLength(state.p * total);
+    scope.setAttribute('transform', `translate(${pt.x} ${pt.y})`);
+    trail.style.strokeDashoffset = String(total * (1 - state.p));
+  };
+  render();
+
+  const setActive = (i) => {
+    const step = steps[i];
+    const organ = step ? step.dataset.step : null;
+    svg.classList.toggle('has-active', !!organ);
+    $$('.organ', svg).forEach((g) => g.classList.toggle('is-active', g.dataset.organ === organ));
+    $$('.tag', svg).forEach((t) => t.classList.toggle('is-active', t.dataset.tag === organ));
+    label.innerHTML = step ? step.dataset.label : 'The digestive tract';
+    counter.textContent = `${String(step ? i + 1 : 0).padStart(2, '0')} / ${String(steps.length).padStart(2, '0')}`;
+    const target = step ? stopFor(step.dataset.stop) : 0;
+    if (reduceMotion) { state.p = target; render(); return; }
+    gsap.to(state, { p: target, duration: 1.6, ease: 'power2.inOut', overwrite: true, onUpdate: render });
+  };
+
+  let current = -1;
+  steps.forEach((step, i) => {
+    ScrollTrigger.create({
+      trigger: step,
+      start: 'top 62%',
+      end: 'bottom 62%',
+      onToggle: (self) => {
+        if (self.isActive && current !== i) { current = i; setActive(i); }
+      },
+    });
+  });
+  // Leaving the section upwards resets the tour.
+  ScrollTrigger.create({
+    trigger: steps[0], start: 'top 62%',
+    onLeaveBack: () => { current = -1; setActive(-1); },
+  });
+
+  if (reduceMotion) return;
+
+  // Steps fade up as they arrive.
+  steps.forEach((step) => {
+    gsap.to(step.children, {
+      opacity: 1, y: 0, duration: 1.1, ease: 'expo.out', stagger: 0.07,
+      scrollTrigger: { trigger: step, start: 'top 78%', once: true },
+    });
+    gsap.from($$('.chips li', step), {
+      scale: 0.6, opacity: 0, duration: 0.7, ease: 'back.out(2)', stagger: 0.04,
+      scrollTrigger: { trigger: $('.gstep__meta', step), start: 'top 85%', once: true },
+    });
+  });
+
+  // Line-art draw-in the first time the diagram is seen.
+  const lines = $$('.o-fill, .o-duct, .o-detail, .t-out, .t-haustra', svg);
+  lines.forEach((el) => {
+    const len = el.getTotalLength();
+    el.style.strokeDasharray = `${len}`;
+    el.style.strokeDashoffset = `${len}`;
+  });
+  const fills = $$('.o-fill', svg);
+  const inners = $$('.t-in', svg);
+  gsap.set(fills, { fillOpacity: 0 });
+  gsap.set(inners, { opacity: 0 });
+  gsap.set(scope, { opacity: 0 });
+  gsap.timeline({
+    scrollTrigger: { trigger: svg, start: 'top 80%', once: true },
+    onComplete: () => lines.forEach((el) => { el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; }),
+  })
+    .to(lines, { strokeDashoffset: 0, duration: 2.2, ease: 'power2.inOut', stagger: 0.06 })
+    .to(inners, { opacity: 1, duration: 0.6, stagger: 0.05 }, 0.9)
+    .to(fills, { fillOpacity: 1, duration: 1, stagger: 0.08 }, 1.2)
+    .to(scope, { opacity: 1, duration: 0.6 }, 1.6);
+
+  // The light breathes while it waits.
+  gsap.to($('.gut__glow', scope), { scale: 1.35, opacity: 0.6, duration: 1.2, ease: 'sine.inOut', yoyo: true, repeat: -1, transformOrigin: '50% 50%' });
 }
 
 /* ------------------------------------------------------------------ *
@@ -588,24 +719,22 @@ function initForm() {
 function init() {
   initHero();
   // Everything below the fold is set up once the browser is idle, keeping the first paint fast.
-  const rest = () => {
-    $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear()));
-    // The pinned section is created first so every trigger below it measures with the pin in place.
-    initCare();
-    initCounters();
-    initMarquee();
-    initStatement();
-    initWords();
-    initWipes();
-    initReveals();
-    initSectionOpen();
-    initTraining();
-    initDetails();
-    initProgress();
-    initMagnetic();
-    initNav();
-    initFaq();
-    initForm();
+  // Below-the-fold setup runs in small tasks, yielding to the browser between
+  // each, so the main thread never blocks long enough to delay a tap.
+  // Order matters: the pinned section is created before the triggers below it.
+  const queue = [
+    initNav, initForm, initFaq,
+    () => $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear())),
+    initGut, initCare, initCounters, initMarquee, initStatement,
+    initWords, initWipes, initReveals, initSectionOpen,
+    initTraining, initDetails, initProgress, initMagnetic,
+  ];
+  const yieldToBrowser = () => new Promise((r) => setTimeout(r, 0));
+  const rest = async () => {
+    for (const task of queue) {
+      task();
+      await yieldToBrowser();
+    }
     ScrollTrigger.sort();
     ScrollTrigger.refresh();
   };
