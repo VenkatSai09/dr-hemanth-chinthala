@@ -8,10 +8,10 @@ Single-page website for **Dr Hemanth Chinthala**, Consultant Medical Gastroenter
 
 | | Performance | Accessibility | Best practices | SEO |
 |---|---|---|---|---|
-| Mobile | 97 | 100 | 100 | 100 |
-| Desktop | 100 | 100 | 100 | 100 |
+| Mobile | 96 | 100 | 100 | 100 |
+| Desktop | 99 | 100 | 100 | 100 |
 
-Mobile: FCP 1.7 s · LCP 2.4 s · TBT 100 ms · CLS 0.
+Mobile: FCP 1.6 s · LCP 2.3 s · TBT 80 ms · CLS 0.01.
 
 ## Stack
 
@@ -26,17 +26,24 @@ Editorial and clinical rather than "template medical": ink-navy on warm paper wi
 
 ## Motion
 
-| Section | Effect |
-|---|---|
-| Hero | Word-by-word masked headline reveal, clip-path photo wipe with scale settle, scroll parallax, subtle 3D tilt on the photo (mouse only) |
-| Credentials | Count-up numbers |
-| Practice | Statement words brighten as you scroll (scrubbed) |
-| Areas of care | **Pinned horizontal scroll** on desktop (≥1024 px) with progress bar; cards lift into place via `containerAnimation`. Stacked list on mobile |
-| Procedures | Index rows with hover fill and slide |
-| Training | Photo wipe, timeline line that draws with scroll |
-| Everywhere | Batched fade-up reveals, hide-on-scroll nav, animated FAQ, mobile booking dock |
+Watch it: [`docs/video/walkthrough-desktop.mp4`](docs/video/walkthrough-desktop.mp4) · [`docs/video/walkthrough-mobile.mp4`](docs/video/walkthrough-mobile.mp4)
 
-`prefers-reduced-motion` turns off Lenis, pinning and all animations, and the page renders fully. If the script fails to load, a 2.5 s fallback in `<head>` shows all content.
+| Where | Effect |
+|---|---|
+| Intro | Navy loader: name rises word by word, counter runs 000 → 100, then the curtain lifts into the hero (first visit per session) |
+| Hero | Masked word-by-word headline, clip-path photo wipe with zoom settle, nav drops in, layered parallax on scroll, 3D tilt on the photo |
+| Everywhere | Reading-progress line along the top of the nav, magnetic buttons, hide-on-scroll nav |
+| Credentials | Count-up numbers |
+| Specialty band | Giant serif marquee that speeds up and **reverses with scroll direction** |
+| Practice | Statement words darken as you read (scrubbed), languages rise one by one |
+| Section headings | Every heading rises word by word out of a mask |
+| Navy sections | Open from an inset rounded card into full-bleed as they scroll in |
+| Areas of care | **Pinned horizontal scroll** on desktop with progress bar, cards lift and straighten as they enter, 3D hover tilt; staggered stack on mobile |
+| Rows (procedures, awards, research, timeline, FAQ, visit steps) | Wipe in left to right, so the hairline rules draw themselves, with content following |
+| Training | Photo wipe, timeline line draws with scroll |
+| Booking | Portrait spins in, form rises in, animated FAQ accordions |
+
+`prefers-reduced-motion` turns off Lenis, the loader, pinning and all animation, and the page renders fully. If the script fails to load, a 2.5 s fallback in `<head>` shows all content.
 
 ## Booking
 
@@ -52,6 +59,12 @@ npm run preview   # serve the production build
 ```
 
 Deploy `dist/` to any static host (Netlify, Vercel, Cloudflare Pages, GitHub Pages).
+
+> **Opening `dist/index.html` by double-clicking won't animate.** Browsers block module scripts and fonts on `file://`. Either serve it (`npm run preview`) or build the offline copy:
+
+```bash
+npm run build:offline   # writes offline/ — double-click offline/index.html
+```
 
 ## Files
 

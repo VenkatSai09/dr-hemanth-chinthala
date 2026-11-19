@@ -223,8 +223,8 @@ em { font-style: italic; }
   font-variation-settings: 'opsz' 72;
   text-wrap: balance;
 }
-.hero__title .w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
-.hero__title .w > span { display: inline-block; will-change: transform; }
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+.w > span { display: inline-block; will-change: transform; }
 .hero__figure { grid-area: figure; justify-self: end; width: min(72%, 380px); }
 .hero__frame { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: var(--paper-3); transform-style: preserve-3d; will-change: transform; }
 .hero__frame img { width: 100%; height: 100%; object-fit: cover; transform-origin: 50% 30%; }
@@ -537,9 +537,81 @@ em { font-style: italic; }
 .js:not(.no-motion) .hero__frame { clip-path: inset(100% 0 0 0); }
 .js:not(.no-motion) [data-reveal] { opacity: 0; transform: translateY(28px); }
 .js:not(.no-motion) .training__figure { clip-path: inset(0 0 100% 0); }
-.no-motion .hero__title .w > span, .no-motion [data-hero-fade], .no-motion [data-reveal] { opacity: 1 !important; transform: none !important; }
+.no-motion .w > span, .no-motion [data-hero-fade], .no-motion [data-reveal], .no-motion [data-wipe], .no-motion [data-words], .no-motion [data-langs] li { opacity: 1 !important; transform: none !important; }
 .no-motion .hero__frame, .no-motion .training__figure { clip-path: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* ==========================================================================
+   Motion layer 2 — loader, progress, marquee, word reveals, wipes
+   ========================================================================== */
+
+/* Intro loader (first visit per session; skipped with reduced motion) */
+.loader {
+  position: fixed; inset: 0; z-index: 150;
+  background: var(--night); color: var(--night-text);
+  display: none; align-items: flex-end;
+  padding-bottom: clamp(32px, 8vh, 80px);
+}
+.js:not(.no-motion):not(.seen) .loader { display: flex; }
+.loader__inner { display: grid; gap: 18px; }
+.loader__name {
+  font-family: var(--serif); font-weight: 320; letter-spacing: -0.035em; line-height: 0.95;
+  font-size: clamp(48px, 10vw, 150px); font-variation-settings: 'opsz' 72;
+}
+.loader__name .w:last-child > span { font-style: italic; color: #e08a5f; }
+.loader__name .w > span { transform: translateY(105%); }
+.loader__meta { display: flex; justify-content: space-between; gap: 24px; color: var(--night-mute); }
+.loader__count { color: var(--night-text); font-variant-numeric: tabular-nums; }
+.loader__bar { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--night-rule); }
+.loader__bar span { display: block; height: 100%; background: #e08a5f; transform: scaleX(0); transform-origin: left; }
+
+/* Reading progress along the top of the nav */
+.nav__progress { position: absolute; left: 0; right: 0; top: 0; height: 2px; pointer-events: none; }
+.nav__progress span { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+
+/* Specialty marquee — speeds up and reverses with scroll velocity */
+.marquee {
+  margin-top: clamp(64px, 9vw, 120px);
+  border-block: 1px solid var(--rule-strong);
+  overflow: hidden; padding-block: clamp(14px, 2vw, 26px);
+  white-space: nowrap; user-select: none;
+}
+.marquee__track { display: flex; width: max-content; will-change: transform; }
+.marquee__group { display: flex; align-items: center; flex: none; }
+.marquee span {
+  font-family: var(--serif); font-weight: 320; letter-spacing: -0.025em; line-height: 1;
+  font-size: clamp(40px, 7.4vw, 112px); font-variation-settings: 'opsz' 72;
+  padding-inline: 0.28em;
+}
+.marquee span.is-alt { font-style: italic; color: var(--accent); }
+.marquee i {
+  width: clamp(14px, 1.6vw, 24px); height: clamp(14px, 1.6vw, 24px); flex: none;
+  background: var(--ink);
+  clip-path: polygon(50% 0, 61% 39%, 100% 50%, 61% 61%, 50% 100%, 39% 61%, 0 50%, 39% 39%);
+}
+
+/* Word-rise headings */
+.js:not(.no-motion) [data-words]:not(.is-split) { opacity: 0; }
+.js:not(.no-motion) [data-words] .w > span { transform: translateY(110%); }
+
+/* Wipe-in rows (the hairline rule draws left-to-right with the content) */
+.js:not(.no-motion) [data-wipe] { clip-path: inset(0 100% 0 0); }
+.js:not(.no-motion) [data-wipe] > * { opacity: 0; transform: translateY(18px); }
+.no-motion [data-wipe] > * { opacity: 1 !important; transform: none !important; }
+.no-motion [data-wipe] { clip-path: none !important; }
+
+/* Languages rise one by one */
+.js:not(.no-motion) [data-langs] li { opacity: 0; transform: translateY(40%); }
+
+/* Navy sections open up from an inset card as they arrive */
+.care, .book { will-change: clip-path; }
+
+/* Magnetic buttons need a transform context */
+[data-magnetic] { will-change: transform; }
+[data-magnetic] > * { pointer-events: none; }
+
+/* Cards: 3D hover tilt context */
+@media (hover: hover) and (pointer: fine) { .card { transform-style: preserve-3d; } }
