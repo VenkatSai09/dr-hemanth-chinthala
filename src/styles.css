@@ -614,32 +614,33 @@ abbr { text-decoration: none; }
 /* ==========================================================================
    Liver disease, stage by stage (Gemini illustrations, scroll-scrubbed)
    ========================================================================== */
-.liver { background: var(--paper-2); }
-.liver__grid { display: grid; grid-template-columns: minmax(0, 1fr); }
-.liver__stage {
+/* Shared by the liver and IBD sections: three illustrations that blend as you scroll. */
+.stages { background: var(--paper-2); }
+.stages__grid { display: grid; grid-template-columns: minmax(0, 1fr); }
+.stages__stage {
   position: sticky; top: var(--nav-h); z-index: 2;
   margin-inline: calc(var(--gutter) * -1); padding: 10px var(--gutter) 12px;
   background: var(--paper-2);
   box-shadow: 0 calc(var(--nav-h) * -1) 0 var(--paper-2);
   border-bottom: 1px solid var(--rule);
 }
-.liver__view { position: relative; display: grid; place-items: center; height: 30vh; height: 30svh; }
-.liver__view::before { content: ''; position: absolute; inset: 4% 10%; border-radius: 50%; background: radial-gradient(closest-side, var(--stage-glow), transparent 75%); }
-.liver__float { position: relative; width: min(100%, 520px); height: 100%; }
-.liver__imgs { position: relative; height: 100%; transform-origin: 50% 55%; }
-.liver__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 22px 24px var(--shadow-soft)); }
-.liver__img[data-l='1'], .liver__img[data-l='2'] { opacity: 0; }
-.liver__scale { margin-top: 10px; }
-.liver__track { display: block; height: 3px; background: var(--rule); border-radius: 3px; overflow: hidden; }
-.liver__track span { display: block; height: 100%; background: linear-gradient(90deg, var(--ink-3), var(--accent)); transform: scaleX(0); transform-origin: left; }
-.liver__labels { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 8px; font-size: 14px; color: var(--ink-3); }
-.liver__labels li:nth-child(2) { text-align: center; }
-.liver__labels li:nth-child(3) { text-align: right; }
-.liver__labels li { transition: color .3s; }
-.liver__labels li.is-active { color: var(--accent); font-weight: 600; }
-.liver__stage .caption { margin-top: 6px; font-size: 13px; }
+.stages__view { position: relative; display: grid; place-items: center; height: 30vh; height: 30svh; }
+.stages__view::before { content: ''; position: absolute; inset: 4% 10%; border-radius: 50%; background: radial-gradient(closest-side, var(--stage-glow), transparent 75%); }
+.stages__float { position: relative; width: min(100%, 520px); height: 100%; }
+.stages__imgs { position: relative; height: 100%; transform-origin: 50% 55%; }
+.stages__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 22px 24px var(--shadow-soft)); }
+.stages__img[data-l='1'], .stages__img[data-l='2'] { opacity: 0; }
+.stages__scale { margin-top: 10px; }
+.stages__track { display: block; height: 3px; background: var(--rule); border-radius: 3px; overflow: hidden; }
+.stages__track span { display: block; height: 100%; background: linear-gradient(90deg, var(--ink-3), var(--accent)); transform: scaleX(0); transform-origin: left; }
+.stages__labels { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 8px; font-size: 14px; color: var(--ink-3); }
+.stages__labels li:nth-child(2) { text-align: center; }
+.stages__labels li:nth-child(3) { text-align: right; }
+.stages__labels li { transition: color .3s; }
+.stages__labels li.is-active { color: var(--accent); font-weight: 600; }
+.stages__stage .caption { margin-top: 6px; font-size: 13px; }
 
-.liver__steps { position: relative; z-index: 1; }
+.stages__steps { position: relative; z-index: 1; }
 .lstep { min-height: 60vh; min-height: 60svh; padding: 32px 0; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--rule); transition: opacity .4s var(--ease-out); }
 .lstep__no { font-size: 14px; color: var(--accent); font-weight: 600; }
 .lstep__title { margin-top: 8px; font-family: var(--serif); font-weight: 340; font-size: clamp(32px, 4vw, 54px); line-height: 1.04; letter-spacing: -0.022em; font-variation-settings: 'opsz' 72; }
@@ -649,10 +650,10 @@ abbr { text-decoration: none; }
 .lstep__cta { margin-top: 24px; }
 
 @media (min-width: 1024px) {
-  .liver__grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); column-gap: 5vw; }
-  .liver__stage { top: calc(var(--nav-h) + 24px); margin: 0; padding: 0; border: 0; background: none; box-shadow: none; grid-row: 1 / span 2; align-self: start; height: calc(100vh - var(--nav-h) - 48px); display: flex; flex-direction: column; justify-content: center; }
-  .liver__view { height: auto; aspect-ratio: 780 / 566; }
-  .liver__float { width: 100%; }
-  .liver__steps { grid-column: 2; }
+  .stages__grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); column-gap: 5vw; }
+  .stages__stage { top: calc(var(--nav-h) + 24px); margin: 0; padding: 0; border: 0; background: none; box-shadow: none; grid-row: 1 / span 2; align-self: start; height: calc(100vh - var(--nav-h) - 48px); display: flex; flex-direction: column; justify-content: center; }
+  .stages__view { height: auto; aspect-ratio: var(--stage-ratio, 780 / 566); }
+  .stages__float { width: 100%; }
+  .stages__steps { grid-column: 2; }
   .lstep { min-height: 82vh; border-bottom: 0; }
 }

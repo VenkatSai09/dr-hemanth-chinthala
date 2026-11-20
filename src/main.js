@@ -118,47 +118,50 @@ function initGlyphs() {
   });
 }
 
-/* Liver disease, stage by stage. The three Gemini illustrations share one
-   frame; scrolling blends healthy -> fatty -> cirrhosis. The fatty liver
+/* Stage-by-stage sections (liver disease, IBD). Three illustrations share
+   one frame and blend into each other as you scroll. data-stages-scale and
+   data-stages-rot set the size and tilt at stages 2 and 3: the fatty liver
    swells a little and the cirrhotic liver shrinks, as they do in life. */
-function initLiver() {
-  const sec = $('[data-liver]');
-  if (!sec) return;
-  const imgs = $$('.liver__img', sec);
-  const wrap = $('[data-liver-imgs]', sec);
-  const fill = $('[data-liver-fill]', sec);
-  const labels = $$('[data-llabel]', sec);
-  const steps = $$('article[data-lstep]', sec);
+function initStages() {
+  $$('[data-stages]').forEach((sec) => {
+    const imgs = $$('.stages__img', sec);
+    const wrap = $('[data-stages-imgs]', sec);
+    const fill = $('[data-stages-fill]', sec);
+    const labels = $$('[data-llabel]', sec);
+    const steps = $$('article[data-lstep]', sec);
+    const [s1, s2] = (sec.dataset.stagesScale || '1 1').split(' ').map(Number);
+    const [r1, r2] = (sec.dataset.stagesRot || '0 0').split(' ').map(Number);
 
-  const setStage = (i) => {
-    labels.forEach((l, k) => l.classList.toggle('is-active', k === i));
-    steps.forEach((st, k) => st.classList.toggle('is-active', k === i));
-  };
-  setStage(0);
-  steps.forEach((st, i) => ScrollTrigger.create({
-    trigger: st, start: 'top 60%', end: 'bottom 60%',
-    onToggle: (self) => { if (self.isActive) setStage(i); },
-  }));
+    const setStage = (i) => {
+      labels.forEach((l, k) => l.classList.toggle('is-active', k === i));
+      steps.forEach((st, k) => st.classList.toggle('is-active', k === i));
+    };
+    setStage(0);
+    steps.forEach((st, i) => ScrollTrigger.create({
+      trigger: st, start: 'top 60%', end: 'bottom 60%',
+      onToggle: (self) => { if (self.isActive) setStage(i); },
+    }));
 
-  // The morph follows the scroll position itself, so it runs both ways.
-  // Each new stage fades in on top; the one beneath fades only at the end,
-  // so the liver never looks see-through mid-blend.
-  gsap.timeline({
-    scrollTrigger: { trigger: steps[0], start: 'center 60%', endTrigger: steps[2], end: 'center 60%', scrub: reduceMotion ? true : 0.6 },
-  })
-    .to(imgs[1], { opacity: 1, duration: 1, ease: 'none' }, 0)
-    .to(imgs[0], { opacity: 0, duration: 0.2, ease: 'none' }, 0.8)
-    .to(wrap, { scale: 1.06, duration: 1, ease: 'none' }, 0)
-    .to(fill, { scaleX: 0.5, duration: 1, ease: 'none' }, 0)
-    .to(imgs[2], { opacity: 1, duration: 1, ease: 'none' }, 1)
-    .to(imgs[1], { opacity: 0, duration: 0.2, ease: 'none' }, 1.8)
-    .to(wrap, { scale: 0.86, rotation: -2, duration: 1, ease: 'none' }, 1)
-    .to(fill, { scaleX: 1, duration: 1, ease: 'none' }, 1);
+    // The blend follows the scroll position itself, so it runs both ways.
+    // Each new stage fades in on top; the one beneath fades only at the end,
+    // so the picture never looks see-through mid-blend.
+    gsap.timeline({
+      scrollTrigger: { trigger: steps[0], start: 'center 60%', endTrigger: steps[2], end: 'center 60%', scrub: reduceMotion ? true : 0.6 },
+    })
+      .to(imgs[1], { opacity: 1, duration: 1, ease: 'none' }, 0)
+      .to(imgs[0], { opacity: 0, duration: 0.2, ease: 'none' }, 0.8)
+      .to(wrap, { scale: s1, rotation: r1, duration: 1, ease: 'none' }, 0)
+      .to(fill, { scaleX: 0.5, duration: 1, ease: 'none' }, 0)
+      .to(imgs[2], { opacity: 1, duration: 1, ease: 'none' }, 1)
+      .to(imgs[1], { opacity: 0, duration: 0.2, ease: 'none' }, 1.8)
+      .to(wrap, { scale: s2, rotation: r2, duration: 1, ease: 'none' }, 1)
+      .to(fill, { scaleX: 1, duration: 1, ease: 'none' }, 1);
 
-  if (reduceMotion) return;
-  // A slow float, paused while the section is off screen.
-  const float = gsap.to($('[data-liver-float]', sec), { y: -10, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1, paused: true });
-  ScrollTrigger.create({ trigger: sec, start: 'top bottom', end: 'bottom top', onToggle: (st) => (st.isActive ? float.play() : float.pause()) });
+    if (reduceMotion) return;
+    // A slow float, paused while the section is off screen.
+    const float = gsap.to($('[data-stages-float]', sec), { y: -10, duration: 3, ease: 'sine.inOut', yoyo: true, repeat: -1, paused: true });
+    ScrollTrigger.create({ trigger: sec, start: 'top bottom', end: 'bottom top', onToggle: (st) => (st.isActive ? float.play() : float.pause()) });
+  });
 }
 
 /* ------------------------------------------------------------------ *
@@ -507,7 +510,7 @@ function start() {
 const queue = [
   initNav, initForm, initFaq,
   () => $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear())),
-  initGut, initCare, initSectionOpen, initTraining, initMap, initCounters, initGlyphs, initLiver,
+  initGut, initCare, initSectionOpen, initTraining, initMap, initCounters, initGlyphs, initStages,
 ];
 const rest = async () => {
   for (const task of queue) {
