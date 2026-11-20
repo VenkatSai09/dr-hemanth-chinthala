@@ -39,10 +39,11 @@ Mobile: FCP 1.8 s, LCP 2.3 s, TBT 30 ms, CLS 0.
 
 ## Motion
 
-There is one main moving piece, and the rest of the page stays still around it.
+The hero stage and the digestive-system tour carry the motion, and the rest of the page stays quiet around them.
 
-- **The digestive system tour.** The drawing draws itself when it first appears. A small light, standing in for an endoscope, travels through the gut from the oesophagus to the rectum and stops at each organ as its text scrolls in. The current organ turns sienna and gets a label, the others fade back, and a wave runs through the tube-shaped organs the way the gut moves food along.
-- **Hero.** The headline rises word by word and the photograph is uncovered once, on load. On desktop the photo tilts slightly towards the pointer.
+- **The digestive system tour.** The drawing draws itself when it first appears. The capsule camera, rendered in 3D and turning to follow the bends, travels through the gut from the oesophagus to the rectum and stops at each organ as its text scrolls in. The current organ turns sienna and gets a label, the others fade back, and a wave runs through the tube-shaped organs the way the gut moves food along.
+- **Hero stage.** The photograph sits in an arched frame with rendered 3D objects floating around it at different depths: a capsule endoscope (the camera pill used in capsule endoscopy), two-tone capsules, a tablet, a glass cube and iridescent glass bubbles. A sienna-to-gold ribbon swirls behind the arch, and a thin thread crosses in front. On load the ribbons draw in and the objects fly in from outside and settle. They then bob and turn slowly, each on its own rhythm. They follow the mouse (nearer objects move further) and scatter upwards as the hero scrolls away. The objects load only after the photograph, so the first paint is unaffected.
+- **Headline.** It rises word by word, and on desktop the photo tilts slightly towards the pointer.
 - **Conditions.** On desktop the section pins and the cards scroll sideways, settling into line as they arrive.
 - **Training.** The photo is uncovered and the career line fills in as you read down it.
 - **Navy sections** open out from a rounded panel to full width as they scroll in.
@@ -97,7 +98,8 @@ src/styles.css        design tokens, layout, responsive rules
 vite.config.js        base path for GitHub Pages
 public/img/           optimised images (AVIF/WebP, 1x and 2x) and the og.jpg share card
 public/fonts/         subset Newsreader variable fonts
-scripts/              font subsetting and the offline build
+public/img/3d/        rendered 3D objects (transparent WebP)
+scripts/              font subsetting, the offline build, and render-3d/ (Three.js scene that renders the 3D objects)
 source-images/        original photos from the Medicover profile
 docs/                 screenshots and videos
 ```
@@ -108,3 +110,4 @@ docs/                 screenshots and videos
 - Confirm you have permission to use the two photos from the Medicover profile, or replace them with a professional shoot. The hero is designed for a 4:5 portrait.
 - Once the domain is known, add `<link rel="canonical">` and make the `og:image` URL absolute in `index.html`.
 - After changing the copy, run `python3 scripts/subset-fonts.py` so any new characters are included in the heading font.
+- To change the 3D objects, edit `scripts/render-3d/scene.html`, then run `node scripts/render-3d/render.mjs <dir>` and `python3 scripts/render-3d/matte.py <dir>`, and export the PNGs to `public/img/3d/` as WebP.

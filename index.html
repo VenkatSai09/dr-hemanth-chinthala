@@ -115,11 +115,44 @@
         </div>
 
         <figure class="hero__figure" data-hero-figure>
-          <div class="hero__frame" data-tilt>
-            <picture>
-              <source type="image/avif" srcset="/img/hero-380.avif 380w, /img/hero-760.avif 760w" sizes="(min-width: 1024px) 30vw, min(72vw, 380px)" />
-              <img src="/img/hero-760.webp" srcset="/img/hero-380.webp 380w, /img/hero-760.webp 760w" sizes="(min-width: 1024px) 30vw, min(72vw, 380px)" width="760" height="950" alt="Dr Hemanth Chinthala in navy gastroenterology scrubs, smiling, beside an ultrasound unit" fetchpriority="high" decoding="async" />
-            </picture>
+          <div class="stage" data-stage>
+            <span class="stage__glow" aria-hidden="true"></span>
+
+            <svg class="ribbon ribbon--back" viewBox="0 0 400 500" aria-hidden="true" preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="ribbon-grad" x1="0" y1="1" x2="1" y2="0">
+                  <stop class="rb-1" offset="0" />
+                  <stop class="rb-2" offset="0.55" />
+                  <stop class="rb-3" offset="1" />
+                </linearGradient>
+              </defs>
+              <path class="ribbon__band" data-ribbon pathLength="1" d="M 6 400 C 70 478 196 486 292 418 C 380 356 404 252 362 172 C 330 112 268 92 292 24" />
+              <path class="ribbon__sheen" data-ribbon pathLength="1" d="M 10 408 C 74 486 200 494 296 426 C 384 364 410 256 368 174 C 336 114 274 96 298 28" />
+            </svg>
+
+            <!-- floating objects behind the photograph -->
+            <span class="fl fl--ink" data-depth="0.7"><span class="fl__p"><span class="fl__s"><img class="fl__i" data-src="/img/3d/pill-ink.webp" width="235" height="260" alt="" decoding="async" fetchpriority="low" /></span></span></span>
+            <span class="fl fl--bubble-l" data-depth="0.45"><span class="fl__p"><span class="fl__s"><img class="fl__i" data-src="/img/3d/bubble.webp" width="320" height="320" alt="" decoding="async" fetchpriority="low" /></span></span></span>
+            <span class="fl fl--cam-b" data-depth="0.55"><span class="fl__p"><span class="fl__s"><img class="fl__i" data-src="/img/3d/capsule-cam-b.webp" width="367" height="520" alt="" decoding="async" fetchpriority="low" /></span></span></span>
+
+            <div class="hero__frame">
+              <picture>
+                <source type="image/avif" srcset="/img/hero-380.avif 380w, /img/hero-760.avif 760w" sizes="(min-width: 1024px) 30vw, min(72vw, 380px)" />
+                <img src="/img/hero-760.webp" srcset="/img/hero-380.webp 380w, /img/hero-760.webp 760w" sizes="(min-width: 1024px) 30vw, min(72vw, 380px)" width="760" height="950" alt="Dr Hemanth Chinthala in navy gastroenterology scrubs, smiling, beside an ultrasound unit" fetchpriority="high" decoding="async" />
+              </picture>
+            </div>
+
+            <!-- floating objects in front of the photograph -->
+            <span class="fl fl--cam" data-depth="1.5"><span class="fl__p"><span class="fl__s"><img class="fl__i" data-src="/img/3d/capsule-cam-a.webp" width="483" height="520" alt="" decoding="async" fetchpriority="low" /></span></span></span>
+            <span class="fl fl--cube" data-depth="1.2"><span class="fl__p"><span class="fl__s"><img class="fl__i" data-src="/img/3d/glass-cube.webp" width="276" height="300" alt="" decoding="async" fetchpriority="low" /></span></span></span>
+            <span class="fl fl--sienna" data-depth="1.3"><span class="fl__p"><span class="fl__s"><img class="fl__i" data-src="/img/3d/pill-sienna.webp" width="300" height="245" alt="" decoding="async" fetchpriority="low" /></span></span></span>
+            <span class="fl fl--tablet" data-depth="1.05"><span class="fl__p"><span class="fl__s"><img class="fl__i" data-src="/img/3d/tablet.webp" width="240" height="231" alt="" decoding="async" fetchpriority="low" /></span></span></span>
+            <span class="fl fl--bubble-s" data-depth="1.7"><span class="fl__p"><span class="fl__s"><img class="fl__i" data-src="/img/3d/bubble.webp" width="320" height="320" alt="" decoding="async" fetchpriority="low" /></span></span></span>
+            <span class="fl fl--bubble-xs" data-depth="1.9"><span class="fl__p"><span class="fl__s"><img class="fl__i" data-src="/img/3d/bubble.webp" width="320" height="320" alt="" decoding="async" fetchpriority="low" /></span></span></span>
+
+            <svg class="ribbon ribbon--front" viewBox="0 0 400 500" aria-hidden="true" preserveAspectRatio="none">
+              <path class="ribbon__thread" data-ribbon pathLength="1" d="M 8 452 C 108 492 208 428 298 470 S 380 482 400 456" />
+            </svg>
           </div>
           <figcaption class="caption">At Royal Melbourne Hospital, where he trained in intestinal ultrasound.</figcaption>
         </figure>
@@ -239,8 +272,8 @@
             <path class="gut__journey" data-journey d="" />
             <path class="gut__trail" data-trail d="" />
             <g data-scope>
-            <circle class="gut__glow" r="20" fill="url(#gut-glow)" />
-            <circle class="gut__dot" r="4.5" />
+              <circle class="gut__glow" r="22" fill="url(#gut-glow)" />
+              <g data-scope-cam><image class="gut__cam" href="/img/3d/capsule-cam-side.webp" width="44" height="22.6" x="-22" y="-11.3" /></g>
             </g>
 
             <!-- Callout labels -->

@@ -77,6 +77,7 @@ function splitWords(el) {
 function initHero() {
   const title = $('[data-split]');
   splitWords(title);
+  const stageReady = loadStageImages();
   if (reduceMotion) return;
 
   const words = $$('.w > span', title);
@@ -86,12 +87,14 @@ function initHero() {
 
   gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.05 })
     .to(words, { yPercent: 0, duration: 1.1, stagger: 0.05 }, 0)
-    .fromTo(frame, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut' }, 0.05)
+    .fromTo(frame, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut', onComplete: () => gsap.set(frame, { clipPath: 'none' }) }, 0.05)
     .fromTo(img, { scale: 1.25 }, { scale: 1, duration: 1.8 }, 0.25)
     .to('[data-hero-fade]', { opacity: 1, y: 0, duration: 0.9, stagger: 0.1 }, 0.4);
 
   // The photograph drifts a little slower than the page as the hero leaves.
   gsap.to(img, { yPercent: 10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+  stageReady.then(initStage);
 
   // A slight 3D tilt follows the pointer. The figure listens and stays still;
   // only the frame inside it moves, so the hover target never slides away.
@@ -107,6 +110,104 @@ function initHero() {
     });
     fig.addEventListener('pointerleave', () => { rx(0); ry(0); });
   }
+}
+
+/* The floating objects are decoration: they load only after the hero
+   photograph, so they never compete with it for the first paint. */
+function loadStageImages() {
+  const photo = $('.hero__frame img');
+  const imgs = $$('.fl__i[data-src]');
+  const photoDone = photo.complete
+    ? Promise.resolve()
+    : new Promise((done) => {
+        photo.addEventListener('load', done, { once: true });
+        photo.addEventListener('error', done, { once: true });
+      });
+  return photoDone.then(() => {
+    imgs.forEach((img) => { img.src = img.dataset.src; });
+    return Promise.all(imgs.map((img) => img.decode().catch(() => {})));
+  });
+}
+
+/* ------------------------------------------------------------------ *
+ * Hero stage: rendered 3D objects (a capsule endoscope, capsules, a
+ * tablet, glass) float around the photograph at different depths.
+ * Each object has three nested layers so the motions never fight:
+ *   .fl__i  fly-in, then a slow idle bob and turn
+ *   .fl__s  scatter outward as the hero scrolls away
+ *   .fl__p  pointer parallax, scaled by depth
+ * ------------------------------------------------------------------ */
+function initStage() {
+  const stage = $('[data-stage]');
+  if (!stage) return;
+  const items = $$('.fl', stage);
+  const ribbons = $$('[data-ribbon]', stage);
+  const sr = stage.getBoundingClientRect();
+  const cx = sr.left + sr.width / 2;
+  const cy = sr.top + sr.height / 2;
+
+  // Ribbons draw themselves in behind and in front of the photograph.
+  gsap.to(ribbons, {
+    strokeDashoffset: 0, duration: 1.8, ease: 'power2.inOut', stagger: 0.18, delay: 0.1,
+    onComplete: () => gsap.set(ribbons, { strokeDasharray: 'none' }),
+  });
+
+  const idles = [];
+  items.forEach((el, i) => {
+    const depth = Number(el.dataset.depth) || 1;
+    const r = el.getBoundingClientRect();
+    const dx = r.left + r.width / 2 - cx;
+    const dy = r.top + r.height / 2 - cy;
+    const len = Math.hypot(dx, dy) || 1;
+    const ux = dx / len;
+    const uy = dy / len;
+    const img = $('.fl__i', el);
+    const spin = (i % 2 ? 1 : -1) * (25 + depth * 20);
+
+    // Fly in from outside the stage, turning as it settles.
+    gsap.fromTo(img,
+      { x: ux * 180 * depth, y: uy * 180 * depth, rotation: spin, scale: 0.55, opacity: 0 },
+      {
+        x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: 1.6, ease: 'expo.out', delay: 0.15 + i * 0.07,
+        onComplete: () => {
+          // Then float: a slow bob and turn, each object on its own rhythm.
+          idles.push(gsap.to(img, {
+            y: (i % 2 ? -1 : 1) * (6 + depth * 6),
+            rotation: (i % 3 - 1) * (3 + depth * 3),
+            duration: 2.6 + (i % 4) * 0.6,
+            ease: 'sine.inOut', yoyo: true, repeat: -1,
+          }));
+        },
+      });
+
+    // Scatter outward and upward as the hero leaves; nearer objects move more.
+    gsap.to($('.fl__s', el), {
+      x: ux * 90 * depth, y: -140 * depth + uy * 40, rotation: spin * 0.6, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 },
+    });
+  });
+
+  // Pointer parallax: nearer objects follow the pointer further.
+  if (finePointer) {
+    const movers = items.map((el) => {
+      const p = $('.fl__p', el);
+      const d = Number(el.dataset.depth) || 1;
+      return { d, x: gsap.quickTo(p, 'x', { duration: 1, ease: 'power3.out' }), y: gsap.quickTo(p, 'y', { duration: 1, ease: 'power3.out' }) };
+    });
+    const hero = $('.hero');
+    hero.addEventListener('pointermove', (e) => {
+      const nx = e.clientX / window.innerWidth - 0.5;
+      const ny = e.clientY / window.innerHeight - 0.5;
+      movers.forEach((m) => { m.x(nx * 46 * m.d); m.y(ny * 34 * m.d); });
+    });
+    hero.addEventListener('pointerleave', () => movers.forEach((m) => { m.x(0); m.y(0); }));
+  }
+
+  // Idle motion stops while the hero is off screen.
+  ScrollTrigger.create({
+    trigger: '.hero', start: 'top bottom', end: 'bottom top',
+    onToggle: (s) => idles.forEach((t) => (s.isActive ? t.resume() : t.pause())),
+  });
 }
 
 /* ------------------------------------------------------------------ *
@@ -145,9 +246,16 @@ function initGut() {
 
   trail.style.strokeDasharray = `${total}`;
   const state = { p: 0 };
+  // The capsule camera points along the gut as it travels.
+  const cam = $('[data-scope-cam]', svg);
   const render = () => {
-    const pt = journey.getPointAtLength(state.p * total);
+    const at = state.p * total;
+    const pt = journey.getPointAtLength(at);
+    const a = journey.getPointAtLength(Math.max(0, at - 3));
+    const b = journey.getPointAtLength(Math.min(total, at + 3));
+    const angle = (Math.atan2(b.y - a.y, b.x - a.x) * 180) / Math.PI;
     scope.setAttribute('transform', `translate(${pt.x} ${pt.y})`);
+    cam.setAttribute('transform', `rotate(${angle})`);
     trail.style.strokeDashoffset = String(total * (1 - state.p));
   };
   render();
