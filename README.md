@@ -26,7 +26,7 @@ Mobile: FCP 1.8 s, LCP 2.4 s, TBT 0 ms, CLS 0.
 
 1. Hero: headline, one sentence, booking and call actions, and the credentials in plain text
 2. How he works
-3. The digestive system, organ by organ: a line drawing of the gut that stays on screen while seven organs scroll past
+3. The digestive system, organ by organ: a realistic illustration of the gut that stays on screen and zooms to each of seven organs as they scroll past
 4. Conditions he treats: eleven groups, pinned and scrolled sideways on desktop
 5. Procedures he performs
 6. Training and career
@@ -39,15 +39,13 @@ Mobile: FCP 1.8 s, LCP 2.4 s, TBT 0 ms, CLS 0.
 
 ## Motion
 
-The hero stage and the digestive-system tour carry the motion, and floating objects carry it lightly through the rest of the page.
+The digestive-system tour, the liver stages and the procedure drawings carry the motion. The hero is deliberately calm.
 
-- **The digestive system tour.** The drawing draws itself when it first appears. The capsule camera, rendered in 3D and turning to follow the bends, travels through the gut from the oesophagus to the rectum and stops at each organ as its text scrolls in. The current organ turns sienna and gets a label, the others fade back, and a wave runs through the tube-shaped organs the way the gut moves food along.
-- **Hero stage.** The photograph sits in an arched frame with rendered 3D objects floating around it at different depths: a capsule endoscope (the camera pill used in capsule endoscopy), two-tone capsules, a tablet, a glass cube and iridescent glass bubbles. A sienna-to-gold ribbon swirls behind the arch, and a thin thread crosses in front. On load the ribbons draw in and the objects fly in from outside and settle. They then bob and turn slowly, each on its own rhythm. They follow the mouse (nearer objects move further) and scatter upwards as the hero scrolls away. The objects load only after the photograph, so the first paint is unaffected.
-- **Headline.** It rises word by word, and on desktop the photo tilts slightly towards the pointer.
+- **The digestive system tour.** A realistic illustration made with Google Gemini, cut out from its background. As each organ's text scrolls in, the view glides and zooms to that organ while the rest softens away, and the capsule camera, turning to follow the bends, travels along the real tract and leaves a sienna trail. For the liver, gallbladder and pancreas it waits in the duodenum, where ERCP and EUS reach them.
+- **Hero.** The studio portrait sits in a plain frame with a name line. On load it is unveiled from the bottom and settles from a slight zoom, and it drifts a little slower than the page as the hero scrolls away.
+- **Headline.** It rises word by word.
 - **Procedure animations.** Each of the ten procedures has its own small line drawing that loops while its row is on screen (`src/glyphs.js`): the scope travelling into the stomach and taking pictures; colonoscopy finding and removing a polyp; narrow-band light revealing a lesion; ERCP contrast filling the bile ducts and a stone pushed out; the EUS fan finding a pancreatic lesion; a clip closing on a bleeding vessel; the capsule camera photographing the small bowel; balloon enteroscopy pleating the bowel; an intestinal-ultrasound probe showing a thickened bowel wall; and manometry traces forming a swallow's wave. With reduced motion each shows a still frame.
 - **Liver disease, stage by stage.** Three Gemini illustrations (healthy, fatty, cirrhotic) share one frame. Scrolling blends one into the next: the fatty liver swells slightly and the cirrhotic liver shrinks, as in life. A stage scale fills underneath, and the section ends with his liver services. The Gemini originals are in `source-images/gemini/`.
-- **Rising bubbles.** Small glass bubbles drift up behind the photograph and fade, like steam.
-- **Objects between sections.** Capsules, the capsule camera, a tablet and glass drift past in the margins of the About, Procedures, warning-signs and Booking sections. They move faster than the page and turn as they go, with shorter travel on phones so they stay clear of the text.
 - **Conditions.** On desktop the section pins and the cards scroll sideways, settling into line as they arrive.
 - **Training.** The photo is uncovered and the career line fills in as you read down it.
 - **Navy sections** open out from a rounded panel to full width as they scroll in.

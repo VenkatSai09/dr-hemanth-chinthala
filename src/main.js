@@ -168,9 +168,27 @@ function initLiver() {
  * scrolls into view. The active organ warms up and a peristaltic wave
  * runs through it; the rest of the anatomy recedes.
  * ------------------------------------------------------------------ */
+/* Where the camera looks for each stop, in the illustration's own pixels
+   (465 x 1015), and how far it zooms in relative to the whole tract. */
+const GUT_W = 465;
+const GUT_H = 1015;
+const GUT_FOCUS = {
+  overview: [232, 507, 1],
+  oesophagus: [238, 160, 2.1],
+  stomach: [312, 372, 2.2],
+  liver: [150, 362, 1.5],
+  gallbladder: [158, 412, 2.8],
+  pancreas: [268, 468, 2.6],
+  smallbowel: [236, 672, 1.7],
+  colon: [240, 690, 1.12],
+};
+
 function initGut() {
   const section = $('[data-gut]');
   if (!section) return;
+  const view = $('[data-gut-view]', section);
+  const rig = $('[data-gut-rig]', section);
+  const vignette = $('[data-gut-vignette]', section);
   const svg = $('[data-gut-svg]', section);
   const journey = $('[data-journey]', svg);
   const trail = $('[data-trail]', svg);
@@ -179,7 +197,7 @@ function initGut() {
   const counter = $('[data-gut-count]', section);
   const steps = $$('[data-step]', section);
 
-  // One continuous lumen built from the organs' centre-lines.
+  // One continuous route through the tract, built from its segments.
   const order = ['oesophagus', 'stomach', 'duodenum', 'smallbowel', 'colon'];
   const segs = order.map((id) => $(`[data-seg="${id}"]`, svg));
   const d = segs.map((p, i) => (i ? p.getAttribute('d').trim().replace(/^M/, 'L') : p.getAttribute('d').trim())).join(' ');
@@ -194,6 +212,25 @@ function initGut() {
     const [id, f] = spec.split(':');
     return Math.min(1, (startOf[id] + lens[order.indexOf(id)] * Number(f)) / sum);
   };
+
+  // The camera: scale and move the illustration so the organ sits mid-frame.
+  // Phones show a wide, short frame, so they zoom in further.
+  const frameFor = (key) => {
+    const [fx, fy, z] = GUT_FOCUS[key] || GUT_FOCUS.overview;
+    const vw = view.clientWidth;
+    const vh = view.clientHeight;
+    const fit = Math.min(vw / GUT_W, vh / GUT_H) * 0.96;
+    const wide = z > 1 ? (vw / vh > 0.8 ? 1.45 : 0.9) : 1;
+    const s = Math.min(fit * z * wide, 2.2);
+    const sw = GUT_W * s;
+    const sh = GUT_H * s;
+    const x = sw <= vw ? (vw - sw) / 2 : gsap.utils.clamp(vw - sw, 0, vw / 2 - fx * s);
+    const y = sh <= vh ? (vh - sh) / 2 : gsap.utils.clamp(vh - sh, 0, vh / 2 - fy * s);
+    return { x, y, scale: s };
+  };
+  let focus = 'overview';
+  gsap.set(rig, frameFor(focus));
+  new ResizeObserver(() => gsap.set(rig, frameFor(focus))).observe(view);
 
   trail.style.strokeDasharray = `${total}`;
   const state = { p: 0 };
@@ -214,13 +251,18 @@ function initGut() {
   const setActive = (i) => {
     const step = steps[i];
     const organ = step ? step.dataset.step : null;
-    svg.classList.toggle('has-active', !!organ);
-    $$('.organ', svg).forEach((g) => g.classList.toggle('is-active', g.dataset.organ === organ));
-    $$('.tag', svg).forEach((t) => t.classList.toggle('is-active', t.dataset.tag === organ));
+    focus = organ || 'overview';
     label.textContent = step ? step.dataset.label : 'The digestive tract';
     counter.textContent = step ? `${i + 1} of ${steps.length}` : '';
     const target = step ? stopFor(step.dataset.stop) : 0;
-    if (reduceMotion) { state.p = target; render(); return; }
+    if (reduceMotion) {
+      gsap.set(rig, frameFor(focus));
+      gsap.set(vignette, { opacity: organ ? 1 : 0 });
+      state.p = target; render();
+      return;
+    }
+    gsap.to(rig, { ...frameFor(focus), duration: 1.4, ease: 'power3.inOut', overwrite: 'auto' });
+    gsap.to(vignette, { opacity: organ ? 1 : 0, duration: 0.9, ease: 'power2.out', overwrite: 'auto' });
     gsap.to(state, { p: target, duration: 1.5, ease: 'power2.inOut', overwrite: true, onUpdate: render });
   };
 
@@ -239,26 +281,17 @@ function initGut() {
     gsap.to(step.children, { opacity: 1, y: 0, duration: 1, ease: 'expo.out', stagger: 0.06, scrollTrigger: { trigger: step, start: 'top 80%', once: true } });
   });
 
-  // Line-art draw-in the first time the diagram is seen.
-  const lines = $$('.o-fill, .o-duct, .o-detail, .t-out, .t-haustra', svg);
-  lines.forEach((el) => { const len = el.getTotalLength(); el.style.strokeDasharray = `${len}`; el.style.strokeDashoffset = `${len}`; });
-  const fills = $$('.o-fill', svg);
-  const inners = $$('.t-in', svg);
-  gsap.set(fills, { fillOpacity: 0 });
-  gsap.set(inners, { opacity: 0 });
+  // The illustration rises into place the first time it is seen.
+  const img = $('.gut__img', rig);
+  gsap.set(img, { opacity: 0, y: 40 });
   gsap.set(scope, { opacity: 0 });
-  gsap.timeline({
-    scrollTrigger: { trigger: svg, start: 'top 80%', once: true },
-    onComplete: () => lines.forEach((el) => { el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; }),
-  })
-    .to(lines, { strokeDashoffset: 0, duration: 2, ease: 'power2.inOut', stagger: 0.05 })
-    .to(inners, { opacity: 1, duration: 0.5, stagger: 0.04 }, 0.8)
-    .to(fills, { fillOpacity: 1, duration: 0.9, stagger: 0.07 }, 1.1)
-    .to(scope, { opacity: 1, duration: 0.5 }, 1.5);
+  gsap.timeline({ scrollTrigger: { trigger: view, start: 'top 85%', once: true } })
+    .to(img, { opacity: 1, y: 0, duration: 1.3, ease: 'expo.out' })
+    .to(scope, { opacity: 1, duration: 0.5 }, 0.7);
 
   // The light breathes while it waits; paused when the section is off screen.
   const breathe = gsap.to($('.gut__glow', scope), { scale: 1.35, opacity: 0.6, duration: 1.2, ease: 'sine.inOut', yoyo: true, repeat: -1, transformOrigin: '50% 50%', paused: true });
-  ScrollTrigger.create({ trigger: section, start: 'top bottom', end: 'bottom top', onToggle: (s) => (s.isActive ? breathe.play() : breathe.pause()) });
+  ScrollTrigger.create({ trigger: section, start: 'top bottom', end: 'bottom top', onToggle: (st) => (st.isActive ? breathe.play() : breathe.pause()) });
 }
 
 /* ------------------------------------------------------------------ *

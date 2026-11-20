@@ -164,95 +164,37 @@
       <div class="wrap">
         <header class="section__head">
           <h2 id="gut-h" class="h-section">The digestive system, organ by organ</h2>
-          <p class="section__intro">Scroll to follow the route food takes, and the route an endoscope takes, from the food pipe to the rectum. Each stop lists what Dr Chinthala treats there and how it is examined.</p>
+          <p class="section__intro">Scroll to zoom in on each organ and follow the route food takes, and the route a capsule camera takes, from the food pipe to the rectum. Each stop lists what Dr Chinthala treats there and how it is examined.</p>
         </header>
 
         <div class="gut__grid">
           <figure class="gut__stage">
-            <svg class="gut__svg" viewBox="-60 0 520 590" role="img" aria-labelledby="gut-svg-t" data-gut-svg>
-            <title id="gut-svg-t">Schematic diagram of the digestive system, from the food pipe to the rectum</title>
-            <defs>
-            <radialGradient id="gut-glow">
-            <stop class="glow-a" offset="0" />
-            <stop class="glow-b" offset="0.35" />
-            <stop class="glow-c" offset="1" />
-            </radialGradient>
-            </defs>
-
-            <!-- Liver -->
-            <g class="organ" data-organ="liver">
-            <path class="o-fill" d="M70 198 C64 168 108 146 160 148 C204 150 238 158 250 172 C254 182 240 188 226 192 C202 202 172 232 130 252 C104 264 76 248 70 198 Z" />
-            <path class="o-detail" d="M150 152 C160 180 168 206 172 226" />
-            </g>
-
-            <!-- Gallbladder + bile duct -->
-            <g class="organ" data-organ="gallbladder">
-            <path class="o-duct" d="M163 244 C170 268 176 292 178 318" />
-            <path class="o-fill" d="M148 234 C138 250 144 270 158 272 C172 272 176 256 166 242 Z" />
-            </g>
-
-            <!-- Jejunum and ileum (drawn behind the colon) -->
-            <g class="organ organ--tube" data-organ="smallbowel">
-            <path class="t-out t-sb" data-seg="smallbowel" d="M258 330 C268 350 276 378 270 400 C262 416 236 402 214 404 C186 408 160 400 150 414 C140 430 168 434 196 430 C230 426 266 420 274 436 C282 452 250 456 222 452 C190 448 156 446 150 462 C146 476 170 482 200 476 C228 470 252 470 254 480 C256 490 230 492 206 490 C176 488 146 494 124 498" />
-            <path class="t-in t-sb" d="M258 330 C268 350 276 378 270 400 C262 416 236 402 214 404 C186 408 160 400 150 414 C140 430 168 434 196 430 C230 426 266 420 274 436 C282 452 250 456 222 452 C190 448 156 446 150 462 C146 476 170 482 200 476 C228 470 252 470 254 480 C256 490 230 492 206 490 C176 488 146 494 124 498" />
-            <path class="t-flow t-sb" d="M258 330 C268 350 276 378 270 400 C262 416 236 402 214 404 C186 408 160 400 150 414 C140 430 168 434 196 430 C230 426 266 420 274 436 C282 452 250 456 222 452 C190 448 156 446 150 462 C146 476 170 482 200 476 C228 470 252 470 254 480 C256 490 230 492 206 490 C176 488 146 494 124 498" />
-            </g>
-
-            <!-- Colon, rectum and appendix -->
-            <g class="organ organ--tube" data-organ="colon">
-            <path class="t-out t-app" d="M112 512 C106 526 112 538 122 536" />
-            <path class="t-in t-app" d="M112 512 C106 526 112 538 122 536" />
-            <path class="t-out t-colon" data-seg="colon" d="M120 500 C106 494 104 476 106 458 L108 398 C108 384 118 376 134 376 C180 382 240 386 288 378 C302 376 310 386 310 400 L308 472 C308 496 292 506 270 506 C250 506 242 520 232 532 C224 542 212 550 208 572" />
-            <path class="t-in t-colon" d="M120 500 C106 494 104 476 106 458 L108 398 C108 384 118 376 134 376 C180 382 240 386 288 378 C302 376 310 386 310 400 L308 472 C308 496 292 506 270 506 C250 506 242 520 232 532 C224 542 212 550 208 572" />
-            <path class="t-haustra" d="M106 470 h13 M107 440 h13 M107 410 h13 M160 380 v13 M200 383 v13 M240 384 v13 M310 420 h-13 M309 450 h-13" />
-            <path class="t-flow t-colon" d="M120 500 C106 494 104 476 106 458 L108 398 C108 384 118 376 134 376 C180 382 240 386 288 378 C302 376 310 386 310 400 L308 472 C308 496 292 506 270 506 C250 506 242 520 232 532 C224 542 212 550 208 572" />
-            </g>
-
-            <!-- Duodenum (part of the small intestine) -->
-            <g class="organ organ--tube" data-organ="smallbowel">
-            <path class="t-out t-duo" data-seg="duodenum" d="M206 286 C182 288 168 300 170 322 C172 344 190 356 214 354 C236 352 250 342 258 330" />
-            <path class="t-in t-duo" d="M206 286 C182 288 168 300 170 322 C172 344 190 356 214 354 C236 352 250 342 258 330" />
-            <path class="t-flow t-duo" d="M206 286 C182 288 168 300 170 322 C172 344 190 356 214 354 C236 352 250 342 258 330" />
-            </g>
-
-            <!-- Pancreas -->
-            <g class="organ" data-organ="pancreas">
-            <path class="o-fill" d="M188 318 C186 302 204 296 220 304 C246 312 276 298 312 292 C324 292 326 306 314 310 C286 320 258 326 234 330 C226 344 198 346 190 334 Z" />
-            <path class="o-detail" d="M204 320 C232 318 270 308 308 300" />
-            </g>
-
-            <!-- Oesophagus -->
-            <g class="organ organ--tube" data-organ="oesophagus">
-            <path class="t-out t-oes" data-seg="oesophagus" d="M200 28 C200 80 204 130 214 180" />
-            <path class="t-in t-oes" d="M200 28 C200 80 204 130 214 180" />
-            <path class="t-flow t-oes" d="M200 28 C200 80 204 130 214 180" />
-            </g>
-
-            <!-- Stomach -->
-            <g class="organ" data-organ="stomach">
-            <path class="o-fill" d="M208 182 C206 150 248 132 278 148 C308 164 320 214 306 252 C294 288 252 306 220 298 L204 294 L204 278 C228 282 258 272 262 240 C264 214 246 196 226 192 L222 184 Z" />
-            <path class="o-detail" d="M226 196 C250 170 288 176 296 214 M276 246 C268 268 248 282 224 288" />
-            <path class="t-flow t-stom" d="M214 182 C232 160 282 166 290 214 C294 256 252 290 206 286" />
-            <path class="seg-hidden" data-seg="stomach" d="M214 182 C232 160 282 166 290 214 C294 256 252 290 206 286" />
-            </g>
-
-            <!-- Endoscope journey: trail + light -->
-            <path class="gut__journey" data-journey d="" />
-            <path class="gut__trail" data-trail d="" />
-            <g data-scope>
-              <circle class="gut__glow" r="22" fill="url(#gut-glow)" />
-              <g data-scope-cam><image class="gut__cam" href="/img/3d/capsule-cam-side.webp" width="44" height="22.6" x="-22" y="-11.3" /></g>
-            </g>
-
-            <!-- Callout labels -->
-            <g class="tag" data-tag="oesophagus"><path d="M204 96 H262" /><circle cx="204" cy="96" r="2.5" /><text x="268" y="100">Oesophagus</text></g>
-            <g class="tag" data-tag="stomach"><path d="M306 206 H332" /><circle cx="306" cy="206" r="2.5" /><text x="338" y="210">Stomach</text></g>
-            <g class="tag" data-tag="liver"><path d="M98 196 H34" /><circle cx="98" cy="196" r="2.5" /><text x="28" y="200" text-anchor="end">Liver</text></g>
-            <g class="tag" data-tag="gallbladder"><path d="M150 262 H60" /><circle cx="150" cy="262" r="2.5" /><text x="54" y="266" text-anchor="end">Gallbladder</text></g>
-            <g class="tag" data-tag="pancreas"><path d="M312 300 H334" /><circle cx="312" cy="300" r="2.5" /><text x="340" y="304">Pancreas</text></g>
-            <g class="tag" data-tag="smallbowel"><path d="M150 462 H36" /><circle cx="150" cy="462" r="2.5" /><text x="30" y="458" text-anchor="end">Small</text><text x="30" y="474" text-anchor="end">intestine</text></g>
-            <g class="tag" data-tag="colon"><path d="M321 440 H338" /><circle cx="321" cy="440" r="2.5" /><text x="344" y="444">Colon</text></g>
-            </svg>
+            <div class="gut__view" data-gut-view>
+              <div class="gut__rig" data-gut-rig>
+                <img class="gut__img" src="/img/gut/digestive-930.webp" width="465" height="1015" alt="Illustration of the human digestive system: the oesophagus, stomach, liver and gallbladder, pancreas, small intestine, colon and rectum" loading="lazy" decoding="async" />
+                <svg class="gut__svg" viewBox="0 0 465 1015" aria-hidden="true" data-gut-svg>
+                <defs>
+                <radialGradient id="gut-glow">
+                <stop class="glow-a" offset="0" />
+                <stop class="glow-b" offset="0.35" />
+                <stop class="glow-c" offset="1" />
+                </radialGradient>
+                </defs>
+                <path class="seg-hidden" data-seg="oesophagus" d="M236 0 C236.3 18.3 237.3 76.7 238 110 C238.7 143.3 238.7 175.8 240 200 C241.3 224.2 243.3 239.2 246 255 C248.7 270.8 254.3 288.3 256 295" />
+                <path class="seg-hidden" data-seg="stomach" d="M256 295 C262.0 296.3 277.7 299.7 292 303 C306.3 306.3 328.2 306.8 342 315 C355.8 323.2 369.0 338.2 375 352 C381.0 365.8 381.8 384.5 378 398 C374.2 411.5 365.3 425.3 352 433 C338.7 440.7 316.7 444.5 298 444 C279.3 443.5 257.2 434.8 240 430 C222.8 425.2 202.5 417.5 195 415" />
+                <path class="seg-hidden" data-seg="duodenum" d="M195 415 C190.0 416.8 173.7 419.0 165 426 C156.3 433.0 146.2 445.3 143 457 C139.8 468.7 142.0 486.3 146 496 C150.0 505.7 157.7 510.7 167 515 C176.3 519.3 191.5 522.2 202 522 C212.5 521.8 225.3 515.3 230 514" />
+                <path class="seg-hidden" data-seg="smallbowel" d="M230 514 C234.3 524.2 252.3 557.0 256 575 C259.7 593.0 264.3 615.8 252 622 C239.7 628.2 205.3 609.0 182 612 C158.7 615.0 122.3 627.0 112 640 C101.7 653.0 108.3 679.7 120 690 C131.7 700.3 160.0 706.7 182 702 C204.0 697.3 225.7 675.3 252 662 C278.3 648.7 318.7 622.0 340 622 C361.3 622.0 376.7 645.3 380 662 C383.3 678.7 375.0 707.0 360 722 C345.0 737.0 313.3 744.7 290 752 C266.7 759.3 243.3 763.0 220 766 C196.7 769.0 168.0 773.3 150 770 C132.0 766.7 118.3 750.0 112 746" />
+                <path class="seg-hidden" data-seg="colon" d="M112 746 C106.0 750.3 86.0 773.8 76 772 C66.0 770.2 57.7 755.3 52 735 C46.3 714.7 43.0 676.7 42 650 C41.0 623.3 41.3 593.8 46 575 C50.7 556.2 57.3 541.8 70 537 C82.7 532.2 103.3 542.8 122 546 C140.7 549.2 160.3 553.3 182 556 C203.7 558.7 228.7 562.7 252 562 C275.3 561.3 300.3 555.5 322 552 C343.7 548.5 365.3 546.0 382 541 C398.7 536.0 413.0 518.5 422 522 C431.0 525.5 433.3 542.0 436 562 C438.7 582.0 438.2 615.3 438 642 C437.8 668.7 437.2 697.0 435 722 C432.8 747.0 432.8 772.3 425 792 C417.2 811.7 404.2 830.3 388 840 C371.8 849.7 347.3 851.3 328 850 C308.7 848.7 286.7 833.3 272 832 C257.3 830.7 247.0 833.7 240 842 C233.0 850.3 231.7 865.7 230 882 C228.3 898.3 230.0 920.7 230 940 C230.0 959.3 230.0 988.3 230 998" />
+                <path class="gut__journey" data-journey d="" />
+                <path class="gut__trail" data-trail d="" />
+                <g data-scope>
+                  <circle class="gut__glow" r="20" fill="url(#gut-glow)" />
+                  <g data-scope-cam><image class="gut__cam" href="/img/3d/capsule-cam-side.webp" width="34" height="17.5" x="-17" y="-8.75" /></g>
+                </g>
+                </svg>
+              </div>
+              <span class="gut__vignette" data-gut-vignette aria-hidden="true"></span>
+            </div>
             <figcaption class="gut__caption"><span data-gut-label>The digestive tract</span><span class="data" data-gut-count></span></figcaption>
           </figure>
 
@@ -327,7 +269,7 @@
                 <div><dt class="label">How it is examined</dt><dd><ul class="chips chips--proc" role="list"><li>Colonoscopy</li><li>Intestinal ultrasound</li></ul></dd></div>
               </dl>
             </article>
-            <p class="gut__note">The diagram is simplified and not to scale.</p>
+            <p class="gut__note">Illustration made with Google Gemini. Simplified, not to scale.</p>
           </div>
         </div>
       </div>

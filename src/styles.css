@@ -267,7 +267,12 @@ abbr { text-decoration: none; }
   box-shadow: 0 calc(var(--nav-h) * -1) 0 var(--paper);
   display: grid; grid-template-rows: minmax(0, 1fr) auto;
 }
-.gut__svg { display: block; width: 100%; height: 100%; min-height: 0; overflow: visible; }
+.gut__view { position: relative; overflow: hidden; min-height: 0; }
+.gut__rig { position: absolute; left: 0; top: 0; width: 465px; height: 1015px; transform-origin: 0 0; will-change: transform; }
+.gut__img { display: block; width: 100%; height: 100%; max-width: none; -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 8%); mask-image: linear-gradient(to bottom, transparent 0, #000 8%); }
+.gut__svg { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; overflow: visible; }
+/* Softens everything away from the organ in focus. */
+.gut__vignette { position: absolute; inset: 0; pointer-events: none; opacity: 0; background: radial-gradient(ellipse 62% 56% at 50% 50%, transparent 52%, var(--paper) 100%); }
 .gut__caption { display: flex; justify-content: space-between; gap: 12px; color: var(--ink-3); font-size: 14px; padding-top: 6px; }
 .gut__caption [data-gut-label] { color: var(--accent); font-weight: 500; }
 
@@ -275,40 +280,11 @@ abbr { text-decoration: none; }
 .glow-b { stop-color: var(--glow-2); stop-opacity: 0.45; }
 .glow-c { stop-color: var(--glow-2); stop-opacity: 0; }
 
-.organ { transition: opacity .6s var(--ease-out); }
-.organ .o-fill { fill: var(--organ); stroke: var(--ink); stroke-width: 1.4; stroke-linejoin: round; transition: fill .6s var(--ease-out), stroke .6s; }
-.organ .o-detail { fill: none; stroke: var(--ink); stroke-width: 0.9; stroke-linecap: round; opacity: .45; }
-.organ .o-duct { fill: none; stroke: var(--ink); stroke-width: 3.2; stroke-linecap: round; }
-.organ .t-out { fill: none; stroke: var(--ink); stroke-linecap: round; stroke-linejoin: round; transition: stroke .6s; }
-.organ .t-in { fill: none; stroke: var(--organ); stroke-linecap: round; stroke-linejoin: round; transition: stroke .6s var(--ease-out); }
-.organ .t-flow { fill: none; stroke: var(--accent); stroke-linecap: round; opacity: 0; stroke-dasharray: 2 16; transition: opacity .5s; }
-.organ .t-haustra { fill: none; stroke: var(--ink); stroke-width: 0.9; opacity: .4; }
-.t-oes.t-out { stroke-width: 15; } .t-oes.t-in { stroke-width: 12; } .t-oes.t-flow { stroke-width: 3.5; }
-.t-duo.t-out { stroke-width: 15; } .t-duo.t-in { stroke-width: 12; } .t-duo.t-flow { stroke-width: 3.5; }
-.t-sb.t-out { stroke-width: 13; } .t-sb.t-in { stroke-width: 10; } .t-sb.t-flow { stroke-width: 3; }
-.t-colon.t-out { stroke-width: 27; } .t-colon.t-in { stroke-width: 24; } .t-colon.t-flow { stroke-width: 4.5; stroke-dasharray: 3 22; }
-.t-app.t-out { stroke-width: 7; } .t-app.t-in { stroke-width: 4.6; }
-.t-stom.t-flow { stroke-width: 4; }
 .seg-hidden { fill: none; stroke: none; }
 .gut__journey { fill: none; stroke: none; }
-.gut__trail { fill: none; stroke: var(--accent); stroke-width: 1.6; stroke-linecap: round; opacity: .85; }
+.gut__trail { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; opacity: .65; }
 .gut__cam { filter: drop-shadow(0 2px 2px var(--shadow-tight)); }
 .gut__glow { mix-blend-mode: multiply; }
-
-.gut__svg.has-active .organ { opacity: .38; }
-.gut__svg.has-active .organ.is-active { opacity: 1; }
-.organ.is-active .o-fill { fill: var(--organ-hot); stroke: var(--accent); stroke-width: 1.8; }
-.organ.is-active .o-duct, .organ.is-active .t-out { stroke: var(--accent); }
-.organ.is-active .t-in { stroke: var(--organ-hot); }
-.organ.is-active .t-flow { opacity: .9; animation: peristalsis 1.6s linear infinite; }
-@keyframes peristalsis { to { stroke-dashoffset: -36; } }
-
-.tag { opacity: 0; transition: opacity .4s var(--ease-out); pointer-events: none; }
-.tag.is-active { opacity: 1; }
-.tag path { fill: none; stroke: var(--accent); stroke-width: 1; }
-.tag circle { fill: var(--accent); }
-.tag text { font-family: var(--sans); font-size: 15px; font-weight: 500; fill: var(--ink); }
-@media (max-width: 1023px) { .tag text { font-size: 20px; } }
 
 .gut__steps { position: relative; z-index: 1; }
 .gstep { min-height: 64vh; min-height: 64svh; padding: 36px 0 40px; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--rule); }
