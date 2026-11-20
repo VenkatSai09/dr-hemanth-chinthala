@@ -4,6 +4,7 @@ import './styles.css';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { buildGlyph } from './glyphs.js';
 
 
 /*
@@ -253,6 +254,30 @@ function initDrift() {
       tl.fromTo(img,
         { y: () => travel() * speed, rotation: -rot / 2 },
         { y: () => -travel() * speed, rotation: rot / 2, ease: 'none', duration: 1 }, 0);
+    });
+  });
+}
+
+/* Procedure animations: each is built the first time its row comes near the
+   screen and plays only while the row is visible. With reduced motion, each
+   shows one representative still frame instead. */
+function initGlyphs() {
+  $$('[data-glyph]').forEach((el) => {
+    let tl = null;
+    if (reduceMotion) {
+      tl = buildGlyph(el);
+      tl?.progress(0.45).pause();
+      return;
+    }
+    ScrollTrigger.create({
+      trigger: el.closest('.proc__row') || el,
+      start: 'top bottom+=200',
+      end: 'bottom top-=100',
+      onToggle: (self) => {
+        if (!tl) tl = buildGlyph(el);
+        if (!tl) return;
+        if (self.isActive) tl.play(); else tl.pause();
+      },
     });
   });
 }
@@ -525,7 +550,7 @@ function start() {
 const queue = [
   initNav, initForm, initFaq,
   () => $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear())),
-  initGut, initCare, initSectionOpen, initTraining, initDrift,
+  initGut, initCare, initSectionOpen, initTraining, initDrift, initGlyphs,
 ];
 const rest = async () => {
   for (const task of queue) {
