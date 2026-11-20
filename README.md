@@ -45,6 +45,7 @@ The hero stage and the digestive-system tour carry the motion, and floating obje
 - **Hero stage.** The photograph sits in an arched frame with rendered 3D objects floating around it at different depths: a capsule endoscope (the camera pill used in capsule endoscopy), two-tone capsules, a tablet, a glass cube and iridescent glass bubbles. A sienna-to-gold ribbon swirls behind the arch, and a thin thread crosses in front. On load the ribbons draw in and the objects fly in from outside and settle. They then bob and turn slowly, each on its own rhythm. They follow the mouse (nearer objects move further) and scatter upwards as the hero scrolls away. The objects load only after the photograph, so the first paint is unaffected.
 - **Headline.** It rises word by word, and on desktop the photo tilts slightly towards the pointer.
 - **Procedure animations.** Each of the ten procedures has its own small line drawing that loops while its row is on screen (`src/glyphs.js`): the scope travelling into the stomach and taking pictures; colonoscopy finding and removing a polyp; narrow-band light revealing a lesion; ERCP contrast filling the bile ducts and a stone pushed out; the EUS fan finding a pancreatic lesion; a clip closing on a bleeding vessel; the capsule camera photographing the small bowel; balloon enteroscopy pleating the bowel; an intestinal-ultrasound probe showing a thickened bowel wall; and manometry traces forming a swallow's wave. With reduced motion each shows a still frame.
+- **Liver disease, stage by stage.** Three Gemini illustrations (healthy, fatty, cirrhotic) share one frame. Scrolling blends one into the next: the fatty liver swells slightly and the cirrhotic liver shrinks, as in life. A stage scale fills underneath, and the section ends with his liver services. The Gemini originals are in `source-images/gemini/`.
 - **Rising bubbles.** Small glass bubbles drift up behind the photograph and fade, like steam.
 - **Objects between sections.** Capsules, the capsule camera, a tablet and glass drift past in the margins of the About, Procedures, warning-signs and Booking sections. They move faster than the page and turn as they go, with shorter travel on phones so they stay clear of the text.
 - **Conditions.** On desktop the section pins and the cards scroll sideways, settling into line as they arrive.
@@ -53,6 +54,10 @@ The hero stage and the digestive-system tour carry the motion, and floating obje
 - **Feedback:** a reading-progress line in the nav, the active section in the nav, form errors.
 
 The script starts after the first frame is painted, so the page lays out before any animation code runs, and setup below the fold runs in small idle-time tasks. All other content is visible without animation. With "reduce motion" switched on in the operating system, smooth scrolling, pinning and every animation are off and the page is fully readable. If the script fails to load, a fallback in `<head>` shows everything after 2.5 seconds.
+
+## Images
+
+Generated images are made with Google Gemini, following the owner's instruction, and checked for anatomical accuracy before use. Backgrounds are removed by keying out the white background with edge un-mixing, and every stage of a sequence is cropped with one shared box so they stay aligned. Photographs of the doctor are real and never generated or altered.
 
 ## Design skills applied
 
