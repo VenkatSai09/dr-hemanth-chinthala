@@ -48,6 +48,8 @@ The digestive-system tour, the liver stages and the procedure drawings carry the
 - **Liver disease, stage by stage.** Three Gemini illustrations (healthy, fatty, cirrhotic) share one frame. Scrolling blends one into the next: the fatty liver swells slightly and the cirrhotic liver shrinks, as in life. A stage scale fills underneath, and the section ends with his liver services. The Gemini originals are in `source-images/gemini/`.
 - **Conditions.** On desktop the section pins and the cards scroll sideways, settling into line as they arrive.
 - **Training.** The photo is uncovered and the career line fills in as you read down it.
+- **Training map.** A dotted map from India to Australia (built from Natural Earth data by `scripts/build-map.mjs`, which writes it into `index.html`). When it comes into view his route draws itself leg by leg: Hyderabad, Chandigarh, Vellore, Melbourne and home to Hyderabad, where a ring keeps pulsing. The ESEGH is an examination, so it is not drawn as a journey.
+- **Credentials.** Years in practice, the recommendation rate and the review count count up once when first seen.
 - **Navy sections** open out from a rounded panel to full width as they scroll in.
 - **Feedback:** a reading-progress line in the nav, the active section in the nav, form errors.
 

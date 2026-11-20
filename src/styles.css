@@ -407,6 +407,8 @@ abbr { text-decoration: none; }
 .glyph .g-trace { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .glyph .g-dot { fill: var(--accent); }
 
+[data-count] { font-variant-numeric: tabular-nums; }
+
 /* ---------- training ---------- */
 .training { background: var(--paper-2); }
 .training__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 56px; }
@@ -418,6 +420,17 @@ abbr { text-decoration: none; }
   /* a definite height plus the aspect ratio reserves the space before the lazy image arrives */
   .training__figure img { height: min(calc(100vh - var(--nav-h) - 140px), 728px); width: auto; max-width: 100%; }
 }
+/* The training map: a dotted map from India to Australia with his route. */
+.tmap { margin: 28px 0 44px; max-width: 560px; }
+.tmap__frame { aspect-ratio: 940 / 780; }
+.tmap__svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.tmap__land { fill: none; stroke: var(--rule-strong); stroke-width: 4.4; stroke-linecap: round; }
+.tmap__leg { fill: none; stroke: var(--accent); stroke-width: 2.6; stroke-linecap: round; }
+.tmap__dot { fill: var(--accent); }
+.tmap__ring { fill: none; stroke: var(--accent); stroke-width: 1.6; opacity: .45; }
+.tmap__place text { font-family: var(--sans); font-size: 32px; font-weight: 500; fill: var(--ink); paint-order: stroke; stroke: var(--paper-2); stroke-width: 6px; stroke-linejoin: round; }
+.tmap .caption { margin-top: 10px; }
+@media (min-width: 1024px) { .tmap__place text { font-size: 23px; } }
 .timeline { position: relative; padding-left: 34px; }
 .timeline__line { position: absolute; left: 5px; top: 10px; bottom: 10px; width: 1px; background: var(--rule-strong); }
 .timeline__line span { position: absolute; inset: 0; background: var(--accent); transform-origin: top; transform: scaleY(1); }
@@ -587,6 +600,9 @@ abbr { text-decoration: none; }
 .js:not(.no-motion) [data-hero-fade] { opacity: 0; transform: translateY(14px); }
 .js:not(.no-motion) .hero__frame { clip-path: inset(100% 0 0 0); }
 .js:not(.no-motion) .training__figure { clip-path: inset(0 0 100% 0); }
+.js:not(.no-motion) .tmap__leg { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.js:not(.no-motion) .tmap__place, .js:not(.no-motion) .tmap__land { opacity: 0; }
+.js:not(.no-motion) [data-count] { opacity: 0; }
 .js:not(.no-motion) .gstep > * { opacity: 0; transform: translateY(22px); }
 .no-motion .w > span, .no-motion [data-hero-fade], .no-motion .gstep > * { opacity: 1 !important; transform: none !important; }
 .no-motion .hero__frame, .no-motion .training__figure { clip-path: none !important; }

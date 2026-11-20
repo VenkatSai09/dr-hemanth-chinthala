@@ -344,6 +344,51 @@ function initTraining() {
   gsap.fromTo('[data-timeline-fill]', { scaleY: 0 }, { scaleY: 1, ease: 'none', scrollTrigger: { trigger: '[data-timeline]', start: 'top 70%', end: 'bottom 60%', scrub: true } });
 }
 
+/* The credentials count up once, the first time they are seen. */
+function initCounters() {
+  $$('[data-count]').forEach((el) => {
+    if (reduceMotion) return;
+    const end = Number(el.dataset.count);
+    const suffix = el.dataset.suffix || '';
+    const o = { v: 0 };
+    el.textContent = `0${suffix}`;
+    gsap.to(o, {
+      v: end, duration: 1.6, ease: 'power2.out',
+      scrollTrigger: { trigger: el, start: 'top 95%', once: true },
+      onStart: () => gsap.set(el, { opacity: 1 }),
+      onUpdate: () => { el.textContent = `${Math.round(o.v)}${suffix}`; },
+    });
+  });
+}
+
+/* The training map: the land appears, then his route is drawn leg by leg,
+   from Hyderabad to Chandigarh, Vellore and Melbourne and home again. */
+function initMap() {
+  const svg = $('[data-tmap]');
+  if (!svg || reduceMotion) return;
+  const order = ['hyderabad', 'chandigarh', 'vellore', 'melbourne'];
+  const place = (id) => $(`[data-place="${id}"]`, svg);
+  const pop = (tl, id, at) => tl
+    .to(place(id), { opacity: 1, duration: 0.35 }, at)
+    .fromTo($('.tmap__dot', place(id)), { scale: 0 }, { scale: 1, duration: 0.6, ease: 'back.out(3)', transformOrigin: '50% 50%' }, '<');
+
+  const home = $('.tmap__ring', place('hyderabad'));
+  const pulse = gsap.fromTo(home, { scale: 1, opacity: 0.6 }, { scale: 2.6, opacity: 0, duration: 1.8, ease: 'sine.out', repeat: -1, paused: true, transformOrigin: '50% 50%' });
+  const tl = gsap.timeline({ paused: true, onComplete: () => pulse.play() });
+  tl.to($('.tmap__land', svg), { opacity: 1, duration: 0.9, ease: 'power1.out' });
+  pop(tl, 'hyderabad', 0.4);
+  $$('[data-leg]', svg).forEach((leg, i) => {
+    tl.to(leg, { strokeDashoffset: 0, duration: i === 2 ? 1.3 : 0.9, ease: 'power2.inOut' }, i ? '>-0.05' : '>');
+    if (i < 3) pop(tl, order[i + 1], '>-0.2');
+  });
+
+  ScrollTrigger.create({ trigger: svg, start: 'top 78%', once: true, onEnter: () => tl.play() });
+  ScrollTrigger.create({
+    trigger: svg, start: 'top bottom', end: 'bottom top',
+    onToggle: (st) => { if (tl.progress() === 1) (st.isActive ? pulse.play() : pulse.pause()); },
+  });
+}
+
 /* ------------------------------------------------------------------ *
  * Navigation: progress, hide on scroll down, active section, menu, dock
  * ------------------------------------------------------------------ */
@@ -462,7 +507,7 @@ function start() {
 const queue = [
   initNav, initForm, initFaq,
   () => $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear())),
-  initGut, initCare, initSectionOpen, initTraining, initGlyphs, initLiver,
+  initGut, initCare, initSectionOpen, initTraining, initMap, initCounters, initGlyphs, initLiver,
 ];
 const rest = async () => {
   for (const task of queue) {
