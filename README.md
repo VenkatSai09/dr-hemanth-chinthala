@@ -74,7 +74,7 @@ To use these skills in your own Claude Code sessions, read each repository's `SK
 
 ## Booking
 
-The appointment form stores nothing. It builds a WhatsApp message to the Medicover appointments desk (+91 70754 93806) with the patient's name, mobile number, visit type, preferred date and problem. The appointment phone links dial +91 70872 22235; the emergency and insurance lines stay on the hospital number, 040 6833 4455.
+The appointment form stores nothing. It builds a WhatsApp message to +91 70872 22235 with the patient's name, mobile number, visit type, preferred date and problem. The appointment phone links dial +91 70872 22235; the emergency and insurance lines stay on the hospital number, 040 6833 4455.
 
 ## Develop
 

@@ -405,7 +405,7 @@ function initForm() {
       `Preferred date: ${when}`,
     ];
     if (form.message.value.trim()) lines.push(`Problem: ${form.message.value.trim()}`);
-    window.open(`https://wa.me/917075493806?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener');
+    window.open(`https://wa.me/917087222235?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener');
   });
   [form.name, form.phone].forEach((input) => input.addEventListener('input', () => input.removeAttribute('aria-invalid')));
 }
