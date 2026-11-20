@@ -78,7 +78,7 @@ npm run preview   # serves the production build
 
 ## Deploy
 
-**GitHub Pages:** `.github/workflows/pages.yml` builds and deploys on every push to `main`. In the repository settings, set Pages to deploy from GitHub Actions. Free Pages needs a public repository. The workflow sets the base path to the repository name.
+**GitHub Pages:** `.github/workflows/pages.yml` builds the site on every push to `main` and publishes it to the `gh-pages` branch, which Pages serves at https://venkatsai09.github.io/dr-hemanth-chinthala/. The workflow sets the base path to the repository name.
 
 **Any static host** (Netlify, Vercel, Cloudflare Pages): upload `dist/`. For Netlify Drop, drag the folder onto https://app.netlify.com/drop.
 
