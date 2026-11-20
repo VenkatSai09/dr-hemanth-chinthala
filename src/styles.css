@@ -596,3 +596,34 @@ abbr { text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
+
+/* ==========================================================================
+   Floating objects beyond the hero
+   ========================================================================== */
+/* Rising bubbles behind the photograph, like the steam off the reel's cup. */
+.rise { position: absolute; inset: -6% -14% 0 -14%; z-index: -1; pointer-events: none; }
+.rise__b { position: absolute; bottom: 0; left: 50%; width: 18px; height: auto; opacity: 0; will-change: transform, opacity; }
+
+/* Objects that fly past between sections, faster than the page. */
+.about, .procedures, .signs, .book { position: relative; }
+.about > .wrap, .procedures > .wrap, .signs > .wrap, .book > .wrap { position: relative; z-index: 1; }
+.drift { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.drift__i { position: absolute; height: auto; filter: drop-shadow(0 16px 16px var(--shadow-soft)); will-change: transform; }
+.book .drift__i { filter: drop-shadow(0 16px 20px var(--shadow)); }
+.dr--a1 { width: clamp(64px, 8vw, 130px); right: 3%; top: 6%; }
+.dr--a2 { width: clamp(36px, 4.5vw, 84px); right: 15%; top: 34%; }
+.dr--a3 { width: clamp(26px, 3vw, 54px); left: 1%; bottom: 8%; }
+.dr--p1 { width: clamp(64px, 8.5vw, 140px); right: 3%; top: 3%; }
+.dr--p2 { width: clamp(44px, 5vw, 86px); left: -1%; top: 46%; }
+.dr--p3 { width: clamp(30px, 3.6vw, 64px); right: 6%; bottom: 10%; }
+.dr--s1 { width: clamp(48px, 5.5vw, 96px); right: 4%; top: 8%; }
+.dr--s2 { width: clamp(44px, 5vw, 86px); left: -1%; bottom: 6%; }
+.dr--b1 { width: clamp(40px, 5vw, 90px); left: 44%; top: 5%; }
+.dr--b2 { width: clamp(56px, 6.5vw, 116px); left: 2%; bottom: 12%; }
+.dr--b3 { width: clamp(28px, 3vw, 56px); right: 3%; top: 3%; }
+@media (max-width: 899px) {
+  .dr--a2, .dr--p3, .dr--b1 { display: none; }
+  /* on phones they sit beside the section headings, where there is free space */
+  .dr--a1, .dr--p1, .dr--s1, .dr--b3 { right: 4%; top: 52px; width: 58px; }
+  .dr--a3, .dr--p2, .dr--s2, .dr--b2 { width: 44px; }
+}

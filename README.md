@@ -13,7 +13,7 @@ Videos: [walkthrough, desktop](docs/video/walkthrough-desktop.mp4) · [walkthrou
 | Mobile | 97 | 100 | 100 | 100 |
 | Desktop | 100 | 100 | 100 | 100 |
 
-Mobile: FCP 1.8 s, LCP 2.3 s, TBT 30 ms, CLS 0.
+Mobile: FCP 1.8 s, LCP 2.4 s, TBT 0 ms, CLS 0.
 
 ## Stack
 
@@ -39,17 +39,19 @@ Mobile: FCP 1.8 s, LCP 2.3 s, TBT 30 ms, CLS 0.
 
 ## Motion
 
-The hero stage and the digestive-system tour carry the motion, and the rest of the page stays quiet around them.
+The hero stage and the digestive-system tour carry the motion, and floating objects carry it lightly through the rest of the page.
 
 - **The digestive system tour.** The drawing draws itself when it first appears. The capsule camera, rendered in 3D and turning to follow the bends, travels through the gut from the oesophagus to the rectum and stops at each organ as its text scrolls in. The current organ turns sienna and gets a label, the others fade back, and a wave runs through the tube-shaped organs the way the gut moves food along.
 - **Hero stage.** The photograph sits in an arched frame with rendered 3D objects floating around it at different depths: a capsule endoscope (the camera pill used in capsule endoscopy), two-tone capsules, a tablet, a glass cube and iridescent glass bubbles. A sienna-to-gold ribbon swirls behind the arch, and a thin thread crosses in front. On load the ribbons draw in and the objects fly in from outside and settle. They then bob and turn slowly, each on its own rhythm. They follow the mouse (nearer objects move further) and scatter upwards as the hero scrolls away. The objects load only after the photograph, so the first paint is unaffected.
 - **Headline.** It rises word by word, and on desktop the photo tilts slightly towards the pointer.
+- **Rising bubbles.** Small glass bubbles drift up behind the photograph and fade, like steam.
+- **Objects between sections.** Capsules, the capsule camera, a tablet and glass drift past in the margins of the About, Procedures, warning-signs and Booking sections. They move faster than the page and turn as they go, with shorter travel on phones so they stay clear of the text.
 - **Conditions.** On desktop the section pins and the cards scroll sideways, settling into line as they arrive.
 - **Training.** The photo is uncovered and the career line fills in as you read down it.
 - **Navy sections** open out from a rounded panel to full width as they scroll in.
 - **Feedback:** a reading-progress line in the nav, the active section in the nav, form errors.
 
-All other content is visible without animation. With "reduce motion" switched on in the operating system, smooth scrolling, pinning and every animation are off and the page is fully readable. If the script fails to load, a fallback in `<head>` shows everything after 2.5 seconds.
+The script starts after the first frame is painted, so the page lays out before any animation code runs, and setup below the fold runs in small idle-time tasks. All other content is visible without animation. With "reduce motion" switched on in the operating system, smooth scrolling, pinning and every animation are off and the page is fully readable. If the script fails to load, a fallback in `<head>` shows everything after 2.5 seconds.
 
 ## Design skills applied
 

@@ -5,7 +5,6 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 
-gsap.registerPlugin(ScrollTrigger);
 
 /*
  * Motion plan
@@ -31,7 +30,8 @@ if (reduceMotion) root.classList.add('no-motion');
  * Smooth scroll (Lenis, driven by GSAP's ticker)
  * ------------------------------------------------------------------ */
 let lenis = null;
-if (!reduceMotion) {
+function initSmoothScroll() {
+  if (reduceMotion) return;
   lenis = new Lenis({ lerp: 0.11, smoothWheel: true });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((t) => lenis.raf(t * 1000));
@@ -94,7 +94,14 @@ function initHero() {
   // The photograph drifts a little slower than the page as the hero leaves.
   gsap.to(img, { yPercent: 10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 
-  stageReady.then(initStage);
+  // The stage is set up in idle time after the first paint, one piece per task,
+  // so it never lengthens the task that paints the headline.
+  const idle = (fn) => new Promise((done) => {
+    const run = () => { fn(); done(); };
+    if ('requestIdleCallback' in window) requestIdleCallback(run, { timeout: 1200 });
+    else setTimeout(run, 120);
+  });
+  stageReady.then(() => idle(initStage)).then(() => idle(initRise));
 
   // A slight 3D tilt follows the pointer. The figure listens and stays still;
   // only the frame inside it moves, so the hover target never slides away.
@@ -116,7 +123,7 @@ function initHero() {
    photograph, so they never compete with it for the first paint. */
 function loadStageImages() {
   const photo = $('.hero__frame img');
-  const imgs = $$('.fl__i[data-src]');
+  const imgs = $$('.fl__i[data-src], .rise__b[data-src]');
   const photoDone = photo.complete
     ? Promise.resolve()
     : new Promise((done) => {
@@ -153,6 +160,7 @@ function initStage() {
   });
 
   const idles = [];
+  const scatter = gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 } });
   items.forEach((el, i) => {
     const depth = Number(el.dataset.depth) || 1;
     const r = el.getBoundingClientRect();
@@ -181,10 +189,7 @@ function initStage() {
       });
 
     // Scatter outward and upward as the hero leaves; nearer objects move more.
-    gsap.to($('.fl__s', el), {
-      x: ux * 90 * depth, y: -140 * depth + uy * 40, rotation: spin * 0.6, ease: 'none',
-      scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 },
-    });
+    scatter.to($('.fl__s', el), { x: ux * 90 * depth, y: -140 * depth + uy * 40, rotation: spin * 0.6, ease: 'none', duration: 1 }, 0);
   });
 
   // Pointer parallax: nearer objects follow the pointer further.
@@ -207,6 +212,48 @@ function initStage() {
   ScrollTrigger.create({
     trigger: '.hero', start: 'top bottom', end: 'bottom top',
     onToggle: (s) => idles.forEach((t) => (s.isActive ? t.resume() : t.pause())),
+  });
+}
+
+/* Glass bubbles rise behind the photograph, like the steam off the reel's
+   cup: each drifts up on its own path, sways, and fades out near the top. */
+function initRise() {
+  const box = $('[data-rise]');
+  if (!box) return;
+  const loops = $$('.rise__b', box).map((b, i) => {
+    const size = gsap.utils.random(10, 30, 1);
+    gsap.set(b, { width: size, left: `${gsap.utils.random(4, 92)}%`, xPercent: -50 });
+    return gsap.timeline({ repeat: -1, repeatRefresh: true, delay: i * 0.7 })
+      .fromTo(b,
+        { y: 0, x: 0, opacity: 0, scale: 0.6 },
+        { y: () => -box.offsetHeight * gsap.utils.random(0.75, 1.05), x: () => gsap.utils.random(-30, 30), scale: 1, duration: () => gsap.utils.random(5, 8), ease: 'sine.out' })
+      .to(b, { opacity: 0.9, duration: 1, ease: 'sine.out' }, 0)
+      .to(b, { opacity: 0, duration: 1.4, ease: 'sine.in' }, '>-1.6');
+  });
+  ScrollTrigger.create({
+    trigger: '.hero', start: 'top bottom', end: 'bottom top',
+    onToggle: (st) => loops.forEach((t) => (st.isActive ? t.resume() : t.pause())),
+  });
+}
+
+/* Objects fly past between sections: each moves faster than the page in
+   proportion to its data-speed, turning as it goes. */
+function initDrift() {
+  if (reduceMotion) return;
+  // Shorter travel on phones, where the objects sit closer to the text.
+  const travel = () => (window.innerWidth < 900 ? 60 : 160);
+  // One scroll trigger per section drives all of that section's objects.
+  $$('.drift').forEach((layer) => {
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: layer.closest('section'), start: 'top bottom', end: 'bottom top', scrub: 0.5, invalidateOnRefresh: true },
+    });
+    $$('.drift__i', layer).forEach((img) => {
+      const speed = Number(img.dataset.speed) || 1;
+      const rot = Number(img.dataset.rot) || 0;
+      tl.fromTo(img,
+        { y: () => travel() * speed, rotation: -rot / 2 },
+        { y: () => -travel() * speed, rotation: rot / 2, ease: 'none', duration: 1 }, 0);
+    });
   });
 }
 
@@ -459,8 +506,18 @@ function initForm() {
   [form.name, form.phone].forEach((input) => input.addEventListener('input', () => input.removeAttribute('aria-invalid')));
 }
 
-/* ------------------------------------------------------------------ */
-initHero();
+/* ------------------------------------------------------------------ *
+ * Start after the first frame has painted. ScrollTrigger and the hero
+ * read layout as they start; doing that before the first paint forces the
+ * browser to lay out the whole page inside this script, one long blocking
+ * task on a slow phone. After the paint, layout is already done and cheap.
+ * ------------------------------------------------------------------ */
+function start() {
+  gsap.registerPlugin(ScrollTrigger);
+  initSmoothScroll();
+  initHero();
+  scheduleRest();
+}
 
 // Below-the-fold setup runs in small tasks so the main thread never blocks
 // long enough to delay a tap. The pinned section is created before the
@@ -468,7 +525,7 @@ initHero();
 const queue = [
   initNav, initForm, initFaq,
   () => $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear())),
-  initGut, initCare, initSectionOpen, initTraining,
+  initGut, initCare, initSectionOpen, initTraining, initDrift,
 ];
 const rest = async () => {
   for (const task of queue) {
@@ -477,9 +534,17 @@ const rest = async () => {
   }
   ScrollTrigger.sort();
   ScrollTrigger.refresh();
+  measured = document.fonts ? document.fonts.status !== 'loaded' : false;
 };
-if ('requestIdleCallback' in window) requestIdleCallback(rest, { timeout: 700 });
-else setTimeout(rest, 200);
+function scheduleRest() {
+  if ('requestIdleCallback' in window) requestIdleCallback(rest, { timeout: 700 });
+  else setTimeout(rest, 200);
+}
 
-document.fonts?.ready.then(() => ScrollTrigger.refresh());
-window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });
+requestAnimationFrame(() => setTimeout(start, 0));
+
+// ScrollTrigger already re-measures on window load. Fonts only need a second
+// measurement if they finish after the setup above has measured once.
+let measured = false;
+document.fonts?.ready.then(() => { if (measured) ScrollTrigger.refresh(); });
+
