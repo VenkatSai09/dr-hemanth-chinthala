@@ -20,7 +20,8 @@ page = (ROOT / "index.html").read_text(encoding="utf-8")
 roman = set(html.unescape(re.sub(r"<[^>]+>", " ", page)))
 roman |= {chr(c) for c in range(0x20, 0x7F)} | set("–—‘’“”·×₹§•…é")
 roman = {c for c in roman if ord(c) < 0x2200}
-italic = set("".join(html.unescape(m) for m in re.findall(r"<em>(.*?)</em>", page)))
+# Italic is used for captions and the organ subtitles: keep the printable ASCII set.
+italic = {chr(c) for c in range(0x20, 0x7F)}
 italic |= set("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ ivx.,—–’‘“”-&")
 
 with tempfile.TemporaryDirectory() as tmp:
