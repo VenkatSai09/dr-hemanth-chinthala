@@ -38,9 +38,6 @@
   --accent-ink: #8a3c1b;
   --glow-1: #ffb48a;
   --glow-2: #e08a5f;
-  --ribbon-1: #9a4421;
-  --ribbon-2: #c98a4b;
-  --ribbon-3: #ecc897;
   --stage-glow: #f7e2cf;
   --mucosa: #e8c3ae;
   --nbi: #2f6a65;
@@ -217,39 +214,13 @@ abbr { text-decoration: none; }
 .hero__cta { margin-top: 28px; display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
 .hero__figure { justify-self: end; width: min(64%, 380px); margin-right: 8%; }
 
-/* The stage: the photograph in an arched frame, a ribbon sweeping behind it,
-   and rendered 3D objects floating at different depths around it. */
-.stage { position: relative; isolation: isolate; }
-.stage__glow { position: absolute; inset: -18% -30%; z-index: -2; background: radial-gradient(closest-side, var(--stage-glow), transparent 72%); pointer-events: none; }
-.hero__frame { position: relative; z-index: 1; overflow: hidden; aspect-ratio: 4 / 5; background: var(--paper-3); border-radius: 999px 999px var(--radius) var(--radius); box-shadow: 0 30px 60px -30px var(--shadow); }
+/* The photograph: a plain studio portrait with a name line beneath. */
+.hero__frame { position: relative; overflow: hidden; aspect-ratio: 4 / 5; background: var(--paper-3); border-radius: var(--radius); box-shadow: 0 34px 60px -34px var(--shadow); }
+.hero__cap { display: grid; gap: 2px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.hero__cap-name { font-family: var(--serif); font-size: 19px; line-height: 1.25; color: var(--ink); font-variation-settings: 'opsz' 24; }
+.hero__cap-role { font-size: 14px; line-height: 1.4; color: var(--ink-3); }
 .hero__frame img { width: 100%; height: 100%; object-fit: cover; transform-origin: 50% 30%; }
 
-.ribbon { position: absolute; inset: -12% -34% -14% -34%; width: 168%; height: 126%; max-width: none; overflow: visible; pointer-events: none; }
-.ribbon--back { z-index: -1; }
-.ribbon--front { z-index: 3; }
-.rb-1 { stop-color: var(--ribbon-1); }
-.rb-2 { stop-color: var(--ribbon-2); }
-.rb-3 { stop-color: var(--ribbon-3); }
-/* even thickness however the stage stretches the ribbon's box */
-.ribbon path { vector-effect: non-scaling-stroke; }
-.ribbon__band { fill: none; stroke: url(#ribbon-grad); stroke-width: 24; stroke-linecap: round; opacity: .92; }
-.ribbon__sheen { fill: none; stroke: var(--white-warm); stroke-width: 2; stroke-linecap: round; opacity: .6; }
-.ribbon__thread { fill: none; stroke: url(#ribbon-grad); stroke-width: 3; stroke-linecap: round; opacity: .85; }
-.hero__figure .caption { margin-top: 56px; }
-
-.fl { position: absolute; display: block; pointer-events: none; z-index: 2; }
-.fl__p, .fl__s { display: block; width: 100%; }
-.fl__i { display: block; width: 100%; height: auto; filter: drop-shadow(0 18px 18px var(--shadow-soft)); will-change: transform; }
-.fl--ink, .fl--bubble-l, .fl--cam-b { z-index: 0; }
-.fl--cam { width: 40%; left: -30%; top: 48%; }
-.fl--cube { width: 22%; left: -14%; top: -2%; }
-.fl--sienna { width: 30%; right: -22%; bottom: 6%; }
-.fl--tablet { width: 17%; left: -4%; bottom: 2%; }
-.fl--bubble-s { width: 14%; right: 4%; top: 10%; }
-.fl--bubble-xs { width: 8%; left: 46%; bottom: -6%; }
-.fl--ink { width: 17%; left: -16%; top: 26%; }
-.fl--bubble-l { width: 32%; right: -30%; top: 28%; }
-.fl--cam-b { width: 20%; right: -12%; top: -12%; }
 @media (min-width: 900px) {
   .hero__grid { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); column-gap: clamp(24px, 4vw, 64px); align-items: end; }
   .hero__figure { width: 76%; justify-self: center; margin-right: 0; }
@@ -638,49 +609,14 @@ abbr { text-decoration: none; }
    ========================================================================== */
 .js:not(.no-motion) .hero__title .w > span { transform: translateY(105%); }
 .js:not(.no-motion) [data-hero-fade] { opacity: 0; transform: translateY(14px); }
-.js:not(.no-motion) .hero__frame { clip-path: inset(100% 0 0 0 round 999px 999px 2px 2px); }
-.js:not(.no-motion) .fl__i { opacity: 0; }
-.js:not(.no-motion) [data-ribbon] { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.js:not(.no-motion) .hero__frame { clip-path: inset(100% 0 0 0); }
 .js:not(.no-motion) .training__figure { clip-path: inset(0 0 100% 0); }
 .js:not(.no-motion) .gstep > * { opacity: 0; transform: translateY(22px); }
-.no-motion .w > span, .no-motion [data-hero-fade], .no-motion .gstep > *, .no-motion .fl__i { opacity: 1 !important; transform: none !important; }
-.no-motion [data-ribbon] { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+.no-motion .w > span, .no-motion [data-hero-fade], .no-motion .gstep > * { opacity: 1 !important; transform: none !important; }
 .no-motion .hero__frame, .no-motion .training__figure { clip-path: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
-}
-
-/* ==========================================================================
-   Floating objects beyond the hero
-   ========================================================================== */
-/* Rising bubbles behind the photograph, like the steam off the reel's cup. */
-.rise { position: absolute; inset: -6% -14% 0 -14%; z-index: -1; pointer-events: none; }
-.rise__b { position: absolute; bottom: 0; left: 50%; width: 18px; height: auto; opacity: 0; will-change: transform, opacity; }
-
-/* Objects that fly past between sections, faster than the page. */
-.about, .procedures, .signs, .book { position: relative; }
-.about > .wrap, .procedures > .wrap, .signs > .wrap, .book > .wrap { position: relative; z-index: 1; }
-.drift { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-.drift__i { position: absolute; height: auto; filter: drop-shadow(0 16px 16px var(--shadow-soft)); will-change: transform; }
-.book .drift__i { filter: drop-shadow(0 16px 20px var(--shadow)); }
-.dr--a1 { width: clamp(64px, 8vw, 130px); right: 3%; top: 6%; }
-.dr--a2 { width: clamp(36px, 4.5vw, 84px); right: 15%; top: 34%; }
-.dr--a3 { width: clamp(26px, 3vw, 54px); left: 1%; bottom: 8%; }
-.dr--p1 { width: clamp(64px, 8.5vw, 140px); right: 3%; top: 3%; }
-.dr--p2 { width: clamp(44px, 5vw, 86px); left: -1%; top: 46%; }
-.dr--p3 { width: clamp(30px, 3.6vw, 64px); right: 6%; bottom: 10%; }
-.dr--s1 { width: clamp(48px, 5.5vw, 96px); right: 4%; top: 8%; }
-.dr--s2 { width: clamp(44px, 5vw, 86px); left: -1%; bottom: 6%; }
-.dr--b1 { width: clamp(40px, 5vw, 90px); left: 44%; top: 5%; }
-.dr--b2 { width: clamp(56px, 6.5vw, 116px); left: 2%; bottom: 12%; }
-.dr--b3 { width: clamp(28px, 3vw, 56px); right: 3%; top: 3%; }
-@media (max-width: 899px) {
-  .dr--a2, .dr--p2, .dr--p3, .dr--b1 { display: none; }
-  .dr--p1 { top: 12px !important; }
-  /* on phones they sit beside the section headings, where there is free space */
-  .dr--a1, .dr--p1, .dr--s1, .dr--b3 { right: 4%; top: 52px; width: 58px; }
-  .dr--a3, .dr--p2, .dr--s2, .dr--b2 { width: 44px; }
 }
 
 /* ==========================================================================

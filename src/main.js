@@ -20,7 +20,6 @@ import { buildGlyph } from './glyphs.js';
 
 const root = document.documentElement;
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 const $ = (s, c = document) => c.querySelector(s);
 const $$ = (s, c = document) => [...c.querySelectorAll(s)];
 
@@ -78,7 +77,6 @@ function splitWords(el) {
 function initHero() {
   const title = $('[data-split]');
   splitWords(title);
-  const stageReady = loadStageImages();
   if (reduceMotion) return;
 
   const words = $$('.w > span', title);
@@ -87,175 +85,13 @@ function initHero() {
   gsap.set(words, { yPercent: 105, y: 0 });
 
   gsap.timeline({ defaults: { ease: 'expo.out' }, delay: 0.05 })
-    .to(words, { yPercent: 0, duration: 1.1, stagger: 0.05 }, 0)
+    .to(words, { yPercent: 0, duration: 1.1, stagger: 0.04 }, 0)
     .fromTo(frame, { clipPath: 'inset(100% 0% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'expo.inOut', onComplete: () => gsap.set(frame, { clipPath: 'none' }) }, 0.05)
-    .fromTo(img, { scale: 1.25 }, { scale: 1, duration: 1.8 }, 0.25)
+    .fromTo(img, { scale: 1.18 }, { scale: 1, duration: 1.8 }, 0.25)
     .to('[data-hero-fade]', { opacity: 1, y: 0, duration: 0.9, stagger: 0.1 }, 0.4);
 
   // The photograph drifts a little slower than the page as the hero leaves.
-  gsap.to(img, { yPercent: 10, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-
-  // The stage is set up in idle time after the first paint, one piece per task,
-  // so it never lengthens the task that paints the headline.
-  const idle = (fn) => new Promise((done) => {
-    const run = () => { fn(); done(); };
-    if ('requestIdleCallback' in window) requestIdleCallback(run, { timeout: 1200 });
-    else setTimeout(run, 120);
-  });
-  stageReady.then(() => idle(initStage)).then(() => idle(initRise));
-
-  // A slight 3D tilt follows the pointer. The figure listens and stays still;
-  // only the frame inside it moves, so the hover target never slides away.
-  if (finePointer) {
-    const fig = $('[data-hero-figure]');
-    gsap.set(frame, { transformPerspective: 900 });
-    const rx = gsap.quickTo(frame, 'rotationX', { duration: 0.8, ease: 'power3.out' });
-    const ry = gsap.quickTo(frame, 'rotationY', { duration: 0.8, ease: 'power3.out' });
-    fig.addEventListener('pointermove', (e) => {
-      const r = fig.getBoundingClientRect();
-      ry(((e.clientX - r.left) / r.width - 0.5) * 6);
-      rx(-((e.clientY - r.top) / r.height - 0.5) * 6);
-    });
-    fig.addEventListener('pointerleave', () => { rx(0); ry(0); });
-  }
-}
-
-/* The floating objects are decoration: they load only after the hero
-   photograph, so they never compete with it for the first paint. */
-function loadStageImages() {
-  const photo = $('.hero__frame img');
-  const imgs = $$('.fl__i[data-src], .rise__b[data-src]');
-  const photoDone = photo.complete
-    ? Promise.resolve()
-    : new Promise((done) => {
-        photo.addEventListener('load', done, { once: true });
-        photo.addEventListener('error', done, { once: true });
-      });
-  return photoDone.then(() => {
-    imgs.forEach((img) => { img.src = img.dataset.src; });
-    return Promise.all(imgs.map((img) => img.decode().catch(() => {})));
-  });
-}
-
-/* ------------------------------------------------------------------ *
- * Hero stage: rendered 3D objects (a capsule endoscope, capsules, a
- * tablet, glass) float around the photograph at different depths.
- * Each object has three nested layers so the motions never fight:
- *   .fl__i  fly-in, then a slow idle bob and turn
- *   .fl__s  scatter outward as the hero scrolls away
- *   .fl__p  pointer parallax, scaled by depth
- * ------------------------------------------------------------------ */
-function initStage() {
-  const stage = $('[data-stage]');
-  if (!stage) return;
-  const items = $$('.fl', stage);
-  const ribbons = $$('[data-ribbon]', stage);
-  const sr = stage.getBoundingClientRect();
-  const cx = sr.left + sr.width / 2;
-  const cy = sr.top + sr.height / 2;
-
-  // Ribbons draw themselves in behind and in front of the photograph.
-  gsap.to(ribbons, {
-    strokeDashoffset: 0, duration: 1.8, ease: 'power2.inOut', stagger: 0.18, delay: 0.1,
-    onComplete: () => gsap.set(ribbons, { strokeDasharray: 'none' }),
-  });
-
-  const idles = [];
-  const scatter = gsap.timeline({ scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.6 } });
-  items.forEach((el, i) => {
-    const depth = Number(el.dataset.depth) || 1;
-    const r = el.getBoundingClientRect();
-    const dx = r.left + r.width / 2 - cx;
-    const dy = r.top + r.height / 2 - cy;
-    const len = Math.hypot(dx, dy) || 1;
-    const ux = dx / len;
-    const uy = dy / len;
-    const img = $('.fl__i', el);
-    const spin = (i % 2 ? 1 : -1) * (25 + depth * 20);
-
-    // Fly in from outside the stage, turning as it settles.
-    gsap.fromTo(img,
-      { x: ux * 180 * depth, y: uy * 180 * depth, rotation: spin, scale: 0.55, opacity: 0 },
-      {
-        x: 0, y: 0, rotation: 0, scale: 1, opacity: 1, duration: 1.6, ease: 'expo.out', delay: 0.15 + i * 0.07,
-        onComplete: () => {
-          // Then float: a slow bob and turn, each object on its own rhythm.
-          idles.push(gsap.to(img, {
-            y: (i % 2 ? -1 : 1) * (6 + depth * 6),
-            rotation: (i % 3 - 1) * (3 + depth * 3),
-            duration: 2.6 + (i % 4) * 0.6,
-            ease: 'sine.inOut', yoyo: true, repeat: -1,
-          }));
-        },
-      });
-
-    // Scatter outward and upward as the hero leaves; nearer objects move more.
-    scatter.to($('.fl__s', el), { x: ux * 90 * depth, y: -140 * depth + uy * 40, rotation: spin * 0.6, ease: 'none', duration: 1 }, 0);
-  });
-
-  // Pointer parallax: nearer objects follow the pointer further.
-  if (finePointer) {
-    const movers = items.map((el) => {
-      const p = $('.fl__p', el);
-      const d = Number(el.dataset.depth) || 1;
-      return { d, x: gsap.quickTo(p, 'x', { duration: 1, ease: 'power3.out' }), y: gsap.quickTo(p, 'y', { duration: 1, ease: 'power3.out' }) };
-    });
-    const hero = $('.hero');
-    hero.addEventListener('pointermove', (e) => {
-      const nx = e.clientX / window.innerWidth - 0.5;
-      const ny = e.clientY / window.innerHeight - 0.5;
-      movers.forEach((m) => { m.x(nx * 46 * m.d); m.y(ny * 34 * m.d); });
-    });
-    hero.addEventListener('pointerleave', () => movers.forEach((m) => { m.x(0); m.y(0); }));
-  }
-
-  // Idle motion stops while the hero is off screen.
-  ScrollTrigger.create({
-    trigger: '.hero', start: 'top bottom', end: 'bottom top',
-    onToggle: (s) => idles.forEach((t) => (s.isActive ? t.resume() : t.pause())),
-  });
-}
-
-/* Glass bubbles rise behind the photograph, like the steam off the reel's
-   cup: each drifts up on its own path, sways, and fades out near the top. */
-function initRise() {
-  const box = $('[data-rise]');
-  if (!box) return;
-  const loops = $$('.rise__b', box).map((b, i) => {
-    const size = gsap.utils.random(10, 30, 1);
-    gsap.set(b, { width: size, left: `${gsap.utils.random(4, 92)}%`, xPercent: -50 });
-    return gsap.timeline({ repeat: -1, repeatRefresh: true, delay: i * 0.7 })
-      .fromTo(b,
-        { y: 0, x: 0, opacity: 0, scale: 0.6 },
-        { y: () => -box.offsetHeight * gsap.utils.random(0.75, 1.05), x: () => gsap.utils.random(-30, 30), scale: 1, duration: () => gsap.utils.random(5, 8), ease: 'sine.out' })
-      .to(b, { opacity: 0.9, duration: 1, ease: 'sine.out' }, 0)
-      .to(b, { opacity: 0, duration: 1.4, ease: 'sine.in' }, '>-1.6');
-  });
-  ScrollTrigger.create({
-    trigger: '.hero', start: 'top bottom', end: 'bottom top',
-    onToggle: (st) => loops.forEach((t) => (st.isActive ? t.resume() : t.pause())),
-  });
-}
-
-/* Objects fly past between sections: each moves faster than the page in
-   proportion to its data-speed, turning as it goes. */
-function initDrift() {
-  if (reduceMotion) return;
-  // Shorter travel on phones, where the objects sit closer to the text.
-  const travel = () => (window.innerWidth < 900 ? 60 : 160);
-  // One scroll trigger per section drives all of that section's objects.
-  $$('.drift').forEach((layer) => {
-    const tl = gsap.timeline({
-      scrollTrigger: { trigger: layer.closest('section'), start: 'top bottom', end: 'bottom top', scrub: 0.5, invalidateOnRefresh: true },
-    });
-    $$('.drift__i', layer).forEach((img) => {
-      const speed = Number(img.dataset.speed) || 1;
-      const rot = Number(img.dataset.rot) || 0;
-      tl.fromTo(img,
-        { y: () => travel() * speed, rotation: -rot / 2 },
-        { y: () => -travel() * speed, rotation: rot / 2, ease: 'none', duration: 1 }, 0);
-    });
-  });
+  gsap.to(img, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
 }
 
 /* Procedure animations: each is built the first time its row comes near the
@@ -593,7 +429,7 @@ function start() {
 const queue = [
   initNav, initForm, initFaq,
   () => $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear())),
-  initGut, initCare, initSectionOpen, initTraining, initDrift, initGlyphs, initLiver,
+  initGut, initCare, initSectionOpen, initTraining, initGlyphs, initLiver,
 ];
 const rest = async () => {
   for (const task of queue) {
