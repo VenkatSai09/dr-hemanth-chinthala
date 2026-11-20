@@ -1,0 +1,36 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face { font-family: 'Newsreader'; src: url(../../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-standard-normal.woff2) format('woff2'); font-weight: 200 800; }
+@font-face { font-family: 'Newsreader'; font-style: italic; src: url(../../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-standard-italic.woff2) format('woff2'); font-weight: 200 800; }
+@font-face { font-family: 'Instrument Sans'; src: url(../../node_modules/@fontsource-variable/instrument-sans/files/instrument-sans-latin-standard-normal.woff2) format('woff2'); font-weight: 400 700; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: 'Instrument Sans', sans-serif; color: #0f1d2b; }
+.serif { font-family: 'Newsreader', serif; font-variation-settings: 'opsz' 72; }
+
+@page { size: A4; margin: 0; }
+.page { width: 210mm; height: 297mm; position: relative; background: #fff; padding: 16mm 18mm; }
+.head { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 6mm; border-bottom: 0.5mm solid #9a4421; }
+.head img { height: 15mm; }
+.head .right { text-align: right; font-size: 8pt; line-height: 1.5; color: #33414f; }
+.head .right b { white-space: nowrap; }
+.head .right b { font-weight: 600; color: #0f1d2b; }
+.reg { margin-top: 4mm; display: flex; justify-content: space-between; font-size: 8.4pt; color: #5d6772; }
+.reg span { display: inline-block; min-width: 46mm; border-bottom: 0.25mm solid #c9c3b7; margin-left: 2mm; }
+.patient { margin-top: 7mm; display: grid; grid-template-columns: 2.2fr 0.7fr 0.7fr 1fr; gap: 4mm; font-size: 8.4pt; color: #5d6772; }
+.patient div { border-bottom: 0.25mm solid #c9c3b7; padding-bottom: 1.5mm; }
+.wm { position: absolute; right: 22mm; bottom: 42mm; width: 62mm; }
+.foot { position: absolute; left: 18mm; right: 18mm; bottom: 12mm; border-top: 0.25mm solid #c9c3b7; padding-top: 3.5mm; display: flex; justify-content: space-between; gap: 8mm; font-size: 7.8pt; line-height: 1.45; color: #5d6772; }
+.foot b { color: #0f1d2b; font-weight: 600; }
+</style></head><body><div class="page">
+  <header class="head">
+    <img src="../logo/logo-horizontal-colour.svg" alt="Dr Hemanth Chinthala, The Gut Doctor">
+    <div class="right"><b>MBBS, MD (PGIMER), DM (CMC Vellore), ESEGH (UK)</b><br>Consultant Medical Gastroenterologist,<br>Hepatologist and Interventional Endoscopist</div>
+  </header>
+  <div class="reg"><p>Reg. No.<span></span></p><p>Date<span></span></p></div>
+  <div class="patient"><div>Patient name</div><div>Age</div><div>Sex</div><div>Mobile</div></div>
+  <div class="wm"><svg viewBox="19.5 -2.5 70 89" style="opacity:0.045"><path d="M42 33 C43 22 53 14 65 14 C79 14 89 26 89 43 C89 66 73 85 51 86 C39 86.5 29 82 23 75 C20 71.5 19.5 67 22 64.5 C24.5 62 28 62.5 30.5 64.5 C35 67.5 41 68.5 47 67.5 C53 66.5 57 61 57.5 53 C58 46 56 40 51 37.5 C48 36 45.5 36 44 37.5 Z" fill="#0f1d2b"/><path d="M47.6 1 C47.6 6 47.6 10 47.8 14.2" fill="none" stroke="#0f1d2b" stroke-width="7" stroke-linecap="round"/></svg></div>
+  <footer class="foot">
+    <p><b>Medicover Hospital</b><br>Myscape Road, beside The District, Financial District,<br>Nanakramguda, Hyderabad 500032</p>
+    <p style="text-align:right"><b>Appointments +91 70872 22235</b><br>Monday to Saturday, 9 am to 4 pm<br>In an emergency, call 108</p>
+  </footer>
+</div></body></html>

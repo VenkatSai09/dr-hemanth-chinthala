@@ -1,0 +1,67 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face { font-family: 'Newsreader'; src: url(../../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-standard-normal.woff2) format('woff2'); font-weight: 200 800; }
+@font-face { font-family: 'Newsreader'; font-style: italic; src: url(../../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-standard-italic.woff2) format('woff2'); font-weight: 200 800; }
+@font-face { font-family: 'Instrument Sans'; src: url(../../node_modules/@fontsource-variable/instrument-sans/files/instrument-sans-latin-standard-normal.woff2) format('woff2'); font-weight: 400 700; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: 'Instrument Sans', sans-serif; color: #0f1d2b; }
+.serif { font-family: 'Newsreader', serif; font-variation-settings: 'opsz' 72; }
+
+@page { size: 297mm 210mm; margin: 0; }
+.p { width: 297mm; height: 210mm; position: relative; padding: 18mm 20mm; page-break-after: always; background: #f2eee6; overflow: hidden; }
+h1 { font-family: 'Newsreader', serif; font-weight: 340; font-size: 30pt; letter-spacing: -0.02em; line-height: 1.05; font-variation-settings: 'opsz' 72; }
+h2 { font-family: 'Newsreader', serif; font-weight: 380; font-size: 17pt; letter-spacing: -0.01em; margin-bottom: 5mm; font-variation-settings: 'opsz' 48; }
+h3 { font-size: 9pt; font-weight: 600; margin-bottom: 2mm; }
+p, li { font-size: 9pt; line-height: 1.5; color: #33414f; }
+.foot { position: absolute; left: 20mm; right: 20mm; bottom: 10mm; display: flex; justify-content: space-between; font-size: 7.5pt; color: #5d6772; }
+.cover { display: grid; place-items: center; }
+.cover img { width: 150mm; }
+.cover .sub { position: absolute; left: 20mm; bottom: 22mm; }
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; }
+.tile { border-radius: 2mm; height: 40mm; padding: 6mm; }
+.tile img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.cap { font-size: 7.5pt; color: #5d6772; margin-top: 1.5mm; }
+.wide { grid-column: span 2; }
+.cols { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 12mm; }
+.sw { display: flex; gap: 3mm; align-items: center; margin-bottom: 3mm; }
+.sw i { width: 16mm; height: 16mm; border-radius: 1.5mm; border: 0.25mm solid rgba(15,29,43,.15); flex: none; }
+.sw p { font-size: 8pt; line-height: 1.45; }
+.sw b { font-size: 9pt; color: #0f1d2b; }
+.type1 { font-family: 'Newsreader', serif; font-size: 26pt; font-weight: 380; line-height: 1.1; font-variation-settings: 'opsz' 72; }
+.type2 { font-family: 'Newsreader', serif; font-style: italic; font-size: 16pt; color: #9a4421; }
+.type3 { font-size: 13pt; margin-top: 1mm; }
+ul { padding-left: 4mm; }
+.space { position: relative; width: 110mm; height: 38mm; margin: 4mm 0 2mm; outline: 0.3mm dashed #9a4421; outline-offset: 0; display: grid; place-items: center; }
+.space img { width: 84mm; }
+</style></head><body>
+<section class="p cover"><img src="../logo/logo-horizontal-colour.svg" alt="">
+  <div class="sub"><h1>Logo and brand guide</h1><p style="margin-top:3mm">The mark is a stomach in front view, with the food pipe entering it: the organ at the centre of his work, drawn in the same navy and sienna as the website.</p></div></section>
+
+<section class="p"><h2>Logo versions</h2>
+<div class="grid">
+  <div class="wide"><div class="tile" style="background:#fff"><img src="../logo/logo-horizontal-colour.svg"></div><p class="cap">Horizontal, colour. The main version. logo-horizontal-colour</p></div>
+  <div class="wide"><div class="tile" style="background:#0f1d2b"><img src="../logo/logo-horizontal-on-dark.svg"></div><p class="cap">Horizontal, on navy or dark photos. logo-horizontal-on-dark</p></div>
+  <div><div class="tile" style="background:#fff"><img src="../logo/logo-stacked-colour.svg"></div><p class="cap">Stacked, for square spaces. logo-stacked-colour</p></div>
+  <div><div class="tile" style="background:#fff"><img src="../logo/mark-colour.svg"></div><p class="cap">Mark alone. mark-colour</p></div>
+  <div><div class="tile" style="background:#fff"><img src="../logo/app-icon.svg"></div><p class="cap">App icon and profile picture. app-icon</p></div>
+  <div><div class="tile" style="background:#0f1d2b"><img src="../logo/logo-stacked-on-dark.svg"></div><p class="cap">Stacked, on navy. logo-stacked-on-dark</p></div>
+  <div class="wide"><div class="tile" style="background:#fff"><img src="../logo/logo-horizontal-navy.svg"></div><p class="cap">One colour, navy. For stamps, forms and one-colour print. logo-horizontal-navy</p></div>
+  <div class="wide"><div class="tile" style="background:#33414f"><img src="../logo/logo-horizontal-white.svg"></div><p class="cap">One colour, white. For photos and coloured backgrounds. logo-horizontal-white</p></div>
+</div><div class="foot"><span>Dr Hemanth Chinthala, The Gut Doctor</span><span>Logo and brand guide</span></div></section>
+
+<section class="p"><div class="cols">
+  <div><h2>Colours</h2><div class="sw"><i style="background:#0f1d2b"></i><p><b>Navy</b><br>HEX #0F1D2B<br>RGB 15 29 43<br>CMYK 65 33 0 83 (approx.)<br>Text, the food pipe, dark backgrounds</p></div><div class="sw"><i style="background:#9a4421"></i><p><b>Sienna</b><br>HEX #9A4421<br>RGB 154 68 33<br>CMYK 0 56 79 40 (approx.)<br>The stomach and the tagline on light backgrounds</p></div><div class="sw"><i style="background:#e08a5f"></i><p><b>Light sienna</b><br>HEX #E08A5F<br>RGB 224 138 95<br>CMYK 0 38 58 12 (approx.)<br>The stomach and the tagline on navy</p></div><div class="sw"><i style="background:#f2eee6"></i><p><b>Cream</b><br>HEX #F2EEE6<br>RGB 242 238 230<br>CMYK 0 2 5 5 (approx.)<br>Light backgrounds</p></div></div>
+  <div><h2>Type</h2>
+    <p class="type1">Newsreader</p><p class="type2">Newsreader Italic</p><p class="type3">Instrument Sans</p>
+    <p style="margin-top:4mm">Newsreader for the name and headings, its italic for the tagline, Instrument Sans for everything else. Both are free Google fonts, so any printer or designer can use them. In the logo files the letters are already outlines, so the logo looks right even without the fonts.</p>
+    <h2 style="margin-top:9mm">Clear space</h2>
+    <div class="space"><img src="../logo/logo-horizontal-colour.svg"></div>
+    <p>Keep space around the logo at least as wide as the stomach's width in the mark. Nothing else should sit inside the dashed line.</p>
+  </div>
+  <div><h2>Minimum size</h2>
+    <ul><li>Horizontal logo: 30 mm wide in print, 160 px on screen.</li><li>Stacked logo: 22 mm wide, 120 px.</li><li>Mark alone: 6 mm, 24 px. Below 32 px, use favicon.svg, which drops the fold line.</li></ul>
+    <h2 style="margin-top:9mm">Please don't</h2>
+    <ul><li>Stretch, squash or rotate the logo.</li><li>Change its colours, or use the colour version on navy (use the on-dark version).</li><li>Add shadows, outlines or glows.</li><li>Put it on a busy photo without a plain area behind it.</li><li>Retype the name in another font. Use the files.</li></ul>
+  </div>
+</div><div class="foot"><span>Dr Hemanth Chinthala, The Gut Doctor</span><span>Logo and brand guide</span></div></section>
+</body></html>

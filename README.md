@@ -56,6 +56,11 @@ The digestive-system tour, the liver stages and the procedure drawings carry the
 
 The script starts after the first frame is painted, so the page lays out before any animation code runs, and setup below the fold runs in small idle-time tasks. All other content is visible without animation. With "reduce motion" switched on in the operating system, smooth scrolling, pinning and every animation are off and the page is fully readable. If the script fails to load, a fallback in `<head>` shows everything after 2.5 seconds.
 
+
+## Logo and brand kit
+
+The logo, its colour and one-colour versions, icons, a profile picture, a print-ready business card, a letterhead and a brand guide are in [`brand/`](brand/README.md). The site uses the mark in the top bar and as its favicon and home-screen icon.
+
 ## Images
 
 Generated images are made with Google Gemini, following the owner's instruction, and checked for anatomical accuracy before use. Backgrounds are removed by keying out the white background with edge un-mixing, and every stage of a sequence is cropped with one shared box so they stay aligned. Photographs of the doctor are real and never generated or altered.

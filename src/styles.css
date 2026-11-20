@@ -174,7 +174,9 @@ abbr { text-decoration: none; }
 .nav__progress { position: absolute; left: 0; right: 0; top: 0; height: 2px; pointer-events: none; }
 .nav__progress span { display: block; height: 100%; background: var(--accent); transform: scaleX(0); transform-origin: left; }
 .nav__inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-.brand { display: grid; line-height: 1.15; }
+.brand { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 10px; align-items: center; line-height: 1.15; }
+.brand__mark { grid-row: span 2; width: auto; height: 40px; }
+.brand__name, .brand__meta { grid-column: 2; }
 .brand__name { font-family: var(--serif); font-size: 20px; font-weight: 450; letter-spacing: -0.01em; font-variation-settings: 'opsz' 24; }
 .brand__meta { font-family: var(--serif); font-style: italic; font-size: 15px; line-height: 1.2; color: var(--accent); font-variation-settings: 'opsz' 24; }
 .nav__links { display: none; gap: 28px; font-size: 14.5px; }

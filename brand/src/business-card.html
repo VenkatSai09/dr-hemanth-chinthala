@@ -1,0 +1,39 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><style>
+@font-face { font-family: 'Newsreader'; src: url(../../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-standard-normal.woff2) format('woff2'); font-weight: 200 800; }
+@font-face { font-family: 'Newsreader'; font-style: italic; src: url(../../node_modules/@fontsource-variable/newsreader/files/newsreader-latin-standard-italic.woff2) format('woff2'); font-weight: 200 800; }
+@font-face { font-family: 'Instrument Sans'; src: url(../../node_modules/@fontsource-variable/instrument-sans/files/instrument-sans-latin-standard-normal.woff2) format('woff2'); font-weight: 400 700; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: 'Instrument Sans', sans-serif; color: #0f1d2b; }
+.serif { font-family: 'Newsreader', serif; font-variation-settings: 'opsz' 72; }
+
+@page { size: 94.9mm 56.8mm; margin: 0; }
+.card { width: 94.9mm; height: 56.8mm; position: relative; overflow: hidden; page-break-after: always; }
+.front { background: #f2eee6; display: grid; place-items: center; }
+.front img { width: 58mm; }
+.back { background: #0f1d2b; color: #e9e3d7; padding: 8mm 9mm 0 9mm; }
+.back .name { font-size: 15.5pt; line-height: 1.05; font-weight: 380; letter-spacing: -0.01em; color: #f2eee6; }
+.back .tag { font-family: 'Newsreader', serif; font-style: italic; font-size: 9.5pt; color: #e08a5f; margin-top: 1mm; }
+.back .role { font-size: 6.4pt; line-height: 1.35; margin-top: 3mm; max-width: 58mm; color: #cfd6dc; }
+.back .quals { font-size: 6.4pt; margin-top: 1mm; color: #9aa6b2; }
+.back .rule { height: 0.3mm; background: rgba(233,227,215,.25); margin: 3.2mm 0 2.6mm; width: 76.9mm; }
+.back .row { display: grid; grid-template-columns: 22mm 1fr; gap: 1mm 2mm; font-size: 6.4pt; line-height: 1.35; }
+.back .row dt { color: #9aa6b2; }
+.back .row dd { color: #f2eee6; }
+.back .mark { position: absolute; right: 9mm; top: 8mm; width: 9mm; }
+</style></head><body>
+<section class="card front"><img src="../logo/logo-horizontal-colour.svg" alt="Dr Hemanth Chinthala, The Gut Doctor"></section>
+<section class="card back">
+  <svg class="mark" viewBox="19.5 -2.5 70 89"><path d="M42 33 C43 22 53 14 65 14 C79 14 89 26 89 43 C89 66 73 85 51 86 C39 86.5 29 82 23 75 C20 71.5 19.5 67 22 64.5 C24.5 62 28 62.5 30.5 64.5 C35 67.5 41 68.5 47 67.5 C53 66.5 57 61 57.5 53 C58 46 56 40 51 37.5 C48 36 45.5 36 44 37.5 Z" fill="#e08a5f"/><path d="M47.6 1 C47.6 6 47.6 10 47.8 14.2" fill="none" stroke="#f2eee6" stroke-width="7" stroke-linecap="round"/><path d="M65 22 C78 26 83 40 81 54 C79 66 70 76 56 79" fill="none" stroke="#f2eee6" stroke-width="2.6" stroke-linecap="round" opacity="0.6"/></svg>
+  <p class="name serif">Dr Hemanth Chinthala</p>
+  <p class="tag">The Gut Doctor</p>
+  <p class="role">Consultant Medical Gastroenterologist, Hepatologist and Interventional Endoscopist</p>
+  <p class="quals">MBBS, MD (PGIMER), DM (CMC Vellore), ESEGH (UK)</p>
+  <div class="rule"></div>
+  <dl class="row">
+    <dt>Appointments</dt><dd>+91 70872 22235</dd>
+    <dt>Consults</dt><dd>Monday to Saturday, 9 am to 4 pm</dd>
+    <dt>Hospital</dt><dd>Medicover Hospital, Financial District,<br>Nanakramguda, Hyderabad 500032</dd>
+  </dl>
+</section>
+</body></html>
