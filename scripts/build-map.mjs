@@ -49,7 +49,8 @@ const i1 = '              ';
 const svg = [
   `${i1}<svg class="tmap__svg" viewBox="0 0 ${W} ${H}" role="img" aria-labelledby="tmap-t" data-tmap>`,
   `${i1}  <title id="tmap-t">Map of where Dr Chinthala trained and worked: Hyderabad, Chandigarh, Vellore and Melbourne, and back to Hyderabad</title>`,
-  `${i1}  <path class="tmap__land" d="${dots}" />`,
+  // The land dots are a separate image, so they do not weigh down the page's HTML.
+  `${i1}  <image class="tmap__land" href="/img/map-land.svg" width="${W}" height="${H}" />`,
   ...legs.map(([a, b, bend]) => `${i1}  <path class="tmap__leg" data-leg pathLength="1" d="${arc(a, b, bend)}" />`),
   ...places.map((p) => {
     const [x, y] = P[p.id];
@@ -57,6 +58,9 @@ const svg = [
   }),
   `${i1}</svg>`,
 ].join('\n');
+
+writeFileSync(new URL('../public/img/map-land.svg', import.meta.url),
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}"><path d="${dots}" fill="none" stroke="#0f1d2b" stroke-opacity=".4" stroke-width="4.4" stroke-linecap="round"/></svg>\n`);
 
 const file = new URL('../index.html', import.meta.url);
 const html = readFileSync(file, 'utf8');

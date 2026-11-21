@@ -42,6 +42,7 @@ export default defineConfig({
           const path = pagePath(ctx.filename.replace(/\\/g, '/'));
           const url = site + path;
           let head = `<link rel="canonical" href="${url}" />\n  <meta property="og:url" content="${url}" />\n`;
+          html = html.replaceAll('%SITE%', site);
           html = html.replace(/<meta property="og:image" content="[^"]*\/img\/([^"]+)" \/>/, `<meta property="og:image" content="${site}img/$1" />`);
           const qa = [...html.matchAll(/<details class="qa">\s*<summary>([\s\S]*?)<\/summary>\s*<div class="qa__a">([\s\S]*?)<\/div>\s*<\/details>/g)];
           if (qa.length) {
@@ -62,6 +63,22 @@ export default defineConfig({
           .map((u) => `  <url><loc>${u}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`;
         this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: xml });
         this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `User-agent: *\nAllow: /\n\nSitemap: ${site}sitemap.xml\n` });
+      },
+    },
+    {
+      // The home page inlines its stylesheet, which saves a round trip before
+      // the first paint. The other pages keep the linked, cacheable file.
+      name: 'inline-home-css',
+      enforce: 'post',
+      generateBundle(_, bundle) {
+        const page = bundle['index.html'];
+        if (!page) return;
+        let html = String(page.source);
+        html = html.replace(/<link rel="stylesheet" crossorigin href="[^"]*\/assets\/([^"]+\.css)">/g, (tag, name) => {
+          const css = bundle[`assets/${name}`];
+          return css ? `<style>${css.source}</style>` : tag;
+        });
+        page.source = html;
       },
     },
   ],
