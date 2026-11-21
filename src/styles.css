@@ -54,6 +54,8 @@
   --night-rule-strong: rgba(233, 227, 215, 0.3);
   /* states */
   --error: #b3261e;
+  --whatsapp: #1fa855; /* WhatsApp green, darkened for contrast with white */
+  --whatsapp-dark: #188a45;
   --shadow: rgba(15, 29, 43, 0.5);
   --shadow-soft: rgba(15, 29, 43, 0.18);
   --shadow-tight: rgba(15, 29, 43, 0.25);
@@ -81,7 +83,8 @@ html {
   scrollbar-color: var(--ink-3) var(--paper-2);
 }
 html:not(.lenis) { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html:not(.lenis) { scroll-behavior: auto; } }
+@media (prefers-reduced-motion: reduce) {
+  .sign--urgent .sign__ic::after { animation: none; opacity: 0; } html:not(.lenis) { scroll-behavior: auto; } }
 body {
   margin: 0;
   background: var(--paper);
@@ -158,6 +161,9 @@ abbr { text-decoration: none; }
 .btn:active::before { transform: scaleY(1); }
 .btn--small { height: 40px; padding: 0 16px; font-size: 14px; }
 .btn--full { width: 100%; }
+.btn--light { background: var(--paper); color: var(--ink); }
+@media (hover: hover) { .btn--light:hover { color: var(--paper); } }
+.btn--light:focus-visible { outline: 3px solid var(--night-accent); outline-offset: 3px; }
 
 .link {
   font-size: 15.5px; font-weight: 500;
@@ -472,7 +478,13 @@ abbr { text-decoration: none; }
 .signs { border-top: 1px solid var(--rule); }
 .signs__grid { display: grid; grid-template-columns: minmax(0, 1fr); border-top: 1px solid var(--rule-strong); }
 .sign { padding: 22px 0 24px; border-bottom: 1px solid var(--rule); }
-.sign__flag { display: inline-block; margin-bottom: 10px; padding: 3px 10px; font-size: 13.5px; font-weight: 600; color: var(--white-warm); background: var(--accent); border-radius: var(--radius); }
+.sign__ic { position: relative; display: inline-grid; vertical-align: top; place-items: center; width: 44px; height: 44px; margin-bottom: 14px; border-radius: 50%; color: var(--ink); background: var(--paper-2); }
+.sign__ic svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.sign--urgent .sign__ic { color: var(--white-warm); background: var(--accent); }
+/* The same-day signs pulse slowly, so they are noticed first. */
+.sign--urgent .sign__ic::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 2px solid var(--accent); animation: sign-pulse 2.4s var(--ease-out) infinite; }
+@keyframes sign-pulse { 0% { transform: scale(1); opacity: .7; } 70%, 100% { transform: scale(1.7); opacity: 0; } }
+.sign__flag { display: inline-block; margin-left: 12px; vertical-align: 26px; margin-bottom: 10px; padding: 3px 10px; font-size: 13.5px; font-weight: 600; color: var(--white-warm); background: var(--accent); border-radius: var(--radius); }
 .sign__title { font-family: var(--serif); font-size: clamp(21px, 1.9vw, 26px); line-height: 1.22; font-weight: 400; letter-spacing: -0.01em; font-variation-settings: 'opsz' 28; }
 .sign__note { margin-top: 6px; color: var(--ink-2); font-size: 15.5px; max-width: 46ch; }
 @media (min-width: 760px) { .signs__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 40px; } }
@@ -481,7 +493,13 @@ abbr { text-decoration: none; }
 /* ---------- first visit ---------- */
 .visit { border-top: 1px solid var(--rule); }
 .steps { display: grid; grid-template-columns: minmax(0, 1fr); }
-.step { border-top: 1px solid var(--rule-strong); padding: 20px 0 32px; display: grid; gap: 8px; }
+.step { position: relative; border-top: 1px solid var(--rule-strong); padding: 20px 0 32px; display: grid; gap: 8px; align-content: start; }
+/* Progress along the steps: a sienna line with a dot at its tip. */
+.step__bar { position: absolute; left: 0; right: 0; top: -1px; height: 2px; pointer-events: none; }
+.step__bar i { position: absolute; inset: 0; background: var(--accent); transform-origin: left; transform: scaleX(1); }
+.step__bar b { position: absolute; top: 50%; left: 100%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px var(--paper); opacity: 0; }
+.step__no { transition: transform .4s var(--ease-out); }
+.step.is-reached .step__no { transform: scale(1.15); transform-origin: left; }
 .step__no { font-family: var(--serif); font-size: 26px; line-height: 1; color: var(--accent); }
 .step p { color: var(--ink-2); font-size: 16px; text-wrap: pretty; }
 @media (min-width: 700px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 32px; } }
@@ -535,6 +553,17 @@ abbr { text-decoration: none; }
 .book__links { margin-top: 26px; display: flex; flex-wrap: wrap; gap: 14px 28px; }
 .book .link { text-decoration-color: var(--night-rule-strong); }
 .book .link:hover { color: var(--night-accent); }
+
+/* Location map: a placeholder until the visitor asks for the Google map. */
+.map { margin-top: 32px; }
+.map__frame { position: relative; aspect-ratio: 16 / 10; border-radius: var(--radius); overflow: hidden; display: grid; place-items: center; align-content: center; gap: 18px;
+  background-color: var(--night-2);
+  background-image: linear-gradient(var(--night-rule) 1px, transparent 1px), linear-gradient(90deg, var(--night-rule) 1px, transparent 1px),
+    linear-gradient(32deg, transparent 47%, var(--night-rule-strong) 47.5%, var(--night-rule-strong) 49%, transparent 49.5%);
+  background-size: 44px 44px, 44px 44px, 100% 100%; }
+.map__pin { width: 30px; height: 40px; fill: var(--night-accent); }
+.map__frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.map__cap { margin-top: 10px; font-size: 14px; color: var(--night-mute); }
 
 .form { background: var(--paper); color: var(--ink); padding: clamp(24px, 4vw, 44px); border-radius: var(--radius); align-self: start; }
 .form__head { font-family: var(--serif); font-size: clamp(26px, 2.6vw, 34px); font-weight: 380; letter-spacing: -0.015em; line-height: 1.1; }
@@ -594,6 +623,20 @@ abbr { text-decoration: none; }
 .dock.is-visible { transform: translateY(0); }
 @media (min-width: 640px) { .dock { display: none; } }
 
+/* WhatsApp: beside the booking dock on phones, in the corner on larger screens. */
+.wa {
+  position: fixed; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 41;
+  display: grid; place-items: center; width: 54px; height: 54px; border-radius: 50%;
+  background: var(--whatsapp); color: #fff; box-shadow: 0 10px 30px -10px var(--shadow);
+  transform: translateY(160%); transition: transform .5s var(--ease-out), background-color .2s;
+}
+.wa svg { width: 28px; height: 28px; }
+.wa.is-visible { transform: translateY(0); }
+.wa:hover { background: var(--whatsapp-dark); }
+.wa:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+@media (max-width: 639px) { .dock { right: 76px; } }
+@media (min-width: 640px) { .wa { right: 24px; bottom: 24px; width: 58px; height: 58px; } }
+
 /* ==========================================================================
    Motion. Content is visible by default; these states apply only when the
    script is running and the visitor has not asked for reduced motion.
@@ -602,6 +645,8 @@ abbr { text-decoration: none; }
 .js:not(.no-motion) [data-hero-fade] { opacity: 0; transform: translateY(14px); }
 .js:not(.no-motion) .hero__frame { clip-path: inset(100% 0 0 0); }
 .js:not(.no-motion) .training__figure { clip-path: inset(0 0 100% 0); }
+.js:not(.no-motion) .step__bar i { transform: scaleX(0); }
+.js:not(.no-motion) .sign__ic path { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .js:not(.no-motion) .tmap__leg { stroke-dasharray: 1; stroke-dashoffset: 1; }
 .js:not(.no-motion) .tmap__place, .js:not(.no-motion) .tmap__land { opacity: 0; }
 .js:not(.no-motion) [data-count] { opacity: 0; }

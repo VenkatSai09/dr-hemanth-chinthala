@@ -398,6 +398,7 @@ function initMap() {
 function initNav() {
   const nav = $('[data-nav]');
   const dock = $('[data-dock]');
+  const wa = $('[data-wa]');
   const toggle = $('[data-menu-toggle]');
   const menu = $('[data-menu]');
 
@@ -415,7 +416,10 @@ function initNav() {
 
   let pastHero = false;
   let atBook = false;
-  const syncDock = () => dock.classList.toggle('is-visible', pastHero && !atBook);
+  const syncDock = () => {
+    dock.classList.toggle('is-visible', pastHero && !atBook);
+    wa?.classList.toggle('is-visible', pastHero && !atBook);
+  };
   ScrollTrigger.create({ trigger: '.hero', start: 'bottom 60%', onEnter: () => { pastHero = true; syncDock(); }, onLeaveBack: () => { pastHero = false; syncDock(); } });
   ScrollTrigger.create({ trigger: '#book', start: 'top bottom', end: 'bottom top', onToggle: (s) => { atBook = s.isActive; syncDock(); } });
 
@@ -455,6 +459,63 @@ function initFaq() {
 /* ------------------------------------------------------------------ *
  * Appointment request -> WhatsApp (nothing stored on this site)
  * ------------------------------------------------------------------ */
+/* Section headings rise word by word, like the main headline. */
+function initHeadings() {
+  if (reduceMotion) return;
+  $$('.h-section, .care__title, .book__title').forEach((h) => {
+    splitWords(h);
+    const words = $$('.w > span', h);
+    gsap.set(words, { yPercent: 105 });
+    gsap.to(words, { yPercent: 0, duration: 1, ease: 'expo.out', stagger: 0.045, scrollTrigger: { trigger: h, start: 'top 88%', once: true } });
+  });
+}
+
+/* Warning signs: each icon draws itself in as the list arrives. */
+function initSigns() {
+  if (reduceMotion) return;
+  $$('.sign').forEach((li, i) => {
+    gsap.to($$('.sign__ic path', li), { strokeDashoffset: 0, duration: 1.1, ease: 'power2.inOut', stagger: 0.12, delay: (i % 3) * 0.12,
+      scrollTrigger: { trigger: li, start: 'top 85%', once: true } });
+  });
+}
+
+/* First visit: a line with a dot runs through the four steps as you scroll. */
+function initSteps() {
+  const list = $('[data-steps]');
+  if (!list || reduceMotion) return;
+  const steps = $$('.step', list);
+  const tl = gsap.timeline({ scrollTrigger: { trigger: list, start: 'top 75%', end: 'bottom 55%', scrub: 0.6 } });
+  steps.forEach((st, i) => {
+    const fill = $('.step__bar i', st);
+    const dot = $('.step__bar b', st);
+    tl.set(dot, { opacity: 1, left: '0%' }, i)
+      .to(fill, { scaleX: 1, duration: 1, ease: 'none' }, i)
+      .to(dot, { left: '100%', duration: 1, ease: 'none' }, i)
+      .call(() => st.classList.add('is-reached'), null, i + 1)
+      .set(dot, { opacity: i === steps.length - 1 ? 1 : 0 }, i + 1);
+  });
+  // Scrolling back up un-reaches the steps again.
+  ScrollTrigger.create({ trigger: list, start: 'top 75%', end: 'bottom 55%',
+    onUpdate: (s) => steps.forEach((st, i) => st.classList.toggle('is-reached', s.progress * steps.length >= i + 1)) });
+}
+
+/* The Google map loads only when asked for, so it costs nothing until then. */
+function initMap2() {
+  const btn = $('[data-map-load]');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const frame = $('[data-map-frame]');
+    const f = document.createElement('iframe');
+    f.src = 'https://maps.google.com/maps?q=Medicover%20Hospitals%2C%20Financial%20District%2C%20Nanakramguda%2C%20Hyderabad&z=15&output=embed';
+    f.title = 'Map showing Medicover Hospital, Financial District, Hyderabad';
+    f.loading = 'lazy';
+    f.referrerPolicy = 'no-referrer-when-downgrade';
+    f.allowFullscreen = true;
+    frame.replaceChildren(f);
+    f.focus();
+  }, { once: true });
+}
+
 function initForm() {
   const form = $('[data-form]');
   const error = $('[data-form-error]');
@@ -508,7 +569,7 @@ function start() {
 // long enough to delay a tap. The pinned section is created before the
 // triggers that sit below it.
 const queue = [
-  initNav, initForm, initFaq,
+  initNav, initForm, initFaq, initMap2, initHeadings, initSigns, initSteps,
   () => $$('[data-year]').forEach((el) => (el.textContent = new Date().getFullYear())),
   initGut, initCare, initSectionOpen, initTraining, initMap, initCounters, initGlyphs, initStages,
 ];
