@@ -1,6 +1,6 @@
 # Logo and brand kit
 
-The mark is the Shield of Care: the organs he treats (the liver and gallbladder, the stomach, and the small and large intestine) inside a shield, held by two hands, in the website's sienna and navy. The shape is defined once, in `scripts/brand/build_brand.py`. The name is set in Newsreader with the tagline *The Gut Doctor* in its italic. In every logo file the letters are already outlines, so the logo looks right without the fonts installed.
+The mark is the Shield of Care: the organs he treats (the liver and gallbladder, the stomach, and the small and large intestine) inside a sienna-to-navy shield, with dots for the gut's microbes, held by two hands. It is the doctor's chosen Gemini design, redrawn as vector art so it prints sharply at any size. The shape is defined once, in `scripts/brand/mark.py`. The name is set in Newsreader with the tagline *The Gut Doctor* in its italic. In every logo file the letters are already outlines, so the logo looks right without the fonts installed.
 
 The full rules (colours, clear space, minimum sizes, what not to do) are in `print/brand-guide.pdf`.
 

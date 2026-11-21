@@ -164,7 +164,7 @@ ul { padding-left: 4mm; }
     foot = '<div class="foot"><span>Dr Hemanth Chinthala, The Gut Doctor</span><span>Logo and brand guide</span></div>'
     html = HEAD + css + f'''</style></head><body>
 <section class="p cover"><img src="{LOGO}/logo-horizontal-colour.svg" alt="">
-  <div class="sub"><h1>Logo and brand guide</h1><p style="margin-top:3mm">The mark is the Shield of Care: the organs he treats (the liver and gallbladder, the stomach, and the small and large intestine) inside a shield, held by two hands. It is drawn in the website's sienna and navy.</p></div></section>
+  <div class="sub"><h1>Logo and brand guide</h1><p style="margin-top:3mm">The mark is the Shield of Care: the organs he treats (the liver and gallbladder, the stomach, and the small and large intestine) inside a sienna-to-navy shield, with dots for the gut's microbes, held by two hands.</p></div></section>
 
 <section class="p"><h2>Logo versions</h2>
 <div class="grid">
