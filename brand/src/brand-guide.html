@@ -4,65 +4,62 @@
 @font-face { font-family: 'Instrument Sans'; src: url(../../node_modules/@fontsource-variable/instrument-sans/files/instrument-sans-latin-standard-normal.woff2) format('woff2'); font-weight: 400 700; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-body { font-family: 'Instrument Sans', sans-serif; color: #0f1d2b; }
+body { font-family: 'Instrument Sans', sans-serif; color: #121f2b; }
 .serif { font-family: 'Newsreader', serif; font-variation-settings: 'opsz' 72; }
 
 @page { size: 297mm 210mm; margin: 0; }
-.p { width: 297mm; height: 210mm; position: relative; padding: 18mm 20mm; page-break-after: always; background: #f2eee6; overflow: hidden; }
+.p { width: 297mm; height: 210mm; position: relative; padding: 18mm 20mm; page-break-after: always; background: #f6f1e5; overflow: hidden; }
 h1 { font-family: 'Newsreader', serif; font-weight: 340; font-size: 30pt; letter-spacing: -0.02em; line-height: 1.05; font-variation-settings: 'opsz' 72; }
 h2 { font-family: 'Newsreader', serif; font-weight: 380; font-size: 17pt; letter-spacing: -0.01em; margin-bottom: 5mm; font-variation-settings: 'opsz' 48; }
-h3 { font-size: 9pt; font-weight: 600; margin-bottom: 2mm; }
 p, li { font-size: 9pt; line-height: 1.5; color: #33414f; }
 .foot { position: absolute; left: 20mm; right: 20mm; bottom: 10mm; display: flex; justify-content: space-between; font-size: 7.5pt; color: #5d6772; }
 .cover { display: grid; place-items: center; }
-.cover img { width: 140mm; margin-top: -20mm; }
-.cover .sub { position: absolute; left: 20mm; bottom: 22mm; }
+.cover img { width: 150mm; margin-top: -24mm; }
+.cover .sub { position: absolute; left: 20mm; bottom: 22mm; max-width: 200mm; }
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; }
-.tile { border-radius: 2mm; height: 36mm; padding: 5mm; }
+.tile { border-radius: 2mm; height: 40mm; padding: 5mm; }
 .tile img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.panel { background: #f6f1e5; border-radius: 2mm; height: 100%; padding: 2mm 3mm; }
 .cap { font-size: 7.5pt; color: #5d6772; margin-top: 1.5mm; }
 .wide { grid-column: span 2; }
 .cols { display: grid; grid-template-columns: 1.1fr 1fr 1fr; gap: 12mm; }
 .sw { display: flex; gap: 3mm; align-items: center; margin-bottom: 3mm; }
-.sw i { width: 16mm; height: 16mm; border-radius: 1.5mm; border: 0.25mm solid rgba(15,29,43,.15); flex: none; }
+.sw i { width: 15mm; height: 15mm; border-radius: 1.5mm; border: 0.25mm solid rgba(18,31,43,.15); flex: none; }
 .sw p { font-size: 8pt; line-height: 1.45; }
-.sw b { font-size: 9pt; color: #0f1d2b; }
-.type1 { font-family: 'Newsreader', serif; font-size: 26pt; font-weight: 380; line-height: 1.1; font-variation-settings: 'opsz' 72; }
-.type2 { font-family: 'Newsreader', serif; font-style: italic; font-size: 16pt; color: #9a4421; }
+.sw b { font-size: 9pt; color: #121f2b; }
+.type1 { font-family: 'Newsreader', serif; font-size: 24pt; font-weight: 430; line-height: 1.1; font-variation-settings: 'opsz' 72; }
+.type2 { font-family: 'Newsreader', serif; font-style: italic; font-size: 15pt; color: #b9714f; }
 .type3 { font-size: 13pt; margin-top: 1mm; }
 ul { padding-left: 4mm; }
-.space { position: relative; width: 110mm; height: 38mm; margin: 4mm 0 2mm; outline: 0.3mm dashed #9a4421; outline-offset: 0; display: grid; place-items: center; }
-.space img { width: 72mm; }
+.space { position: relative; width: 112mm; height: 50mm; margin: 4mm 0 2mm; outline: 0.3mm dashed #81432f; display: grid; place-items: center; }
+.space img { width: 84mm; }
 </style></head><body>
-<section class="p cover"><img src="../logo/logo-primary-colour.svg" alt="">
-  <div class="sub"><h1>Logo and brand guide</h1><p style="margin-top:3mm">The mark is the Shield of Care: the organs he treats (the liver and gallbladder, the stomach, and the small and large intestine) inside a sienna-to-navy shield, with dots for the gut's microbes, held by two hands.</p></div></section>
+<section class="p cover"><img src="../logo/logo-transparent@4x.png" alt="">
+  <div class="sub"><h1>Logo and brand guide</h1><p style="margin-top:3mm">The logo shows the organs he treats (the liver, the stomach and the intestines) inside a shield, held by two caring hands. Use the files in this kit as they are: the design is final.</p></div></section>
 
-<section class="p"><h2>Logo versions</h2>
+<section class="p"><h2>Logo files</h2>
 <div class="grid">
-  <div class="wide"><div class="tile" style="background:#fff"><img src="../logo/logo-primary-colour.svg"></div><p class="cap">Primary logo. The main version. logo-primary-colour</p></div>
-  <div class="wide"><div class="tile" style="background:#0f1d2b"><img src="../logo/logo-primary-on-dark.svg"></div><p class="cap">Primary, on navy or dark photos. logo-primary-on-dark</p></div>
-  <div class="wide"><div class="tile" style="background:#fff"><img src="../logo/logo-horizontal-colour.svg"></div><p class="cap">One line, for narrow spaces such as a website header. logo-horizontal-colour</p></div>
-  <div><div class="tile" style="background:#fff"><img src="../logo/logo-stacked-colour.svg"></div><p class="cap">Stacked, for square spaces. logo-stacked-colour</p></div>
-  <div><div class="tile" style="background:#fff"><img src="../logo/badge-circle.svg"></div><p class="cap">Round badge and profile picture. badge-circle</p></div>
-  <div><div class="tile" style="background:#fff"><img src="../logo/mark-line.svg"></div><p class="cap">Line drawing, for engraving, embossing and one-colour print. mark-line</p></div>
-  <div><div class="tile" style="background:#fff"><img src="../logo/mark-colour.svg"></div><p class="cap">Mark alone. mark-colour</p></div>
-  <div><div class="tile" style="background:#fff"><img src="../logo/logo-primary-navy.svg"></div><p class="cap">One colour, navy. logo-primary-navy</p></div>
-  <div><div class="tile" style="background:#33414f"><img src="../logo/logo-primary-white.svg"></div><p class="cap">One colour, white. logo-primary-white</p></div>
+  <div class="wide"><div class="tile" style="background:#fff"><img src="../logo/logo-transparent@4x.png"></div><p class="cap">The logo on white. logo-transparent.png</p></div>
+  <div class="wide"><div class="tile" style="background:#f6f1e5;outline:0.25mm solid rgba(18,31,43,.12)"><img src="../logo/logo-transparent@4x.png"></div><p class="cap">The logo on its own cream. logo-on-cream.png</p></div>
+  <div><div class="tile" style="background:#fff"><img src="../logo/mark-transparent@4x.png"></div><p class="cap">The shield alone. mark-transparent.png</p></div>
+  <div><div class="tile" style="background:#fff"><img src="../social/profile-picture-1080.png"></div><p class="cap">Profile picture for WhatsApp, Instagram, Google. profile-picture-1080.png</p></div>
+  <div><div class="tile" style="background:#fff"><img src="../icons/apple-touch-icon.png"></div><p class="cap">App and phone home-screen icon. icons/</p></div>
+  <div><div class="tile" style="background:#121f2b"><div class="panel"><img src="../logo/logo-transparent@4x.png"></div></div><p class="cap">On navy or a dark photo: always on a cream panel, never directly.</p></div>
 </div><div class="foot"><span>Dr Hemanth Chinthala, The Gut Doctor</span><span>Logo and brand guide</span></div></section>
 
 <section class="p"><div class="cols">
-  <div><h2>Colours</h2><div class="sw"><i style="background:#0f1d2b"></i><p><b>Navy</b><br>HEX #0F1D2B<br>RGB 15 29 43<br>CMYK 65 33 0 83 (approx.)<br>Text, the food pipe, dark backgrounds</p></div><div class="sw"><i style="background:#9a4421"></i><p><b>Sienna</b><br>HEX #9A4421<br>RGB 154 68 33<br>CMYK 0 56 79 40 (approx.)<br>The stomach and the tagline on light backgrounds</p></div><div class="sw"><i style="background:#e08a5f"></i><p><b>Light sienna</b><br>HEX #E08A5F<br>RGB 224 138 95<br>CMYK 0 38 58 12 (approx.)<br>The stomach and the tagline on navy</p></div><div class="sw"><i style="background:#f2eee6"></i><p><b>Cream</b><br>HEX #F2EEE6<br>RGB 242 238 230<br>CMYK 0 2 5 5 (approx.)<br>Light backgrounds</p></div></div>
+  <div><h2>Colours from the logo</h2><div class="sw"><i style="background:#121f2b"></i><p><b>Navy</b><br>HEX #121F2B, RGB 18 31 43<br>CMYK 58 28 0 83 (approx.)<br>The name, the right hand, body text</p></div><div class="sw"><i style="background:#db8e5d"></i><p><b>Copper</b><br>HEX #DB8E5D, RGB 219 142 93<br>CMYK 0 35 58 14 (approx.)<br>The top of the shield, highlights</p></div><div class="sw"><i style="background:#81432f"></i><p><b>Brown</b><br>HEX #81432F, RGB 129 67 47<br>CMYK 0 48 64 49 (approx.)<br>The organs and the left hand</p></div><div class="sw"><i style="background:#b9714f"></i><p><b>Terracotta</b><br>HEX #B9714F, RGB 185 113 79<br>CMYK 0 39 57 27 (approx.)<br>The tagline, The Gut Doctor</p></div><div class="sw"><i style="background:#f6f1e5"></i><p><b>Cream</b><br>HEX #F6F1E5, RGB 246 241 229<br>CMYK 0 2 7 4 (approx.)<br>Background and the inside of the shield</p></div></div>
   <div><h2>Type</h2>
     <p class="type1">Newsreader</p><p class="type2">Newsreader Italic</p><p class="type3">Instrument Sans</p>
-    <p style="margin-top:4mm">Newsreader for the name and headings, its italic for the tagline, Instrument Sans for everything else. Both are free Google fonts, so any printer or designer can use them. In the logo files the letters are already outlines, so the logo looks right even without the fonts.</p>
-    <h2 style="margin-top:9mm">Clear space</h2>
-    <div class="space"><img src="../logo/logo-primary-colour.svg"></div>
-    <p>Keep space around the logo at least a quarter of the shield's width. Nothing else should sit inside the dashed line.</p>
+    <p style="margin-top:4mm">The logo's lettering is part of the logo image. For other text near it (letters, cards, the website), use Newsreader for names and headings, its italic for the tagline, and Instrument Sans for everything else. Both are free Google fonts.</p>
+    <h2 style="margin-top:8mm">Clear space</h2>
+    <div class="space"><img src="../logo/logo-transparent@4x.png"></div>
+    <p>Keep space around the logo at least as wide as one hand in the logo. Nothing else should sit inside the dashed line.</p>
   </div>
   <div><h2>Minimum size</h2>
-    <ul><li>Horizontal logo: 30 mm wide in print, 160 px on screen.</li><li>Stacked logo: 22 mm wide, 120 px.</li><li>Mark alone: 10 mm, 40 px. Below 40 px, use favicon.svg, which leaves out the hands.</li></ul>
-    <h2 style="margin-top:9mm">Please don't</h2>
-    <ul><li>Stretch, squash or rotate the logo.</li><li>Change its colours, or use the colour version on navy (use the on-dark version).</li><li>Add shadows, outlines or glows.</li><li>Put it on a busy photo without a plain area behind it.</li><li>Retype the name in another font. Use the files.</li></ul>
+    <ul><li>Full logo: 35 mm wide in print, 200 px on screen.</li><li>The shield alone: 10 mm, 40 px.</li><li>Below 40 px, as in a browser tab, the shield becomes a small blur; that is expected.</li></ul>
+    <h2 style="margin-top:8mm">Please don't</h2>
+    <ul><li>Redraw, recolour or rearrange the logo.</li><li>Stretch, squash or rotate it.</li><li>Put it directly on navy, black or a busy photo; use a cream panel behind it.</li><li>Add shadows, outlines or glows.</li><li>Print it larger than about 30 cm across: it is an image, and a signboard needs a print-ready vector file made from it.</li></ul>
   </div>
 </div><div class="foot"><span>Dr Hemanth Chinthala, The Gut Doctor</span><span>Logo and brand guide</span></div></section>
 </body></html>

@@ -1,6 +1,8 @@
 # Logo and brand kit
 
-The mark is the Shield of Care: the organs he treats (the liver and gallbladder, the stomach, and the small and large intestine) inside a sienna-to-navy shield, with dots for the gut's microbes, held by two hands. It is the doctor's chosen Gemini design, redrawn as vector art so it prints sharply at any size. The shape is defined once, in `scripts/brand/mark.py`. The name is set in Newsreader with the tagline *The Gut Doctor* in its italic. In every logo file the letters are already outlines, so the logo looks right without the fonts installed.
+The logo is the doctor's chosen design, used exactly as it is: the organs he treats (the liver, the stomach and the intestines) inside a shield, held by two caring hands, with his name and *The Gut Doctor*. The original file is kept unchanged in `source/logo-original.png`.
+
+The only processing: the plain cream background was made transparent (the inside of the shield keeps its cream), the small Gemini star in the corner was removed, and the shield was cropped out on its own for icons. The `@2x` and `@4x` files are smooth enlargements for print.
 
 The full rules (colours, clear space, minimum sizes, what not to do) are in `print/brand-guide.pdf`.
 
@@ -8,36 +10,27 @@ The full rules (colours, clear space, minimum sizes, what not to do) are in `pri
 
 | Need | File |
 | --- | --- |
-| The main logo: documents, posters, anything on a light background | `logo/logo-primary-colour.svg` (PNG: `png/logo-primary-colour-3200.png`) |
-| Narrow spaces such as a website header (name on one line) | `logo/logo-horizontal-colour.svg` |
-| On navy or a dark photo | `logo/logo-primary-on-dark.svg` |
-| Line drawing, for engraving, embossing and one-colour print | `logo/mark-line.svg`, `logo/logo-primary-line.svg` |
-| Square spaces: signage, posters, slides | `logo/logo-stacked-colour.svg` |
-| One-colour print, stamps, forms | `logo/logo-horizontal-navy.svg` |
-| White on a coloured background | `logo/logo-horizontal-white.svg` |
-| The mark alone | `logo/mark-colour.svg` |
-| WhatsApp, Instagram, Google Business profile picture | `social/profile-badge-circle-1080.png` (round) or `social/profile-picture-1080.png` (square) |
-| How it looks as a clinic sign | `preview/sign-mockup.png` |
-| App icon with rounded corners | `png/app-icon-1024.png` |
+| Documents, posters, anything on a light background | `logo/logo-transparent@4x.png` |
+| Where a cream background is fine, or the background must not be transparent | `logo/logo-on-cream@4x.png` (also `.jpg`) |
+| The shield alone | `logo/mark-transparent@4x.png` |
+| WhatsApp, Instagram, Google Business profile picture | `social/profile-picture-1080.png` |
+| Browser and phone home-screen icons | `icons/` (already used by the website) |
 | Business card, ready to print (3.5 x 2 in, 3 mm bleed) | `print/business-card.pdf` |
 | Letterhead and prescription pad (A4) | `print/letterhead.pdf` |
-| Browser and phone home-screen icons | `icons/` (already used by the website) |
+| How it looks as a clinic sign | `preview/sign-mockup.png` |
 
-SVG files scale to any size without blurring; send those to printers and sign makers. PNG files have transparent backgrounds.
+## Good to know
 
-## Before printing
-
-- Add his medical council registration number to the letterhead, which has a blank line for it.
-- The business card and letterhead use +91 70872 22235 for appointments. Change it in `scripts/brand/build_docs.py` if the number changes.
-- Ask the printer for a proof. The CMYK values in the guide are approximate.
+- **Light backgrounds only.** The name is navy, so on navy, black or a busy photo put the logo on a cream panel.
+- **Size limits.** The logo is an image about 760 pixels wide. It prints sharply up to roughly 30 cm across (a card, letterhead, poster or standee). A large signboard needs a vector file made from it; any sign maker can trace one, and the design must stay exactly the same.
+- **Before printing:** add his medical council registration number to the letterhead, which has a blank line for it, and confirm the appointment number (+91 70872 22235). The CMYK values in the guide are approximate, so ask the printer for a proof.
 
 ## Editing
 
 Everything is generated from `scripts/brand/`:
 
 ```bash
-python3 scripts/brand/build_brand.py   # logo SVGs
-python3 scripts/brand/build_docs.py    # business card, letterhead, guide
-node scripts/brand/render.cjs          # PNGs and PDFs
+python3 scripts/brand/build_from_image.py   # logo files, icons, profile picture
+python3 scripts/brand/build_docs.py         # business card, letterhead, guide, sign mockup
+node scripts/brand/render.cjs               # PDFs and previews
 ```
-

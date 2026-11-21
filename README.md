@@ -59,7 +59,7 @@ The script starts after the first frame is painted, so the page lays out before 
 
 ## Logo and brand kit
 
-The logo (the Shield of Care), its colour and one-colour versions, icons, a profile picture, a print-ready business card, a letterhead and a brand guide are in [`brand/`](brand/README.md). The site uses the mark in the top bar and as its favicon and home-screen icon.
+The logo (the doctor's chosen design, used as is), icons, a profile picture, a print-ready business card, a letterhead, a sign mockup and a brand guide are in [`brand/`](brand/README.md). The site uses the shield in the top bar and as its favicon and home-screen icon.
 
 ## Images
 
