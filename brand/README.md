@@ -8,13 +8,16 @@ The full rules (colours, clear space, minimum sizes, what not to do) are in `pri
 
 | Need | File |
 | --- | --- |
-| Website, documents, anything on a light background | `logo/logo-horizontal-colour.svg` (PNG: `png/logo-horizontal-colour-2400.png`) |
-| On navy or a dark photo | `logo/logo-horizontal-on-dark.svg` |
+| The main logo: documents, posters, anything on a light background | `logo/logo-primary-colour.svg` (PNG: `png/logo-primary-colour-3200.png`) |
+| Narrow spaces such as a website header (name on one line) | `logo/logo-horizontal-colour.svg` |
+| On navy or a dark photo | `logo/logo-primary-on-dark.svg` |
+| Line drawing, for engraving, embossing and one-colour print | `logo/mark-line.svg`, `logo/logo-primary-line.svg` |
 | Square spaces: signage, posters, slides | `logo/logo-stacked-colour.svg` |
 | One-colour print, stamps, forms | `logo/logo-horizontal-navy.svg` |
 | White on a coloured background | `logo/logo-horizontal-white.svg` |
 | The mark alone | `logo/mark-colour.svg` |
-| WhatsApp, Instagram, Google Business profile picture | `social/profile-picture-1080.png` |
+| WhatsApp, Instagram, Google Business profile picture | `social/profile-badge-circle-1080.png` (round) or `social/profile-picture-1080.png` (square) |
+| How it looks as a clinic sign | `preview/sign-mockup.png` |
 | App icon with rounded corners | `png/app-icon-1024.png` |
 | Business card, ready to print (3.5 x 2 in, 3 mm bleed) | `print/business-card.pdf` |
 | Letterhead and prescription pad (A4) | `print/letterhead.pdf` |

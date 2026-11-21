@@ -23,12 +23,14 @@ WHITE = '#ffffff'
 # ---------------------------------------------------------------------------
 from mark import mark as _mark, TIGHT, TIGHT_NO_HANDS
 
-SCHEMES = ('colour', 'on-dark', 'navy', 'white')
+SCHEMES = ('colour', 'on-dark', 'navy', 'white', 'line')
+PEACH = '#efc39c'  # the name on navy, as in the chosen design
 TEXT = {  # name colour, tagline colour
     'colour': (NAVY, SIENNA),
-    'on-dark': (CREAM, SIENNA_LIGHT),
+    'on-dark': (PEACH, SIENNA_LIGHT),
     'navy': (NAVY, NAVY),
     'white': (WHITE, WHITE),
+    'line': (NAVY, SIENNA),
 }
 
 
@@ -81,11 +83,35 @@ def horizontal(scheme):
     nc, tc = TEXT[scheme]
     name_d, name_w = text_path('Dr Hemanth Chinthala', size=name_size, x=nx, y=name_base, tracking=-0.01, **NAME)
     tag_d, tag_w = text_path('The Gut Doctor', size=tag_size, x=nx, y=tag_base, **TAG)
-    body = (f'<g transform="translate({-tx * k:.2f} {my - ty * k:.2f}) scale({k:.4f})">{mark_paths(scheme, scheme in ("colour", "on-dark"))}</g>'
+    body = (f'<g transform="translate({-tx * k:.2f} {my - ty * k:.2f}) scale({k:.4f})">{mark_paths(scheme)}</g>'
             f'<path d="{name_d}" fill="{nc}"/><path d="{tag_d}" fill="{tc}"/>')
     width = nx + max(name_w, tag_w)
     pad = 2
     return svg((-pad, my - pad, width + 2 * pad, th * k + 2 * pad + 8), body), (width + 2 * pad, th * k + 2 * pad + 8)
+
+
+def primary(scheme):
+    """The main logo: the shield, then the name on two lines and the tagline."""
+    size, tag_size = 44, 31
+    axes = dict(wght=430, opsz=72)
+    capH = cap_height('serif', size, **axes)
+    b1, b2 = capH, capH + 52
+    tb = b2 + 47
+    block = tb + 9
+    tx, ty, tw, th = TIGHT
+    k = block * 1.16 / th
+    mw, mh = tw * k, th * k
+    my = (block - mh) / 2
+    nx = mw + 30
+    nc, tc = TEXT[scheme]
+    l1, w1 = text_path('Dr Hemanth', 'serif', size, nx, b1, tracking=-0.005, **axes)
+    l2, w2 = text_path('Chinthala', 'serif', size, nx, b2, tracking=-0.005, **axes)
+    tg, w3 = text_path('The Gut Doctor', 'serif-italic', tag_size, nx, tb, wght=380, opsz=36)
+    body = (f'<g transform="translate({-tx * k:.2f} {my - ty * k:.2f}) scale({k:.4f})">{mark_paths(scheme)}</g>'
+            f'<path d="{l1}" fill="{nc}"/><path d="{l2}" fill="{nc}"/><path d="{tg}" fill="{tc}"/>')
+    width = nx + max(w1, w2, w3)
+    pad = 3
+    return svg((-pad, my - pad, width + 2 * pad, mh + 2 * pad), body), (width + 2 * pad, mh + 2 * pad)
 
 
 def stacked(scheme):
@@ -100,7 +126,7 @@ def stacked(scheme):
     capH = cap_height('serif', name_size, wght=380, opsz=72)
     name_base = mark_h + 34 + capH
     tag_base = name_base + 42
-    body = (f'<g transform="translate({cx - (tx + tw / 2) * k:.2f} {-ty * k:.2f}) scale({k:.4f})">{mark_paths(scheme, scheme in ("colour", "on-dark"))}</g>'
+    body = (f'<g transform="translate({cx - (tx + tw / 2) * k:.2f} {-ty * k:.2f}) scale({k:.4f})">{mark_paths(scheme)}</g>'
             f'<g transform="translate(0 {name_base:.2f})"><path d="{name_d}" fill="{nc}"/></g>'
             f'<g transform="translate({(name_w - tag_w) / 2:.2f} {tag_base:.2f})"><path d="{tag_d}" fill="{tc}"/></g>')
     pad = 4
@@ -134,11 +160,18 @@ def main():
     for sch in SCHEMES:
         files[f'logo/mark-{sch}.svg'] = mark_svg(sch)
         files[f'logo/logo-horizontal-{sch}.svg'], sizes[f'logo-horizontal-{sch}'] = horizontal(sch)
+        files[f'logo/logo-primary-{sch}.svg'], sizes[f'logo-primary-{sch}'] = primary(sch)
         files[f'logo/logo-stacked-{sch}.svg'], sizes[f'logo-stacked-{sch}'] = stacked(sch)
         files[f'logo/wordmark-{sch}.svg'] = wordmark(sch)
     files['logo/app-icon.svg'] = app_icon_svg()
     files['logo/app-icon-square.svg'] = app_icon_svg(radius=0)  # for iOS, Android and profile pictures, which round it themselves
     files['logo/favicon.svg'] = favicon_svg()
+    # Round badge for profile pictures: the colour mark on a navy disc.
+    tx, ty, tw, th = TIGHT
+    k = 70 / th
+    files['logo/badge-circle.svg'] = svg((0, 0, 100, 100), f'<circle cx="50" cy="50" r="50" fill="{NAVY}"/>'
+        f'<g transform="translate({50 - (tx + tw / 2) * k:.2f} {50 - (ty + th / 2) * k:.2f}) scale({k:.4f})">{mark_paths("on-dark")}</g>',
+        title='The Gut Doctor')
     for name, content in files.items():
         (OUT / name).write_text(content)
     (OUT / 'logo' / 'sizes.json').write_text(json.dumps(sizes, indent=1))

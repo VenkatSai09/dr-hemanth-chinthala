@@ -31,8 +31,10 @@ COLON = ('M46 55.4 L62 55.4 C66 55.4 68 57.6 68 61.4 L68 70 C68 74 66 76.2 62 76
          'C52 76.2 50.8 77.6 50.8 80 L50.8 82.2 C50.8 84 49.4 84.8 47.6 84.4 '
          'M46 55.4 L39 55.4 C35 55.4 33 57.6 33 61.4 L33 70 C33 74 35 76.2 39 76.2 L47 76.2')
 SMALL = 'M38.4 61.4 L61.6 61.4 C64 61.4 64 66.2 61.6 66.2 L39.4 66.2 C37 66.2 37 71 39.4 71 L58 71'
-DOTS = [(76.5, 24.5, 2.3), (81.2, 28.4, 1.15), (80.2, 37, 2.3), (76.6, 44.6, 1.15), (81.4, 43, 1),
-        (77.4, 49.4, 2.5), (74.2, 56.4, 1.15), (23.4, 46.4, 1), (27.8, 50.4, 1.2), (25.2, 56.6, 2.7), (28.8, 63, 1.2)]
+# Dots for the gut's microbes: x, y, radius, colour key.
+DOTS = [(76.5, 24.5, 2.4, 'a'), (81.4, 28.6, 1.1, 'b'), (80.4, 36.6, 2.2, 'a'), (76.4, 42.6, 1.2, 'g'),
+        (81.8, 44.2, 1, 'n'), (78, 50.2, 2.6, 'y'), (74.6, 56.4, 1.1, 'b'), (81.2, 56, 0.9, 'n'),
+        (23.6, 47.2, 1, 'b'), (27.8, 51.2, 1.2, 'a'), (25.2, 57.2, 2.6, 'a'), (29.4, 63.4, 1.2, 'y')]
 
 # Left hand: the thumb runs up the shield's left side; the fingers curl in front.
 HAND_L = ('M5.2 52.2 C4.6 66 13.6 80 27.4 88.2 C35.6 93 42.6 96 48.6 98.6 '
@@ -57,25 +59,34 @@ _uid = [0]
 
 PALETTES = {
     'colour': dict(ring=('#cf7440', '#a0482a', '#4a2c34', '#1c2b3e'), organ=('#b0532c', '#8a391b'),
-                   liver=('#a24826', '#7e3219'), dots=('#d08a5e', '#b86a42', '#3a3040'),
+                   liver=('#a24826', '#7e3219'), dots=dict(a='#d99066', b='#b86a42', g='#7a6466', n='#3a3f4c', y='#c9a061'),
                    hand_l=('#c4652f', '#8a3a1c'), hand_r=('#2c3c54', '#0f1d2b'), gap=CREAM),
     'on-dark': dict(ring=('#f0a070', '#e08a5f', '#d9c2b0', '#f2eee6'), organ=('#f0a070', '#d97a4c'),
-                    liver=('#e48a58', '#c4652f'), dots=('#f0a070', '#e08a5f', '#f2eee6'),
+                    liver=('#e48a58', '#c4652f'), dots=dict(a='#f0a070', b='#e08a5f', g='#d9c2b0', n='#f2eee6', y='#e7c27a'),
                     hand_l=('#f0a070', '#d97a4c'), hand_r=('#f2eee6', '#d9d2c6'), gap=NAVY),
     'navy': dict(mono=NAVY),
     'white': dict(mono='#ffffff'),
+    'line': dict(line=NAVY),
 }
+
+
+# The organs are drawn a little larger than their paths, about this centre.
+ORGANS_T = 'translate(48 52) scale(1.07) translate(-48 -52)'
+STOMACH_FOLD = 'M64.6 25.6 C71 28.6 72.4 37.6 68.4 44.4'   # dotted line in the line-art version
+SPARKLE = 'M79 20.4 V25.2 M76.6 22.8 H81.4'
 
 
 def mark(scheme='colour', hands=True):
     P = PALETTES[scheme]
     _uid[0] += 1
     u = f'sc{_uid[0]}'
+    if P.get('line'):
+        return _line_mark(P['line'], u, hands)
     mono = P.get('mono')
     defs = ''
     if mono:
         ring = organ = liver = hl = hr = mono
-        dot_cols = (mono, mono, mono)
+        dot_cols = dict(a=mono, b=mono, g=mono, n=mono, y=mono)
     else:
         r = P['ring']
         defs = (f'<linearGradient id="{u}ring" x1="10" y1="10" x2="90" y2="70" gradientUnits="userSpaceOnUse">'
@@ -95,17 +106,16 @@ def mark(scheme='colour', hands=True):
     s = [f'<defs>{defs}<mask id="{u}lobe" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">'
          f'<rect width="100" height="100" fill="#fff"/><path d="{LIVER_LOBE}" stroke="#000" stroke-width="1.1" fill="none" stroke-linecap="round"/></mask></defs>',
          f'<path d="{SHIELD} {SHIELD_IN}" fill-rule="evenodd" fill="{ring}"/>',
-         f'<path d="{OESOPHAGUS}" fill="none" stroke="{organ}" stroke-width="2.6" stroke-linecap="round"/>',
+         f'<g transform="{ORGANS_T}">',
+         f'<path d="{OESOPHAGUS}" fill="none" stroke="{organ}" stroke-width="2.8" stroke-linecap="round"/>',
          f'<path d="{LIVER}" fill="{liver}" mask="url(#{u}lobe)"/>',
          f'<path d="{STOMACH}" fill="{organ}"/>',
-         f'<path d="{PYLORUS}" fill="none" stroke="{organ}" stroke-width="3.2" stroke-linecap="round"/>',
-         f'<path d="{COLON}" fill="none" stroke="{organ}" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>',
-         f'<path d="{SMALL}" fill="none" stroke="{organ}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>']
-    for i, (x, y, rr) in enumerate(DOTS):
-        c = dot_cols[0] if rr > 2 else dot_cols[1]
-        if not mono and i in (4,):
-            c = dot_cols[2]
-        s.append(f'<circle cx="{x}" cy="{y}" r="{rr}" fill="{c}" opacity="{0.85 if rr > 2 else 0.9}"/>')
+         f'<path d="{PYLORUS}" fill="none" stroke="{organ}" stroke-width="3.8" stroke-linecap="round"/>',
+         f'<path d="{COLON}" fill="none" stroke="{organ}" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>',
+         f'<path d="{SMALL}" fill="none" stroke="{organ}" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>',
+         '</g>']
+    for x, y, rr, key in DOTS:
+        s.append(f'<circle cx="{x}" cy="{y}" r="{rr}" fill="{dot_cols[key]}" opacity="{0.85 if rr > 2 else 0.92}"/>')
     # Hands, each with a thin outline in the background colour so they sit in front of the shield.
     for d, fill in (((HAND_L, hl), (HAND_R, hr)) if hands else ()):
         if gap:
@@ -113,6 +123,29 @@ def mark(scheme='colour', hands=True):
         s.append(f'<path d="{d}" fill="{fill}"/>')
     return ''.join(s)
 
+
+def _line_mark(col, u, hands=True, w=1.3):
+    """Line-art version: every shape as a fine outline, tubes as double lines.
+    Masks make nearer shapes hide the lines behind them, like a drawing."""
+    tubes = [(OESOPHAGUS, 3.4), (PYLORUS, 4.4), (COLON, 5), (SMALL, 4.4)]
+    cut = ''.join(f'<path d="{d}" stroke="#000" stroke-width="{tw - 2 * w}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' for d, tw in tubes)
+    outer = ''.join(f'<path d="{d}" stroke="{col}" stroke-width="{tw}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' for d, tw in tubes)
+    big = '<rect x="-10" y="-10" width="120" height="120" fill="#fff"/>'
+    mu = 'maskUnits="userSpaceOnUse" x="-10" y="-10" width="120" height="120"'
+    hand_cut = f'<path d="{HAND_L}" fill="#000" stroke="#000" stroke-width="{w}"/><path d="{HAND_R}" fill="#000" stroke="#000" stroke-width="{w}"/>' if hands else ''
+    defs = (f'<defs><mask id="{u}t" {mu}>{big}{cut}<path d="{STOMACH}" fill="#000"/></mask>'
+            f'<mask id="{u}h" {mu}>{big}{hand_cut}</mask>'
+            f'<clipPath id="{u}c"><path d="{SHIELD_IN}"/></clipPath></defs>')
+    s = [defs,
+         f'<g mask="url(#{u}h)"><g fill="none" stroke="{col}" stroke-width="{w}" stroke-linecap="round" stroke-linejoin="round">',
+         f'<path d="{SHIELD}"/><path d="{SHIELD_IN}"/>',
+         f'<g clip-path="url(#{u}c)"><g transform="{ORGANS_T}"><path d="{LIVER}"/><path d="{LIVER_LOBE}"/><path d="{STOMACH}"/>'
+         f'<path d="{STOMACH_FOLD}" stroke-dasharray="0.1 2.2"/></g></g>',
+         f'<path d="{SPARKLE}"/><circle cx="80.4" cy="36.6" r="1.4"/><circle cx="78" cy="50.2" r="2"/><circle cx="25.2" cy="57.2" r="1.4"/></g>',
+         f'<g clip-path="url(#{u}c)"><g transform="{ORGANS_T}" mask="url(#{u}t)">{outer}</g></g></g>']
+    if hands:
+        s.append(f'<g fill="none" stroke="{col}" stroke-width="{w}" stroke-linejoin="round"><path d="{HAND_L}"/><path d="{HAND_R}"/></g>')
+    return ''.join(s)
 
 
 TIGHT = (4, 5.5, 92, 94)  # x, y, w, h of the mark's ink

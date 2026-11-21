@@ -41,7 +41,7 @@ def business_card():
 @page { size: 94.9mm 56.8mm; margin: 0; }
 .card { width: 94.9mm; height: 56.8mm; position: relative; overflow: hidden; page-break-after: always; }
 .front { background: #f2eee6; display: grid; place-items: center; }
-.front img { width: 58mm; }
+.front img { width: 62mm; }
 .back { background: #0f1d2b; color: #e9e3d7; padding: 8mm 9mm 0 9mm; }
 .back .name { font-size: 15.5pt; line-height: 1.05; font-weight: 380; letter-spacing: -0.01em; color: #f2eee6; }
 .back .tag { font-family: 'Newsreader', serif; font-style: italic; font-size: 9.5pt; color: #e08a5f; margin-top: 1mm; }
@@ -55,7 +55,7 @@ def business_card():
 '''
     tx, ty, tw, th = TIGHT
     html = HEAD + css + f'''</style></head><body>
-<section class="card front"><img src="{LOGO}/logo-horizontal-colour.svg" alt="Dr Hemanth Chinthala, The Gut Doctor"></section>
+<section class="card front"><img src="{LOGO}/logo-primary-colour.svg" alt="Dr Hemanth Chinthala, The Gut Doctor"></section>
 <section class="card back">
   <svg class="mark" viewBox="{tx} {ty} {tw} {th}">{mark_paths("on-dark")}</svg>
   <p class="name serif">Dr Hemanth Chinthala</p>
@@ -81,7 +81,7 @@ def letterhead():
 @page { size: A4; margin: 0; }
 .page { width: 210mm; height: 297mm; position: relative; background: #fff; padding: 16mm 18mm; }
 .head { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 6mm; border-bottom: 0.5mm solid #9a4421; }
-.head img { height: 15mm; }
+.head img { height: 22mm; }
 .head .right { text-align: right; font-size: 8pt; line-height: 1.5; color: #33414f; }
 .head .right b { white-space: nowrap; }
 .head .right b { font-weight: 600; color: #0f1d2b; }
@@ -95,7 +95,7 @@ def letterhead():
 '''
     html = HEAD + css + f'''</style></head><body><div class="page">
   <header class="head">
-    <img src="{LOGO}/logo-horizontal-colour.svg" alt="Dr Hemanth Chinthala, The Gut Doctor">
+    <img src="{LOGO}/logo-primary-colour.svg" alt="Dr Hemanth Chinthala, The Gut Doctor">
     <div class="right"><b>{QUALS}</b><br>{ROLE.replace(', Hepatologist', ',<br>Hepatologist')}</div>
   </header>
   <div class="reg"><p>Reg. No.<span></span></p><p>Date<span></span></p></div>
@@ -130,10 +130,10 @@ h3 { font-size: 9pt; font-weight: 600; margin-bottom: 2mm; }
 p, li { font-size: 9pt; line-height: 1.5; color: #33414f; }
 .foot { position: absolute; left: 20mm; right: 20mm; bottom: 10mm; display: flex; justify-content: space-between; font-size: 7.5pt; color: #5d6772; }
 .cover { display: grid; place-items: center; }
-.cover img { width: 150mm; }
+.cover img { width: 140mm; margin-top: -20mm; }
 .cover .sub { position: absolute; left: 20mm; bottom: 22mm; }
 .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; }
-.tile { border-radius: 2mm; height: 40mm; padding: 6mm; }
+.tile { border-radius: 2mm; height: 36mm; padding: 5mm; }
 .tile img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .cap { font-size: 7.5pt; color: #5d6772; margin-top: 1.5mm; }
 .wide { grid-column: span 2; }
@@ -147,7 +147,7 @@ p, li { font-size: 9pt; line-height: 1.5; color: #33414f; }
 .type3 { font-size: 13pt; margin-top: 1mm; }
 ul { padding-left: 4mm; }
 .space { position: relative; width: 110mm; height: 38mm; margin: 4mm 0 2mm; outline: 0.3mm dashed #9a4421; outline-offset: 0; display: grid; place-items: center; }
-.space img { width: 84mm; }
+.space img { width: 72mm; }
 '''
     swatches = [
         ('Navy', NAVY, 'Text, the food pipe, dark backgrounds'),
@@ -163,19 +163,20 @@ ul { padding-left: 4mm; }
                     f'RGB {r} {g} {b}<br>CMYK {c} {m} {y} {k} (approx.)<br>{use}</p></div>')
     foot = '<div class="foot"><span>Dr Hemanth Chinthala, The Gut Doctor</span><span>Logo and brand guide</span></div>'
     html = HEAD + css + f'''</style></head><body>
-<section class="p cover"><img src="{LOGO}/logo-horizontal-colour.svg" alt="">
+<section class="p cover"><img src="{LOGO}/logo-primary-colour.svg" alt="">
   <div class="sub"><h1>Logo and brand guide</h1><p style="margin-top:3mm">The mark is the Shield of Care: the organs he treats (the liver and gallbladder, the stomach, and the small and large intestine) inside a sienna-to-navy shield, with dots for the gut's microbes, held by two hands.</p></div></section>
 
 <section class="p"><h2>Logo versions</h2>
 <div class="grid">
-  <div class="wide"><div class="tile" style="background:#fff"><img src="{LOGO}/logo-horizontal-colour.svg"></div><p class="cap">Horizontal, colour. The main version. logo-horizontal-colour</p></div>
-  <div class="wide"><div class="tile" style="background:{NAVY}"><img src="{LOGO}/logo-horizontal-on-dark.svg"></div><p class="cap">Horizontal, on navy or dark photos. logo-horizontal-on-dark</p></div>
+  <div class="wide"><div class="tile" style="background:#fff"><img src="{LOGO}/logo-primary-colour.svg"></div><p class="cap">Primary logo. The main version. logo-primary-colour</p></div>
+  <div class="wide"><div class="tile" style="background:{NAVY}"><img src="{LOGO}/logo-primary-on-dark.svg"></div><p class="cap">Primary, on navy or dark photos. logo-primary-on-dark</p></div>
+  <div class="wide"><div class="tile" style="background:#fff"><img src="{LOGO}/logo-horizontal-colour.svg"></div><p class="cap">One line, for narrow spaces such as a website header. logo-horizontal-colour</p></div>
   <div><div class="tile" style="background:#fff"><img src="{LOGO}/logo-stacked-colour.svg"></div><p class="cap">Stacked, for square spaces. logo-stacked-colour</p></div>
+  <div><div class="tile" style="background:#fff"><img src="{LOGO}/badge-circle.svg"></div><p class="cap">Round badge and profile picture. badge-circle</p></div>
+  <div><div class="tile" style="background:#fff"><img src="{LOGO}/mark-line.svg"></div><p class="cap">Line drawing, for engraving, embossing and one-colour print. mark-line</p></div>
   <div><div class="tile" style="background:#fff"><img src="{LOGO}/mark-colour.svg"></div><p class="cap">Mark alone. mark-colour</p></div>
-  <div><div class="tile" style="background:#fff"><img src="{LOGO}/app-icon.svg"></div><p class="cap">App icon and profile picture. app-icon</p></div>
-  <div><div class="tile" style="background:{NAVY}"><img src="{LOGO}/logo-stacked-on-dark.svg"></div><p class="cap">Stacked, on navy. logo-stacked-on-dark</p></div>
-  <div class="wide"><div class="tile" style="background:#fff"><img src="{LOGO}/logo-horizontal-navy.svg"></div><p class="cap">One colour, navy. For stamps, forms and one-colour print. logo-horizontal-navy</p></div>
-  <div class="wide"><div class="tile" style="background:#33414f"><img src="{LOGO}/logo-horizontal-white.svg"></div><p class="cap">One colour, white. For photos and coloured backgrounds. logo-horizontal-white</p></div>
+  <div><div class="tile" style="background:#fff"><img src="{LOGO}/logo-primary-navy.svg"></div><p class="cap">One colour, navy. logo-primary-navy</p></div>
+  <div><div class="tile" style="background:#33414f"><img src="{LOGO}/logo-primary-white.svg"></div><p class="cap">One colour, white. logo-primary-white</p></div>
 </div>{foot}</section>
 
 <section class="p"><div class="cols">
@@ -184,7 +185,7 @@ ul { padding-left: 4mm; }
     <p class="type1">Newsreader</p><p class="type2">Newsreader Italic</p><p class="type3">Instrument Sans</p>
     <p style="margin-top:4mm">Newsreader for the name and headings, its italic for the tagline, Instrument Sans for everything else. Both are free Google fonts, so any printer or designer can use them. In the logo files the letters are already outlines, so the logo looks right even without the fonts.</p>
     <h2 style="margin-top:9mm">Clear space</h2>
-    <div class="space"><img src="{LOGO}/logo-horizontal-colour.svg"></div>
+    <div class="space"><img src="{LOGO}/logo-primary-colour.svg"></div>
     <p>Keep space around the logo at least a quarter of the shield's width. Nothing else should sit inside the dashed line.</p>
   </div>
   <div><h2>Minimum size</h2>
@@ -197,11 +198,44 @@ ul { padding-left: 4mm; }
     (SRC / 'brand-guide.html').write_text(html)
 
 
+def sign_mockup():
+    from build_brand import mark_paths as mp, primary
+    tx, ty, tw, th = TIGHT
+    css = """
+body { width: 1600px; height: 1100px; overflow: hidden; }
+.wall { position: absolute; inset: 0; background:
+  radial-gradient(1200px 900px at 22% 18%, #efe9e0 0%, #ddd5ca 46%, #c5bcb0 100%); }
+.grain { position: absolute; inset: 0; opacity: .5; mix-blend-mode: multiply; }
+.floor { position: absolute; left: 0; right: 0; bottom: 0; height: 120px; background: linear-gradient(#b9afa2, #a89d8f); box-shadow: 0 -2px 0 rgba(0,0,0,.06) inset; }
+.sign { position: absolute; left: 50%; top: 150px; transform: translateX(-50%); text-align: center; }
+.sign svg.m { width: 420px; height: auto; filter: drop-shadow(10px 16px 10px rgba(60,40,25,.32)) drop-shadow(2px 3px 2px rgba(60,40,25,.35)); }
+.name { margin-top: 34px; font-family: 'Newsreader', serif; font-weight: 430; font-size: 76px; letter-spacing: -0.01em; color: #0f1d2b; font-variation-settings: 'opsz' 72;
+  text-shadow: 3px 5px 4px rgba(60,40,25,.28), 1px 1px 0 rgba(255,255,255,.35); }
+.tag { margin-top: 6px; font-family: 'Newsreader', serif; font-style: italic; font-size: 46px; color: #9a4421; text-shadow: 2px 4px 3px rgba(60,40,25,.25); }
+"""
+    bevel = ('<filter id="bev" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur in="SourceAlpha" stdDeviation="0.5" result="b"/>'
+             '<feSpecularLighting in="b" surfaceScale="2.4" specularConstant=".6" specularExponent="22" lighting-color="#fff" result="s">'
+             '<feDistantLight azimuth="225" elevation="38"/></feSpecularLighting><feComposite in="s" in2="SourceAlpha" operator="in" result="s2"/>'
+             '<feComposite in="SourceGraphic" in2="s2" operator="arithmetic" k1="0" k2="1" k3=".32" k4="0"/></filter>')
+    html = HEAD + css + f"""</style></head><body>
+<div class="wall"></div>
+<svg class="grain" width="1600" height="1100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .45  0 0 0 0 .4  0 0 0 .22 0"/></filter><rect width="100%" height="100%" filter="url(#n)"/></svg>
+<div class="floor"></div>
+<div class="sign">
+  <svg class="m" viewBox="{tx} {ty} {tw} {th}"><defs>{bevel}</defs><g filter="url(#bev)">{mp('colour')}</g></svg>
+  <p class="name">Dr Hemanth Chinthala</p>
+  <p class="tag">The Gut Doctor</p>
+</div>
+</body></html>"""
+    (SRC / 'sign-mockup.html').write_text(html)
+
+
 def main():
     SRC.mkdir(parents=True, exist_ok=True)
     business_card()
     letterhead()
     guide()
+    sign_mockup()
     print('HTML sources written to brand/src/')
 
 
