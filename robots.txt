@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://venkatsai09.github.io/dr-hemanth-chinthala/sitemap.xml
