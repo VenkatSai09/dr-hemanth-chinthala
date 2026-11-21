@@ -1,6 +1,6 @@
 # Logo and brand kit
 
-The mark is a stomach in front view, with the food pipe entering it, drawn in the website's navy and sienna. The name is set in Newsreader with the tagline *The Gut Doctor* in its italic. In every logo file the letters are already outlines, so the logo looks right without the fonts installed.
+The mark is the Shield of Care: the organs he treats (the liver and gallbladder, the stomach, and the small and large intestine) inside a shield, held by two hands, in the website's sienna and navy. The shape is defined once, in `scripts/brand/build_brand.py`. The name is set in Newsreader with the tagline *The Gut Doctor* in its italic. In every logo file the letters are already outlines, so the logo looks right without the fonts installed.
 
 The full rules (colours, clear space, minimum sizes, what not to do) are in `print/brand-guide.pdf`.
 
@@ -38,4 +38,3 @@ python3 scripts/brand/build_docs.py    # business card, letterhead, guide
 node scripts/brand/render.cjs          # PNGs and PDFs
 ```
 
-The mark's shape is defined once, in `build_brand.py`.
