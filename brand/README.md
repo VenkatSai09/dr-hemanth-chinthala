@@ -23,7 +23,7 @@ The full rules (colours, clear space, minimum sizes, what not to do) are in `pri
 
 - **Light backgrounds only.** The name is navy, so on navy, black or a busy photo put the logo on a cream panel.
 - **Size limits.** The logo is an image about 760 pixels wide. It prints sharply up to roughly 30 cm across (a card, letterhead, poster or standee). A large signboard needs a vector file made from it; any sign maker can trace one, and the design must stay exactly the same.
-- **Before printing:** add his medical council registration number to the letterhead, which has a blank line for it, and confirm the appointment number (+91 70872 22235). The CMYK values in the guide are approximate, so ask the printer for a proof.
+- **Before printing:** add his medical council registration number to the letterhead, which has a blank line for it, and confirm the appointment number (+91 90307 43962). The CMYK values in the guide are approximate, so ask the printer for a proof.
 
 ## Editing
 

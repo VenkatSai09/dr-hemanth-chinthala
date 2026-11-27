@@ -31,7 +31,7 @@ body {{ font-family: 'Instrument Sans', sans-serif; color: {NAVY}; }}
 .serif {{ font-family: 'Newsreader', serif; font-variation-settings: 'opsz' 72; }}
 '''
 
-PHONE = '+91 70872 22235'
+PHONE = '+91 90307 43962'
 HOURS = 'Monday to Saturday, 9 am to 4 pm'
 ROLE = 'Consultant Medical Gastroenterologist, Hepatologist and Interventional Endoscopist'
 QUALS = 'MBBS, MD (PGIMER), DM (CMC Vellore), ESEGH (UK)'
