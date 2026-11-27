@@ -5,8 +5,9 @@ import { readdirSync, existsSync } from 'node:fs';
 // GitHub Pages serves the site from /<repo>/, so the workflow sets BASE_PATH.
 const base = process.env.BASE_PATH || '/';
 // The public address of the site, used for the canonical link, share image and
-// sitemap. Change SITE_URL in the workflow when the site moves to its own domain.
-const site = (process.env.SITE_URL || `https://venkatsai09.github.io${base}`).replace(/\/?$/, '/');
+// sitemap: the doctor's own domain, also for the GitHub Pages copy, so search
+// engines treat drhemanthchinthala.com as the one real address.
+const site = (process.env.SITE_URL || 'https://drhemanthchinthala.com/').replace(/\/?$/, '/');
 
 // Every HTML page: the home page plus the condition and procedure pages.
 const pages = { main: resolve(__dirname, 'index.html') };
