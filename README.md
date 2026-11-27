@@ -103,6 +103,8 @@ npm run preview   # serves the production build
 
 **GitHub Pages:** `.github/workflows/pages.yml` builds the site on every push to `main` and publishes it to the `gh-pages` branch, which Pages serves at https://venkatsai09.github.io/dr-hemanth-chinthala/. The workflow sets the base path to the repository name.
 
+**Cloudflare (Workers static assets):** `wrangler.jsonc` serves `dist/` as static files, with clean URLs (`/procedures/ercp`) and `404.html` for missing pages. Connect the GitHub repository in the Cloudflare dashboard (Workers & Pages, Create, Import a repository) with build command `npm run build` and deploy command `npx wrangler deploy`, and set the build variable `SITE_URL` to the site's address. Every push to `main` then deploys. From a computer, `npm run deploy:cloudflare` builds and deploys after `npx wrangler login`.
+
 **Moving to the doctor's own domain:** add the domain in the repository's Settings, Pages, Custom domain; add a `public/CNAME` file containing the domain; and in the workflow set `BASE_PATH: /` and `SITE_URL: https://<domain>/`. At the registrar, point the domain at GitHub Pages (four A records for the apex and a CNAME for `www`, as GitHub's Pages documentation lists), then turn on Enforce HTTPS.
 
 **Any static host** (Netlify, Vercel, Cloudflare Pages): upload `dist/`. For Netlify Drop, drag the folder onto https://app.netlify.com/drop.

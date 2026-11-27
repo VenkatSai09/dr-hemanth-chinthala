@@ -10,6 +10,8 @@ const site = (process.env.SITE_URL || `https://venkatsai09.github.io${base}`).re
 
 // Every HTML page: the home page plus the condition and procedure pages.
 const pages = { main: resolve(__dirname, 'index.html') };
+// The not-found page is built too, but kept out of the sitemap and search results.
+if (existsSync(resolve(__dirname, '404.html'))) pages['404'] = resolve(__dirname, '404.html');
 for (const dir of ['conditions', 'procedures']) {
   const d = resolve(__dirname, dir);
   if (!existsSync(d)) continue;
@@ -17,7 +19,8 @@ for (const dir of ['conditions', 'procedures']) {
 }
 
 const text = (s) => s.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').trim();
-const pagePath = (file) => file.replace(/^.*?\/(?=(conditions|procedures)\/)/, '').replace(/^.*index\.html$/, '');
+// Pages are addressed without .html (Cloudflare and GitHub Pages both serve them that way).
+const pagePath = (file) => file.replace(/^.*?\/(?=(conditions|procedures)\/)/, '').replace(/^.*index\.html$/, '').replace(/\.html$/, '');
 
 export default defineConfig({
   base,
@@ -39,6 +42,7 @@ export default defineConfig({
       transformIndexHtml: {
         order: 'post',
         handler(html, ctx) {
+          if (ctx.filename.endsWith('404.html')) return html;
           const path = pagePath(ctx.filename.replace(/\\/g, '/'));
           const url = site + path;
           let head = `<link rel="canonical" href="${url}" />\n  <meta property="og:url" content="${url}" />\n`;
@@ -57,7 +61,7 @@ export default defineConfig({
         },
       },
       generateBundle() {
-        const urls = Object.keys(pages).map((k) => site + (k === 'main' ? '' : `${k}.html`)).sort();
+        const urls = Object.keys(pages).filter((k) => k !== '404').map((k) => site + (k === 'main' ? '' : k)).sort();
         const today = new Date().toISOString().slice(0, 10);
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
           .map((u) => `  <url><loc>${u}</loc><lastmod>${today}</lastmod></url>`).join('\n')}\n</urlset>\n`;

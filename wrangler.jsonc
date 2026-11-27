@@ -1,0 +1,12 @@
+{
+  // Cloudflare Workers, serving the built site as static assets (no server code).
+  // Build first with `npm run build`, then `npx wrangler deploy`.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "dr-hemanth-chinthala",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}

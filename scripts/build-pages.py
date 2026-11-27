@@ -319,7 +319,7 @@ BY_SLUG = {p['slug']: p for p in PAGES}
 
 def link(slug):
     p = BY_SLUG[slug]
-    return f'../{p["kind"]}/{slug}.html'
+    return f'../{p["kind"]}/{slug}'
 
 
 def render(p):
@@ -332,7 +332,7 @@ def render(p):
         {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': '%SITE%'},
             {'@type': 'ListItem', 'position': 2, 'name': section_name, 'item': f'%SITE%{section_anchor}'},
-            {'@type': 'ListItem', 'position': 3, 'name': p['name'], 'item': f'%SITE%{p["kind"]}/{p["slug"]}.html'}]},
+            {'@type': 'ListItem', 'position': 3, 'name': p['name'], 'item': f'%SITE%{p["kind"]}/{p["slug"]}'}]},
     ]
     ld_html = ''.join(f'\n  <script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in ld)
     faq = ''.join(f'''
