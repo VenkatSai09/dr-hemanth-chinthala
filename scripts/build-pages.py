@@ -9,8 +9,8 @@ import json
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-PHONE, PHONE_TEL = '+91 70872 22235', '+917087222235'
-WA = 'https://wa.me/917087222235?text=Hello%2C%20I%20would%20like%20to%20book%20a%20consultation%20with%20Dr%20Hemanth%20Chinthala.'
+PHONE, PHONE_TEL = '+91 90307 43962', '+919030743962'
+WA = 'https://wa.me/919030743962?text=Hello%2C%20I%20would%20like%20to%20book%20a%20consultation%20with%20Dr%20Hemanth%20Chinthala.'
 ROLE = 'Consultant gastroenterologist, hepatologist and interventional endoscopist'
 
 PAGES = [
