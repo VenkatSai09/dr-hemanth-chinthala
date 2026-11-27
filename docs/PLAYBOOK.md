@@ -47,7 +47,7 @@ Ask for all of this in one message. Missing facts are the main cause of rework.
 
 ---
 
-## 3. Design rules (what keeps it from looking AI-made)
+## 3. Design rules (what keeps it from looking AI-made; skills in section 11)
 
 Applied from the Hallmark, Impeccable, Humanizer and UI UX Pro Max skills:
 
@@ -149,6 +149,49 @@ In the repository Settings, Pages, add the custom domain; add `public/CNAME`; in
 
 ---
 
-## 11. Pricing guide (India, rough)
+## 11. Skills and tools used
+
+### Claude skills (design, animation and writing)
+
+None is a runtime dependency. Read each skill's `SKILL.md` before installing it. Where a skill's own scripts could not be run in the cloud session, its rules were applied by hand.
+
+| Skill | Where to get it | How it was used here |
+|---|---|---|
+| **Impeccable** | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | Main design review. Removed labels above headings, section numbers and big-number stat rows; removed buttons that chase the pointer and self-tilting cards; one main motion sequence instead of the same reveal everywhere; styled cursor, scrollbar, link underlines and numbers. Builds on Anthropic's frontend-design skill. |
+| **Hallmark** | [nutlope/hallmark](https://github.com/nutlope/hallmark) | Anti-"AI look" rules: every colour from a token; sentence-case labels in the body font; no italic accent words, middle dots, link arrows or decorative dots; no animated height; `overflow-x: clip` and `minmax(0, 1fr)`; hero fits a 1280 x 800 window. Its lint script was not run (blocked in the session); the rules were applied manually. |
+| **Humanizer** | [blader/humanizer](https://github.com/blader/humanizer) | All copy: no em dashes, plain headings that say what the section holds, no slogans or staged contrasts, plain verbs. Use it on every page, including topic pages. |
+| **UI UX Pro Max** | [nextlevelbuilder/ui-ux-pro-max-skill](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill) | Medical-clinic guidance: add an insurance answer to the FAQ, keep healthcare pages calm rather than motion-heavy. |
+| **awwwards-animations** | [devmartinese/awwwards-animations-skill](https://github.com/devmartinese/awwwards-animations-skill) | Checked as plain documentation; its techniques were used: word-by-word heading reveals, clip-path image reveals, scroll-scrubbed timelines, pinned sections, parallax, smooth scroll with Lenis. |
+| **frontend-design** (Anthropic) | Install in Claude Code with `/plugin` (only the user can run it) | Not installed in the cloud session; Impeccable, which extends it, was applied instead. Install it if you are working locally. |
+| gsap-framer-scroll-animation, web-design-guidelines, web-animation-design | As listed in the original request | Their site was blocked by the session's network. GSAP and ScrollTrigger were used directly following GSAP's own documentation. |
+
+Also from the same reel, not needed for a website: REA, Ponytail, Diagram Design, Onyx, Last 30 Days, Scrapling.
+
+### Claude Code skills and features used in the session
+
+- **Chrome browser skill** (`anthropic-skills:chrome-browser`): tried, so Gemini could be driven in the user's logged-in Chrome. It does not work from a cloud session; it needs a session running on the user's own computer (Claude desktop app, local session). Hence the "user generates in Gemini, attaches the file" method.
+- **Task list** to track the work, **Playwright** screenshots and tests, **GitHub CLI** for deploy status.
+
+### Libraries and tools
+
+| Tool | Used for |
+|---|---|
+| Vite 5 | Build, multi-page site, SEO build step |
+| GSAP 3 + ScrollTrigger | All animation |
+| Lenis | Smooth scrolling |
+| Newsreader, Instrument Sans (Fontsource, Google Fonts) | Type |
+| fontTools (Python) | Font subsetting (`scripts/subset-fonts.py`) |
+| Pillow + NumPy (Python) | Image cut-outs, crops, WebP/AVIF exports, icons, share card |
+| Playwright (Chromium) | Screenshots, PDFs (business card, letterhead, guide), PNG exports, functional tests |
+| Lighthouse 12 | Performance, accessibility, SEO scores |
+| d3-geo, topojson-client, world-atlas | The dotted training map (`scripts/build-map.mjs`) |
+| Three.js | Offline 3D renders of capsules (`scripts/render-3d/`; the hero objects were later removed, the capsule camera is still used) |
+| uharfbuzz | Turning text into outlines for the vector logo concepts (not used by the final image logo) |
+| Google Gemini | All illustrations and the final logo, made by the user and attached |
+| GitHub Pages + Actions | Hosting and automatic deploys |
+
+---
+
+## 12. Pricing guide (India, rough)
 
 Website ₹60,000 to ₹1,50,000; logo and brand kit ₹15,000 to ₹35,000; SEO setup ₹10,000 to ₹25,000; ongoing local SEO ₹8,000 to ₹25,000 a month; domain about ₹1,000 a year. A package of about ₹90,000 to ₹1,10,000 plus monthly SEO worked as a suggestion here.
